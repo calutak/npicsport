@@ -10,6 +10,7 @@ class C_schedule extends CI_Controller
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');
 		$this->load->model('m_tournament');
+		$this->load->model('m_schedule');
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
 		$this->data['tournament'] = $this->m_tournament->load_tournament();
@@ -22,6 +23,7 @@ class C_schedule extends CI_Controller
 	public function form_create()
 	{
 		$this->data['tid'] = $this->input->post('select2');
+		$this->data['team_count'] = $this->m_schedule->get_team_count();
 		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
 	}
 

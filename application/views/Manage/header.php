@@ -31,5 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo site_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'); ?>">
   <!-- sweet alert 2 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/custom.css'); ?>">
 </head>

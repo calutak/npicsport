@@ -14,5 +14,15 @@
 
 <!-- Main content -->
 <section class="content">
-
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Create Tournament</h3>
+        </div>
+        <div class="box-body">
+asd
+        </div>
+        <div class="box-footer with-border">
+            <h3>Add Constrain</h3>
+        </div>
+    </div>
 </section>

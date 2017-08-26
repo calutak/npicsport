@@ -14,41 +14,20 @@
 
 <!-- Main content -->
 <section class="content">
-	<div class="row">
-		<div class="login-box">
-			<div class="box box-danger">
-				<div class="box-header bg-red-active">
-					<i class="fa fa-ban"></i>
-					<h3 class="box-title">Alert!</h3>
-			    </div>
-				<div class="box-body bg-red">
-					<?php echo $tid; ?>
-			      	No tournament found, create one?
-			      	<br><br>
-			        <button type="submit" class="btn btn-danger pull-right">Create</button>
-				</div>
-		    </div>
-		    <div class="box box-success">
-				<div class="box-header bg-green-active">
-					<i class="fa fa-calendar"></i>
-					<h3 class="box-title">Choose tournament!</h3>
-			    </div>
-				<div class="box-body bg-green">
-			      	<div class="form-group col-md-9">
-		                <select class="form-control select2" style="width: 100%;">
-		                  <option selected="selected">Alabama</option>
-		                  <option>Alaska</option>
-		                  <option>California</option>
-		                  <option>Delaware</option>
-		                  <option>Tennessee</option>
-		                  <option>Texas</option>
-		                  <option>Washington</option>
-		                </select>
-              		</div>
-              		<div class="form-group col-md-3">
-		                <button type="submit" class="btn btn-success pull-right">Select</button>
-		            </div>
-		    </div>
-	    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Create Schedule</h3>
+        </div>
+        <div class="box-body">
+        	<?php 
+        	echo form_open() 
+        		
+        		.form_submit('add_pools', 'Create Pool', 'class=\'btn btn-default\'')
+        		.form_close(); 
+        	?>
+        </div>
+        <div class="box-footer with-border">
+            <h3>Add Constrain</h3>
+        </div>
     </div>
 </section>
