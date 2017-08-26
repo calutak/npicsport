@@ -49,7 +49,6 @@ class C_tournament extends CI_Controller
 
 	public function find_tournament_year()
 	{
-		
 		// $year = $this->input->post('select2');
 		// $this->data['yearfilteredData'] = $this->m_tournament->filteryearTournament($year);
 		// $this->data['form_findtourhistory'] = ;
@@ -138,8 +137,9 @@ class C_tournament extends CI_Controller
 				'tournament_year' => date('Y', $t_enddate),
 				'registration_start' => $r_startdate,
 				'registration_end' => $r_enddate,
-				'max_team' => $this->input->post('max_team'),
-				'max_team_member' => $this->input->post('max_player')
+				'min_games' => $this->input->post('min_games'),
+				'game_duration' => $this->input->post('game_dur'),
+				'type' => $this->input->post('select2')
 			);
 		$id = $this->input->post('t_id');
 		if($this->m_tournament->update_data_tour($id, $data_tournament))
@@ -148,5 +148,30 @@ class C_tournament extends CI_Controller
 			redirect(site_url('tournament/manage'));
 		}
 	}
+	public function matching_up($n)
+	{	
+		$nr = $n - 1;
+		$arr = '';
+		for($i=1; $i<$n; $i++)
+		{
+			for ($j=1; $j <= $n/2; $j++) { 
+				if($j==1){
+					$arr .= "Team ".$this->format(1)." VS Team ".$this->format(($n-1+$i-1) % ($n-1)+2).'<br>';
+				} else {
+					$arr .= "Team ".$this->format(($i+$j-2) % ($n-1)+2)." VS Team ".$this->format(($n-1+$i-$j) % ($n-1)+2).'<br>';
+				}
+			}
+			$this->data['list'] = $arr;
+		}
+	}
+	function format($x)
+	{
+		if($x < 10) {
+			return ' '+$x;
+		} else {
+			return $x;
+		}
+	}
+
 }
 ?>
