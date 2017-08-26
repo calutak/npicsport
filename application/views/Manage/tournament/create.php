@@ -20,12 +20,13 @@
 	</div>
 	<div class="box-body">
 		<form method="post" action="<?php echo site_url('tournament/create/newpost'); ?>" role="form">
+		<input type="hidden" name="id" value="<?php echo $tmax->id; ?>">
 		<div class="form-group col-md-4">
-			<label>Tournament Name</label>
+			<label>* Tournament Name</label>
 			<input type="text" name="t_name" class="form-control" placeholder="Name" required>
 		</div>
 		<div class="form-group col-md-4">
-		    <label>Registration Date</label>
+		    <label>* Registration Date</label>
 		    <div class="input-group">
 		      <div class="input-group-addon">
 		        <i class="fa fa-calendar"></i>
@@ -34,7 +35,7 @@
 		    </div>
 		</div>
 		<div class="form-group col-md-4">
-		    <label>Tournament Date</label>
+		    <label>* Tournament Date</label>
 		    <div class="input-group">
 		      <div class="input-group-addon">
 		        <i class="fa fa-calendar"></i>
@@ -42,25 +43,31 @@
 		      <input class="form-control pull-right" name="tdate" id="reservation" type="text">
 		    </div>
 		</div>
-		<div class="form-group col-xs-2">
-			<label>Max Team</label>
-			<input type="text" name="max_team" class="form-control col-xs-3" placeholder="Max team" required>
+		<div class="form-group col-xs-4">
+			<label>* Sport type</label>
+			<select name="select2" class="form-control select2">
+				<option value="Football (Soccer)" selected>Football (Soccer)</option>
+			</select>
 		</div>
-		<div class="form-group col-xs-2">
-			<label>Max Team Member</label>
-			<input type="text" name="max_player" class="form-control col-xs-3" placeholder="Max team" required>
+		<div class="form-group col-xs-4">
+			<label>* Minimum number of games</label>
+			<input type="text" name="min_games" class="form-control col-xs-3" placeholder="Minimum number of games" required>
+		</div>
+		<div class="form-group col-xs-4">
+			<label>* Game durations</label>
+			<input type="text" name="game_dur" class="form-control col-xs-3" placeholder="Game durations" required>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Description</label>
-			<textarea name="description" class="form-control" rows="3" placeholder="Description" required></textarea>
+			<textarea name="description" class="form-control" rows="3" placeholder="Description"></textarea>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Rules</label>
-			<textarea name="rules" class="form-control" rows="6" placeholder="List the tournament rules" required></textarea>
+			<textarea name="rules" class="form-control" rows="6" placeholder="List the tournament rules"></textarea>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Requirements</label>
-			<textarea name="req" class="form-control" rows="6" placeholder="Tournament requirements" required></textarea>
+			<textarea name="req" class="form-control" rows="6" placeholder="Tournament requirements"></textarea>
 		</div>
 		<div class="form-group col-md-4">
 			<button type="submit" class="btn btn-info">Create</button>

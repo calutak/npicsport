@@ -17,6 +17,10 @@ class M_tournament extends CI_Model
 	{
 		return $this->db->get('tb_tournament')->num_rows();
 	}
+	public function get_max_id()
+	{
+		return $this->db->select_max('tournament_id', 'id')->get('tb_tournament')->row_object();
+	}
 	public function update_data_tour($id, $data)
 	{
 		return $this->db->where('tournament_id', $id)->update('tb_tournament', $data);

@@ -181,7 +181,7 @@ desired effect
           <ul class="treeview-menu">
             <li><a href="<?php echo site_url('tournament/create');?>">Create</a></li>
             <li><a href="<?php echo site_url('tournament/manage');?>">Manage</a></li>
-            <li><a href="<?php echo site_url('tournament/history');?>">History</a></li>
+            <li><a href="<?php echo site_url('tournament/history');?>">History & Result</a></li>
           </ul>
         </li>
         <li class="treeview">

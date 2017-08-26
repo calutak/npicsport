@@ -44,19 +44,6 @@
                   <a href="'.site_url("tournament/delete/".$row->tournament_id).'" class="delete btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</a>
                 </center></td>
               </tr>';
-            echo '<input class="t_id'.$row->tournament_id.'" type="hidden" value="'.$row->tournament_id.'">';
-            echo '<input class="t_name'.$row->tournament_id.'" type="hidden" value="'.$row->tournament_name.'">';
-            echo '<input type="hidden" value="'.$row->tournament_start.'" id="t_start'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->tournament_end.'" id="t_end'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->registration_start.'" id="r_start'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->registration_end.'" id="r_end'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->tournament_rules.'" id="t_rules'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->tournament_desc.'" id="t_desc'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->tournament_req.'" id="t_req'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->tournament_year.'" id="t_year'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->status.'" id="t_stat'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->max_team.'" id="t_max_team'.$row->tournament_id.'">';
-            echo '<input type="hidden" value="'.$row->max_team_member.'" id="t_max_player'.$row->tournament_id.'">'; 
               } 
             ?>
             </tbody>
