@@ -21,13 +21,17 @@
         <div class="box-body">
         	<?php 
         	echo form_open() 
-        		
-        		.form_submit('add_pools', 'Create Pool', 'class=\'btn btn-default\'')
+                .$team_count
+        		.'<h4>Add Times</h4>'
+        		.anchor('#', 'Add Times', 'class=\'btn btn-default\'').'&nbsp;'
+        		.anchor('#', 'Save', 'class=\'btn btn-default\'').'&nbsp;'
+        		.form_submit('create_schedule', 'Create Schedule', 'class=\'btn btn-info\'')
         		.form_close(); 
         	?>
         </div>
         <div class="box-footer with-border">
-            <h3>Add Constrain</h3>
+            <h4>Add Constrain</h4>
         </div>
     </div>
 </section>
+

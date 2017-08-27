@@ -75,6 +75,8 @@ $route['timeline/manage/save'] = 'c_timeline/update_post';
 $route['timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
 //message
 $route['message/broadcast'] = 'c_message/form_broadcast';
+//validate
+$route['validate/team'] = 'c_validate/manage_team';
 //default
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -36,5 +36,30 @@ class C_schedule extends CI_Controller
 	{
 		
 	}
+
+	public function matching_up($n)
+	{	
+		$nr = $n - 1;
+		$arr = '';
+		for($i=1; $i<$n; $i++)
+		{
+			for ($j=1; $j <= $n/2; $j++) { 
+				if($j==1){
+					$arr .= "Team ".$this->format(1)." VS Team ".$this->format(($n-1+$i-1) % ($n-1)+2).'<br>';
+				} else {
+					$arr .= "Team ".$this->format(($i+$j-2) % ($n-1)+2)." VS Team ".$this->format(($n-1+$i-$j) % ($n-1)+2).'<br>';
+				}
+			}
+			$this->data['list'] = $arr;
+		}
+	}
+	function format($x)
+	{
+		if($x < 10) {
+			return ' '+$x;
+		} else {
+			return $x;
+		}
+	}
 }
 ?>
