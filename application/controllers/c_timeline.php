@@ -7,6 +7,10 @@ class C_timeline extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		if(empty($_SESSION['id']))
+		{
+			redirect(site_url('sysladm'));
+		}
 
 		$this->load->helper('ckeditor');
 		$this->load->library('ckeditor');

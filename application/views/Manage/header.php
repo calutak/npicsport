@@ -34,4 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.css">
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/custom.css'); ?>">
+  <!-- Data Toogle -->
+  <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/bootstrap-toggle.min.css'); ?>">
+  <!-- Datetime Picker -->
+  <link rel="stylesheet" href="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.css'); ?>">
 </head>

@@ -66,6 +66,7 @@ $route['tournament/history'] = 'c_tournament/show_history';
 $route['tournament/history/findyear'] = 'c_tournament/find_tournament_year';
 //schedule
 $route['schedule/create'] = 'c_schedule/form_create';
+$route['schedule/create/add_new'] = 'c_schedule/create_schedule';
 //timeline
 $route['timeline/create'] = 'c_timeline/create_post';
 $route['timeline/create/post'] = 'c_timeline/posting_timeline';

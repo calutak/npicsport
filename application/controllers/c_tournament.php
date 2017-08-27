@@ -7,6 +7,10 @@ class C_tournament extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		if(empty($_SESSION['id']))
+		{
+			redirect(site_url('sysladm'));
+		}
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');		
 		$this->load->model('m_tournament');

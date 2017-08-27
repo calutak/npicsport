@@ -41,7 +41,7 @@
                     <td>'.$row->team_banner.'</td>
                     <td><center><a href="#" class="btn btn-xs btn-danger">Registered</a></center></td>
                     <td><center>
-                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Validate</a>
+                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-warning"><i class="fa fa-edit"></i> Validate</a>
                     </center></td>
                   </tr>';
               }
@@ -54,7 +54,7 @@
                     <td>'.$row->team_banner.'</td>
                     <td><center><a href="#" class="btn btn-xs btn-warning">Paid</a></center></td>
                     <td><center>
-                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Validate</a>
+                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Activate</a>
                     </center></td>
                   </tr>';
               } 

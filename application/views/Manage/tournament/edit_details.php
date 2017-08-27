@@ -90,13 +90,9 @@
 $('#reservation').daterangepicker({
     "startDate": "<?php echo date('m/d/Y',$rowbyid->tournament_start); ?>",
     "endDate": "<?php echo date('m/d/Y',$rowbyid->tournament_end); ?>"
-}, function(start, end, label) {
-  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 });
 $('#reservation2').daterangepicker({
     "startDate": "<?php echo date('m/d/Y',$rowbyid->registration_start); ?>",
     "endDate": "<?php echo date('m/d/Y',$rowbyid->registration_end); ?>"
-}, function(start, end, label) {
-  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 });
 </script>
