@@ -17,35 +17,40 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Create Schedule</h3>
+            <button class="btn btn-default pull-right"><i class="fa fa-gear"></i> Settings</button>
         </div>
         <div class="box-body">
         	<?php
-            $list_sport_type = array('footbal(soccer)' => 'Football (Soccer)'); 
+            $list_type = array('Knockout' => 'Knockout'); 
         	echo form_open(site_url('schedule/create/add_new'))
-                .'<h4><strong>Tournament Information</strong></h4><hr>'
+                .'<div class=\'col-md-12\'>
+                <h4><strong>Tournament Information</strong></h4>
+                <hr>'
                 .'<div class=\'form-group col-md-2\'>'
                 .form_label('Total Team', 'team_c')
                 .form_input('team_c', $team_count, 'class=\'form-control\' disabled')
                 .form_hidden('team_count',$team_count)
-                .'</div>'
-                .'<div class=\'form-group col-md-3\'>'
+                .'</div>
+                <div class=\'form-group col-md-3\'>'
+                .form_label('* Venue', 'venue')
+                .form_input('venue', '', 'class=\'form-control\' placeholder=\'Venue\' required')
+                .'</div>
+                <div class=\'form-group col-md-2\'>'
+                .form_label('Tournament Type', 'type')
+                .form_dropdown('type', $list_type, 'Knockout', 'class=\'form-control\'')
+                .'</div>
+                <div class=\'form-group col-md-3\'>'
                 .form_label('Tournament Date', 'tdate')
-                .'<div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>'
-                    .form_input('tdate', date('d/M/Y',$row_tournament->tournament_start).' - '.date('d/M/Y',$row_tournament->tournament_end), 'class=\'form-control\' disabled')
+                .form_input('tdate', date('d/M/Y',$row_tournament->tournament_start).' - '.date('d/M/Y',$row_tournament->tournament_end), 'class=\'form-control\' disabled')
                 .form_hidden('start_tour',$row_tournament->tournament_start)
                 .form_hidden('end_tour',$row_tournament->tournament_end)
-                .'</div></div><div class=\'form-group col-md-2\'>'
+                .'</div>
+                <div class=\'form-group col-md-2\'>'
                 .form_label('Game Duration', 'gamedur')
                 .form_input('gamedur', $row_tournament->game_duration, 'class=\'form-control\' disabled')
                 .form_hidden('gameduration',$row_tournament->game_duration)
                 .'</div>
-                <div class=\'form-group col-md-5\'>'
-                .form_label('Sport Type', 'sport_type')
-                .form_dropdown('sport_type', $list_sport_type, 'football(soccer)', 'class=\'form-control\'')
-                .'</div>
+                </div>
                 <div class=\'col-md-12\'>
                 <h4><strong>Add Times</strong></h4>
                 <hr>
@@ -82,20 +87,34 @@
                 .'</span>'
                 .'</div>'
                 .'<div class=\'form-group col-md-2\'>'
+                .form_label('Start Time', 'start_time')
                 .form_input('start_time', '', 'class=\'form-control\' id=\'start_time\' placeholder=\'Start\' required')
                 .'</div>'
                 .'<div class=\'form-group col-md-2\'>'
+                .form_label('End Time', 'end_time')
                 .form_input('end_time', '', 'class=\'form-control\' id=\'end_time\' placeholder=\'End\' required')
                 .'</div>'
                 .'<div class=\'form-group col-md-2\'>'
+                .form_label('Time Gap per Games', 'time_gap')
                 .form_input('time_gap', '', 'class=\'form-control\' placeholder=\'Gap in minutes\' required')
+                .'</div>
+                <div class=\'col-md-12\'>
+                <h4><strong>Action</strong></h4>
+                <hr>'
+                .form_submit('create_schedule', 'Create Schedule', 'class=\'btn btn-info\'')
                 .'</div>'
-        		.form_submit('create_schedule', 'Create Schedule', 'class=\'btn btn-info\'')
         		.form_close(); 
         	?>
         </div>
         <div class="box-footer with-border">
-            <!-- <h4><strong>Add Constrain</strong></h4> -->
+            <?php 
+            if(isset($list_date))
+            {
+                foreach ($list_date as $key) {
+                    echo $key.'<br>';
+                }
+            } 
+            ?>
         </div>
     </div>
 </section>

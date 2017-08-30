@@ -27,18 +27,59 @@ class C_schedule extends CI_Controller
 	public function form_create()
 	{
 		$this->data['tid'] = $this->input->post('select2');
-		$this->data['team_count'] = $this->m_schedule->get_team_count();
+		$this->data['team_count'] = $this->m_schedule->get_team_count($this->data['tid']);
 		$this->data['row_tournament'] = $this->m_tournament->get_row_byID($this->input->post('select2'));
 		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
 	}
 
-	public function rand_schedule() 
+	public function getBracket($nteam) 
 	{
+		$p = range(1, $nteam);
+		$pCount = count($p);
+		$rounds = ceil(log($pCount)/log(2));
+		$bracketSize = pow(2, $rounds);
+		$byes = $bracketSize - $pCount;
 
+		echo sprintf('Number of participants: %d<br/>%s', $pCount, PHP_EOL);
+	    echo sprintf('Number of rounds: %d<br/>%s', $rounds, PHP_EOL);
+	    echo sprintf('Bracket size: %d<br/>%s', $bracketSize, PHP_EOL);
+	    echo sprintf('Required number of byes: %d<br/>%s', $byes, PHP_EOL);  
+
+		if($pCount < 2) 
+		{
+			return array();
+		}
+
+		$matches = array(array(1,2));
+
+		for($r = 1; $r < $rounds; $r++)
+		{
+			$roundMatches = array();
+			$sum = pow(2, ($r+1)) + 1;
+			foreach ($matches as $match) 
+			{
+				$home = $this->changeIntoBye($match[0], $pCount);
+	            $away = $this->changeIntoBye($sum - $match[0], $pCount);
+	            $roundMatches[] = array($home, $away);
+	            $home = $this->changeIntoBye($sum - $match[1], $pCount);
+	            $away = $this->changeIntoBye($match[1], $pCount);
+	            $roundMatches[] = array($home, $away);
+			}
+			$matches = $roundMatches;
+		}
+		return $matches;
+	}
+
+	function changeIntoBye($seed, $pCount)
+	{ 
+	    return $seed <= $pCount ?  $seed : null;
 	}
 
 	public function create_schedule()
 	{
+		$matches = $this->getBracket($this->input->post('team_count'));
+		// $matches = $this->getBracket(9);
+		// var_dump($matches);
 		$t_start = $this->input->post('start_tour');
 		$t_end = $this->input->post('end_tour');
 		//match time
@@ -51,6 +92,8 @@ class C_schedule extends CI_Controller
 
 		if(isset($_POST['day'])) 
 		{
+			$i=0;
+			$arrDate = array();
 			while ($t_start <= $t_end) 
 			{
 				$curDay = date('D',$t_start);
@@ -60,12 +103,35 @@ class C_schedule extends CI_Controller
 					{
 						$time = $start;
 						while ($time < $end) {
-							echo date('h:i A', $time).' AND '.date('d/M/Y', $t_start).'<br>';
+							$arrDate[$i] = date('h:i A', $time).' '.date('d/M/Y', $t_start);
 							$time = strtotime('+'.$tot_gap.' minutes', $time);
+							$i++;
 						}
 					}
 				}
 				$t_start = strtotime('+1 day', $t_start);
+			}
+			echo '<br> Number Slot of Times : '.$i.'<br>';
+			for ($s=0; $s < $i; $s++) { 
+				if(count($matches) <= $s)
+				{
+					//echo 'unscheduled on'.$arrDate[$s];
+				}
+				else
+				{
+					if(empty($matches[$s][0]))
+					{
+						echo $matches[$s][1].' VS Bye <br>';	
+					}
+					else if (empty($matches[$s][1]))
+					{
+						echo $matches[$s][0].' VS Bye <br>';
+					}
+					else
+					{
+						echo $matches[$s][0].' VS '.$matches[$s][1].'<br>';
+					}
+				}
 			}
 		} 
 		else
