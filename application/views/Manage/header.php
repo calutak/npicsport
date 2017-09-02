@@ -7,6 +7,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>SPORTSYSNPIC</title>
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/custom.css'); ?>">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/bootstrap.min.css'); ?>">
   <!-- Font Awesome -->

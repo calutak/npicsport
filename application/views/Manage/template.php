@@ -1,4 +1,4 @@
-<!--
+
 BODY TAG OPTIONS:
 =================
 Apply one or more of the following classes to get the
@@ -145,7 +145,7 @@ desired effect
               <span class="hidden-xs">NPIC Sport Admin</span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="<?php echo site_url('syslogout'); ?>">Logout</a></li>
+              <li><a href="<?php echo site_url('adm/syslogout'); ?>">Logout</a></li>
             </ul>
           </li>
 
@@ -179,43 +179,47 @@ desired effect
         <li class="treeview">
           <a href="#"><i class="fa fa-trophy"></i> <span>Tournament</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo site_url('tournament/create');?>">Create</a></li>
-            <li><a href="<?php echo site_url('tournament/manage');?>">Manage</a></li>
-            <li><a href="<?php echo site_url('tournament/history');?>">History & Result</a></li>
+            <li><a href="<?php echo site_url('adm/tournament/create');?>">Create</a></li>
+            <li><a href="<?php echo site_url('adm/tournament/manage');?>">Manage</a></li>
+            <li><a href="<?php echo site_url('adm/tournament/history');?>">History & Result</a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#"><i class="fa fa-calendar-o"></i> <span>Schedule</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
             <?php if($tnumrows>0) { ?>
-            <li><a href="<?php //echo site_url('schedule/create');?>" data-toggle="modal" data-target="#tournament_found">Create Schedule</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#tournament_found">Create Schedule</a></li>
             <?php } else { ?>
-            <li><a href="<?php //echo site_url('schedule/manage');?>" data-toggle="modal" data-target="#tournament_notfound">Create Schedule</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#tournament_notfound">Create Schedule</a></li>
             <?php } ?>
-            <li><a href="<?php echo site_url('schedule/manage');?>">Manage Schedule</a></li>
+            <?php if($schedule>0) { ?>
+            <li><a href="#" data-toggle="modal" data-target="#sch_found">Manage Schedule</a></li>
+            <?php } else { ?>
+            <li><a href="#" data-toggle="modal" data-target="#sch_notfound">Manage Schedule</a></li>
+            <?php } ?>
           </ul>
         </li>
         <li class="treeview">
           <a href="#"><i class="fa fa-bullhorn"></i> <span>Timeline</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo site_url('timeline/create');?>">Create Post</a></li>
-            <li><a href="<?php echo site_url('timeline/manage');?>">Manage Post</a></li>
+            <li><a href="<?php echo site_url('adm/timeline/create');?>">Create Post</a></li>
+            <li><a href="<?php echo site_url('adm/timeline/manage');?>">Manage Post</a></li>
           </ul>
         </li>
         <li class="treeview">
-          <a href="<?php echo site_url('validate/team');?>"><i class="fa fa-check"></i> <span>Validate Team</span></a>
+          <a href="<?php echo site_url('adm/validate/team');?>"><i class="fa fa-check"></i> <span>Validate Team</span></a>
         </li> 
         <li class="treeview">
           <a href="#"><i class="fa fa-comments"></i> <span>Message</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo site_url('message/broadcast');?>">Create Broadcast Message</a></li>
-            <li><a href="<?php echo site_url('message/manage');?>">Manage Message</a></li>
+            <li><a href="<?php echo site_url('adm/message/broadcast');?>">Create Broadcast Message</a></li>
+            <li><a href="<?php echo site_url('adm/message/manage');?>">Manage Message</a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#"><i class="fa fa-clock-o"></i> <span>Manage Match</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo site_url('match/update');?>">Update Result</a></li>
+            <li><a href="<?php echo site_url('adm/match/update');?>">Update Result</a></li>
           </ul>
         </li>
       </ul>
@@ -258,7 +262,7 @@ desired effect
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancel</button>
-        <a href="<?php echo site_url('tournament/create'); ?>"><button type="button" class="btn btn-outline">Create</button></a>
+        <a href="<?php echo site_url('adm/tournament/create'); ?>"><button type="button" class="btn btn-outline">Create</button></a>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -274,7 +278,7 @@ desired effect
       </div>
       <div class="modal-body">
         <div class="form-group">
-        <form action="<?php echo site_url('schedule/create') ?>" method="post">
+        <form action="<?php echo site_url('adm/schedule/create') ?>" method="post">
         <select name="select2" class="form-control select2" style="width: 100%;">
           <?php foreach ($tournament as $tourname) {
             echo '<option value="'.$tourname->tournament_id.'">'.$tourname->tournament_name.'</option>';
@@ -291,6 +295,48 @@ desired effect
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
+</div>
+<!-- Modal Manage Schedule -->
+<div class="modal modal-danger fade" id="sch_notfound">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa fa-ban"></i> Alert!</h4>
+      </div>
+      <div class="modal-body">
+        <h5>Seems you don't have any Schedule for Tournament yet.</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-success fade" id="sch_found">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <h3 class="box-title"><i class="fa fa-calendar"></i> Choose tournament schedule!</h3>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+        <form action="<?php echo site_url('adm/schedule/manage') ?>" method="post">
+        <select name="select2" class="form-control select2" style="width: 100%;">
+          <?php foreach ($tournament as $tourname) {
+            echo '<option value="'.$tourname->tournament_id.'">'.$tourname->tournament_name.'</option>';
+          } ?>
+        </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-outline">Choose</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- END MODAL Section -->
 
@@ -317,4 +363,4 @@ $(function () {
     $(".textarea").wysihtml5();
   });
 </script>
-<!-- END JS Section Timeline -->
+<!-- END JS Section Timeline 

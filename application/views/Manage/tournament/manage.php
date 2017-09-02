@@ -6,8 +6,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url('adm')?>"><i class="fa fa-home"></i>Dashboard</a></li>
-        <li><a href="<?php echo site_url('tournament/view')?>">Tournament</a></li>
-        <li><a href="<?php echo site_url('tournament/manage')?>">Manage</a></li>
+        <li><a href="<?php echo site_url('adm/tournament/view')?>">Tournament</a></li>
+        <li><a href="<?php echo site_url('adm/tournament/manage')?>">Manage</a></li>
         <li class="active">Here</li>
     </ol>
 </section>
@@ -40,8 +40,8 @@
                 <td>'.date('d/M/Y',$row->tournament_start).' - '.date('d/M/Y',$row->tournament_end).'</td>
                 <td><center>
                   <a href="#" id="'.$row->tournament_id.'" data-toggle="modal" data-target="#show_details" class="modal_details btn btn-xs btn-info"><i class="fa fa-edit"></i> Details</a> 
-                  <a href="'.site_url("tournament/edit/".$row->tournament_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
-                  <a href="'.site_url("tournament/delete/".$row->tournament_id).'" class="delete btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</a>
+                  <a href="'.site_url("adm/tournament/edit/".$row->tournament_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
+                  <a href="'.site_url("adm/tournament/delete/".$row->tournament_id).'" class="delete btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</a>
                 </center></td>
               </tr>';
               } 
@@ -74,7 +74,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-        <a href="<?php echo site_url('tournament/edit/'); ?>" class="btn btn-outline">Edit</button></a>
+        <a href="<?php echo site_url('adm/tournament/edit/'); ?>" class="btn btn-outline">Edit</button></a>
       </div>
     </div>
     <!-- /.modal-content -->

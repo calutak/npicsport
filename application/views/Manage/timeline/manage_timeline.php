@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url('adm')?>"><i class="fa fa-home"></i>Dashboard</a></li>
-        <li><a href="<?php echo site_url('timeline/manage')?>">Timeline</a></li>
+        <li><a href="<?php echo site_url('adm/timeline/manage')?>">Timeline</a></li>
         <li class="active">Here</li>
     </ol>
 </section>
@@ -38,8 +38,8 @@
                 <td>'.substr($row->timeline_details,0,50).'</td>
                 <td>'.date('d/M/Y',$row->timeline_date).'</td>
                 <td><center>
-                  <a href="'.site_url("timeline/manage/edit/".$row->timeline_id).'"><button class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</button></a>
-                  <a href="'.site_url("timeline/manage/delete/".$row->timeline_id).'"><button class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</button></a>
+                  <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'"><button class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</button></a>
+                  <a href="'.site_url("adm/timeline/manage/delete/".$row->timeline_id).'"><button class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</button></a>
                 </center></td>
               </tr>';
               } 

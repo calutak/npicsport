@@ -6,8 +6,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url('adm')?>"><i class="fa fa-home"></i>Dashboard</a></li>
-        <li><a href="<?php echo site_url('schedule/view')?>">Schedule</a></li>
-        <li><a href="<?php echo site_url('schedule/create')?>">Create</a></li>
+        <li><a href="<?php echo site_url('adm/schedule/view')?>">Schedule</a></li>
+        <li><a href="<?php echo site_url('adm/schedule/create')?>">Create</a></li>
         <li class="active">Here</li>
     </ol>
 </section>
@@ -17,12 +17,12 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Create Schedule</h3>
-            <button class="btn btn-default pull-right"><i class="fa fa-gear"></i> Settings</button>
+            <button data-toggle="modal" data-target="#setting" class="btn btn-default pull-right"><i class="fa fa-gear"></i> Settings</button>
         </div>
         <div class="box-body">
         	<?php
             $list_type = array('Knockout' => 'Knockout'); 
-        	echo form_open(site_url('schedule/create/add_new'))
+        	echo form_open(site_url('adm/schedule/create/add_new'))
                 .'<div class=\'col-md-12\'>
                 <h4><strong>Tournament Information</strong></h4>
                 <hr>'
@@ -46,9 +46,9 @@
                 .form_hidden('end_tour',$row_tournament->tournament_end)
                 .'</div>
                 <div class=\'form-group col-md-2\'>'
-                .form_label('Game Duration', 'gamedur')
-                .form_input('gamedur', $row_tournament->game_duration, 'class=\'form-control\' disabled')
-                .form_hidden('gameduration',$row_tournament->game_duration)
+                // .form_label('Game Duration', 'gamedur')
+                // .form_input('gamedur', $row_tournament->game_duration, 'class=\'form-control\' disabled')
+                // .form_hidden('gameduration',$row_tournament->game_duration)
                 .'</div>
                 </div>
                 <div class=\'col-md-12\'>
@@ -97,6 +97,7 @@
                 .'<div class=\'form-group col-md-2\'>'
                 .form_label('Time Gap per Games', 'time_gap')
                 .form_input('time_gap', '', 'class=\'form-control\' placeholder=\'Gap in minutes\' required')
+                .form_hidden('tournament_id', $tid)
                 .'</div>
                 <div class=\'col-md-12\'>
                 <h4><strong>Action</strong></h4>
@@ -142,3 +143,34 @@
         });
     });
 </script>
+
+<!-- MODAL Section -->
+<!-- Setting Modal -->
+<div class="modal modal-default fade" id="setting">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Tournament Setting</h3>
+      </div>
+      <div class="modal-body">
+        <?php 
+            echo 
+            form_open()
+            .form_label('Bracket Size', 'bracket_size')
+            .form_input('bracket_size', '', 'class=\'form-control\''); 
+        ?>
+      </div>
+      <div class="modal-footer">
+        <?php
+            echo 
+            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
+            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
+            .form_close(); 
+        ?>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Setting Modal -->
+<!-- End MODAL Section -->

@@ -19,7 +19,7 @@
 		<h3 class="box-title">Create Tournament</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('tournament/create/newpost'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/tournament/create/newpost'); ?>" role="form">
 		<input type="hidden" name="id" value="<?php echo $tmax->id; ?>">
 		<div class="form-group col-md-4">
 			<label>* Tournament Name</label>
@@ -49,12 +49,16 @@
 				<option value="Football (Soccer)" selected>Football (Soccer)</option>
 			</select>
 		</div>
-		<div class="form-group col-xs-4">
-			<label>* Minimum number of games</label>
-			<input type="text" name="min_games" class="form-control col-xs-3" placeholder="Minimum number of games" required>
+		<div class="form-group col-xs-2">
+			<label>* Max Team / Faculty</label>
+			<input type="text" name="max_team_fac" class="form-control col-xs-2" placeholder="Max Team Faculty">
 		</div>
-		<div class="form-group col-xs-4">
-			<label>* Game durations</label>
+		<div class="form-group col-xs-2">
+			<label>* Max Team</label>
+			<input type="text" name="max_team" class="form-control col-xs-2" placeholder="Max Team">
+		</div>
+		<div class="form-group col-xs-2">
+			<label>* Game Duration</label>
 			<input type="text" name="game_dur" class="form-control col-xs-3" placeholder="Game durations" required>
 		</div>
 		<div class="form-group col-md-12">

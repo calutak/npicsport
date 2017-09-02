@@ -14,8 +14,10 @@ class C_tournament extends CI_Controller
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');		
 		$this->load->model('m_tournament');
+		$this->load->model('m_schedule');
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
+		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tmax'] = $this->m_tournament->get_max_id();
 		$this->data['tournament'] = $this->m_tournament->load_tournament();
 	}
@@ -79,38 +81,39 @@ class C_tournament extends CI_Controller
 				'tournament_year' => date('Y', $t_enddate),
 				'registration_start' => $r_startdate,
 				'registration_end' => $r_enddate,
-				'min_games' => $this->input->post('min_games'),
-				'game_duration' => $this->input->post('game_dur'),
 				'type' => $this->input->post('select2')
 			);
-			if($this->db->insert('tb_tournament', $data_tournament)) 
-			{
-				$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Created new tournament!</div>');
-				redirect(site_url('tournament/manage'));
-			}
+			$data_setting = array(
+				'max_team' => $this->input->post('max_team'),
+				'max_team_faculty' => $this->input->post('max_team_fac'),
+				'game_duration' => $this->input->post('game_dur')
+			);
 		} 
 		else 
 		{
 			$data_tournament = array(
-					'tournament_id' => 'NPICT'.($this->m_tournament->get_row_tournament() + 1),
-					'tournament_name' => $this->input->post('t_name'),
-					'tournament_start' => $t_startdate,
-					'tournament_desc' => $this->input->post('description'),
-					'tournament_req' => $this->input->post('req'),
-					'tournament_rules' => $this->input->post('rules'),
-					'tournament_end' => $t_enddate,
-					'tournament_year' => date('Y', $t_enddate),
-					'registration_start' => $r_startdate,
-					'registration_end' => $r_enddate,
-					'min_games' => $this->input->post('min_games'),
-					'game_duration' => $this->input->post('game_dur'),
-					'type' => $this->input->post('select2')
-				);
-			if($this->db->insert('tb_tournament', $data_tournament)) 
-			{
-				$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Created new tournament!</div>');
-				redirect(site_url('tournament/manage'));
-			}
+				'tournament_id' => 'NPICT'.($this->m_tournament->get_row_tournament() + 1),
+				'tournament_name' => $this->input->post('t_name'),
+				'tournament_start' => $t_startdate,
+				'tournament_desc' => $this->input->post('description'),
+				'tournament_req' => $this->input->post('req'),
+				'tournament_rules' => $this->input->post('rules'),
+				'tournament_end' => $t_enddate,
+				'tournament_year' => date('Y', $t_enddate),
+				'registration_start' => $r_startdate,
+				'registration_end' => $r_enddate,
+				'type' => $this->input->post('select2')
+			);
+			$data_setting = array(
+				'max_team' => $this->input->post('max_team'),
+				'max_team_faculty' => $this->input->post('max_team_fac'),
+				'game_duration' => $this->input->post('game_dur')
+			);
+		}
+		if($this->db->insert('tb_tournament', $data_tournament) && $this->db->insert('tb_settings', $data_setting)) 
+		{
+			$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Created new tournament!</div>');
+			redirect(site_url('adm/tournament/manage'));
 		}
 	}
 
@@ -119,7 +122,11 @@ class C_tournament extends CI_Controller
 		if($this->m_tournament->delete_row($id))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data deleted!</div>');
-			redirect(site_url('tournament/manage'));
+			if ($this->m_schedule->get_row_schedule() == 0) 
+			{
+				$this->m_schedule->clear_table();
+			}
+			redirect(site_url('adm/tournament/manage'));
 		}
 	}
 
@@ -140,7 +147,7 @@ class C_tournament extends CI_Controller
 				'tournament_year' => date('Y', $t_enddate),
 				'registration_start' => $r_startdate,
 				'registration_end' => $r_enddate,
-				'min_games' => $this->input->post('min_games'),
+				// 'min_games' => $this->input->post('min_games'),
 				'game_duration' => $this->input->post('game_dur'),
 				'type' => $this->input->post('select2')
 			);
@@ -148,7 +155,7 @@ class C_tournament extends CI_Controller
 		if($this->m_tournament->update_data_tour($id, $data_tournament))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data has been updated!</div>');
-			redirect(site_url('tournament/manage'));
+			redirect(site_url('adm/tournament/manage'));
 		}
 	}
 }

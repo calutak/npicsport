@@ -55,29 +55,30 @@ $route['sysladm'] = 'c_auth/index';
 $route['adm'] = 'c_dashboard/index';
 $route['syslogout'] = 'c_dashboard/logout';
 //tournament
-$route['tournament/create'] = 'c_tournament/create_tour';
-$route['tournament/create/newpost'] = 'c_tournament/insert_new_tour';
-$route['tournament/manage'] = 'c_tournament/manage';
-$route['tournament/edit/(:any)'] = 'c_tournament/edit_data_tour/$1';
-$route['tournament/delete/(:any)'] = 'c_tournament/delete/$1';
-$route['tournament/update/confirm'] = 'c_tournament/update';
-$route['tournament/show_details/(:any)'] = 'c_tournament/show_details/$1';
-$route['tournament/history'] = 'c_tournament/show_history';
-$route['tournament/history/findyear'] = 'c_tournament/find_tournament_year';
+$route['adm/tournament/create'] = 'c_tournament/create_tour';
+$route['adm/tournament/create/newpost'] = 'c_tournament/insert_new_tour';
+$route['adm/tournament/manage'] = 'c_tournament/manage';
+$route['adm/tournament/edit/(:any)'] = 'c_tournament/edit_data_tour/$1';
+$route['adm/tournament/delete/(:any)'] = 'c_tournament/delete/$1';
+$route['adm/tournament/update/confirm'] = 'c_tournament/update';
+$route['adm/tournament/show_details/(:any)'] = 'c_tournament/show_details/$1';
+$route['adm/tournament/history'] = 'c_tournament/show_history';
+$route['adm/tournament/history/findyear'] = 'c_tournament/find_tournament_year';
 //schedule
-$route['schedule/create'] = 'c_schedule/form_create';
-$route['schedule/create/add_new'] = 'c_schedule/create_schedule';
+$route['adm/schedule/create'] = 'c_schedule/form_create';
+$route['adm/schedule/create/add_new'] = 'c_schedule/create_schedule';
+$route['adm/schedule/manage'] = 'c_schedule/form_manage';
 //timeline
-$route['timeline/create'] = 'c_timeline/create_post';
-$route['timeline/create/post'] = 'c_timeline/posting_timeline';
-$route['timeline/manage'] = 'c_timeline/view_post';
-$route['timeline/manage/edit/(:any)'] = 'c_timeline/edit_post/$1';
-$route['timeline/manage/save'] = 'c_timeline/update_post';
-$route['timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
+$route['adm/timeline/create'] = 'c_timeline/create_post';
+$route['adm/timeline/create/post'] = 'c_timeline/posting_timeline';
+$route['adm/timeline/manage'] = 'c_timeline/view_post';
+$route['adm/timeline/manage/edit/(:any)'] = 'c_timeline/edit_post/$1';
+$route['adm/timeline/manage/save'] = 'c_timeline/update_post';
+$route['adm/timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
 //message
-$route['message/broadcast'] = 'c_message/form_broadcast';
+$route['adm/message/broadcast'] = 'c_message/form_broadcast';
 //validate
-$route['validate/team'] = 'c_validate/manage_team';
+$route['adm/validate/team'] = 'c_validate/manage_team';
 //default
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

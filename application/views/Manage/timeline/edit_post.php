@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url('adm'); ?>"><i class="fa fa-home"></i> Dashboard</a></li>
-        <li><a href="<?php echo site_url('timeline/manage'); ?>"></i> Timeline</a></li>
+        <li><a href="<?php echo site_url('adm/timeline/manage'); ?>"></i> Timeline</a></li>
         <li><a href="#"></i> Edit</a></li>
         <li class="active">Here</li>
     </ol>
@@ -19,7 +19,7 @@
 		<h3 class="box-title">Edit Timeline</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('timeline/manage/save'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/timeline/manage/save'); ?>" role="form">
 		<div class="form-group col-md-12">
             <input type="hidden" name="id" value="<?php echo $tlrow->timeline_id; ?>">
             <div class="box-header">

@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url('adm')?>"><i class="fa fa-home"></i>Dashboard</a></li>
-        <li><a href="<?php echo site_url('validate/team')?>">Validate</a></li>
+        <li><a href="<?php echo site_url('adm/validate/team')?>">Validate</a></li>
         <li class="active">Here</li>
     </ol>
 </section>

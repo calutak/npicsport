@@ -19,7 +19,7 @@
 		<h3 class="box-title">Edit Tournament</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('tournament/update/confirm'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/tournament/update/confirm'); ?>" role="form">
 		<div class="form-group col-md-4">
 			<label>Tournament ID</label>
 			<input type="hidden" name="t_id" class="form-control" value="<?php echo $rowbyid->tournament_id; ?>">
@@ -52,10 +52,6 @@
 			<select name="select2" class="form-control select2">
 				<option value="Football (Soccer)" selected>Football (Soccer)</option>
 			</select>
-		</div>
-		<div class="form-group col-xs-4">
-			<label>* Minimum number of games</label>
-			<input type="text" name="min_games" class="form-control col-xs-3" value="<?php echo $rowbyid->min_games; ?>" required>
 		</div>
 		<div class="form-group col-xs-4">
 			<label>* Game durations</label>

@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class C_schedule extends CI_Controller
 {
 	public $data = array();
+
 	function __construct()
 	{
 		parent::__construct();
@@ -17,11 +18,19 @@ class C_schedule extends CI_Controller
 		$this->load->model('m_schedule');
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
+		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tournament'] = $this->m_tournament->load_tournament();
 	}
 
 	public function index() {
 		$this->load->view('home');
+	}
+
+	public function form_manage()
+	{
+		$this->data['tid'] = $this->input->post('select2');
+		$this->data['list_schedule'] = $this->m_schedule->get_schedule($this->input->post('select2'));
+		$this->template->load('Manage/template', 'Manage/schedule/manage_sch', $this->data);
 	}
 
 	public function form_create()
@@ -36,14 +45,14 @@ class C_schedule extends CI_Controller
 	{
 		$p = range(1, $nteam);
 		$pCount = count($p);
-		$rounds = ceil(log($pCount)/log(2));
-		$bracketSize = pow(2, $rounds);
-		$byes = $bracketSize - $pCount;
+		$this->sch_helper->set_rounds(ceil(log($pCount)/log(2)));
+		$this->sch_helper->set_bracket_size(pow(2, $this->sch_helper->get_rounds()));
+		$this->sch_helper->set_num_byes($this->sch_helper->get_bracket_size() - $pCount);
 
-		echo sprintf('Number of participants: %d<br/>%s', $pCount, PHP_EOL);
-	    echo sprintf('Number of rounds: %d<br/>%s', $rounds, PHP_EOL);
-	    echo sprintf('Bracket size: %d<br/>%s', $bracketSize, PHP_EOL);
-	    echo sprintf('Required number of byes: %d<br/>%s', $byes, PHP_EOL);  
+		// echo sprintf('Number of participants: %d<br/>%s', $pCount, PHP_EOL);
+	 //    echo sprintf('Number of rounds: %d<br/>%s', $this->rounds, PHP_EOL);
+	 //    echo sprintf('Bracket size: %d<br/>%s', $this->bracketSize, PHP_EOL);
+	 //    echo sprintf('Required number of byes: %d<br/>%s', $this->byes, PHP_EOL);  
 
 		if($pCount < 2) 
 		{
@@ -52,7 +61,7 @@ class C_schedule extends CI_Controller
 
 		$matches = array(array(1,2));
 
-		for($r = 1; $r < $rounds; $r++)
+		for($r = 1; $r < $this->sch_helper->get_rounds(); $r++)
 		{
 			$roundMatches = array();
 			$sum = pow(2, ($r+1)) + 1;
@@ -77,9 +86,10 @@ class C_schedule extends CI_Controller
 
 	public function create_schedule()
 	{
-		$matches = $this->getBracket($this->input->post('team_count'));
-		// $matches = $this->getBracket(9);
+		// $matches = $this->getBracket($this->input->post('team_count'));
+		$matches = $this->getBracket(17);
 		// var_dump($matches);
+		$tid = $this->input->post('tournament_id');
 		$t_start = $this->input->post('start_tour');
 		$t_end = $this->input->post('end_tour');
 		//match time
@@ -103,6 +113,7 @@ class C_schedule extends CI_Controller
 					{
 						$time = $start;
 						while ($time < $end) {
+							$this->m_schedule->insert_schedule($t_start, $time, $tid);
 							$arrDate[$i] = date('h:i A', $time).' '.date('d/M/Y', $t_start);
 							$time = strtotime('+'.$tot_gap.' minutes', $time);
 							$i++;
@@ -112,26 +123,33 @@ class C_schedule extends CI_Controller
 				$t_start = strtotime('+1 day', $t_start);
 			}
 			echo '<br> Number Slot of Times : '.$i.'<br>';
-			for ($s=0; $s < $i; $s++) { 
+			$s = 0;
+			$x = 0;
+			while ($s < $i) { 
 				if(count($matches) <= $s)
 				{
-					//echo 'unscheduled on'.$arrDate[$s];
+					echo '<br>Unscheduled on'.$arrDate[$s];
 				}
 				else
 				{
 					if(empty($matches[$s][0]))
 					{
+						echo 'Match date : TBD <br>';
 						echo $matches[$s][1].' VS Bye <br>';	
 					}
 					else if (empty($matches[$s][1]))
 					{
+						echo 'Match date : TBD <br>';
 						echo $matches[$s][0].' VS Bye <br>';
 					}
 					else
 					{
+						echo 'Match date : '.$arrDate[$x].'<br>';
 						echo $matches[$s][0].' VS '.$matches[$s][1].'<br>';
+						$x++;
 					}
 				}
+				$s++;
 			}
 		} 
 		else

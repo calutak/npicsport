@@ -18,9 +18,11 @@ class C_message extends CI_Controller
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');
 		$this->load->model('m_tournament');
+		$this->load->model('m_schedule');
 		$this->load->model('m_message');
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
+		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tournament'] = $this->m_tournament->load_tournament();
  
 		$this->ckeditor->basePath = base_url().'assets/plugins/ckeditor/';

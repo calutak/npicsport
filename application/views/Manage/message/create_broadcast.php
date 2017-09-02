@@ -19,7 +19,7 @@
 		<h3 class="box-title">Create Broadcast Message</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('timeline/create/post'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/timeline/create/post'); ?>" role="form">
 		<div class="form-group col-md-12">
             <div class="box-header">
 				<label>Title</label>
