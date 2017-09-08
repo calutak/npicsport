@@ -31,7 +31,24 @@
                 <textarea name="description" class="description" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                 <?php //echo $this->ckeditor->editor("description"); ?>
                 <script type="text/javascript">
-                    $('.description').wysihtml5();
+                    // $('.description').wysihtml5();
+                tinymce.init({ selector: 'textarea',
+                  height: 500,
+                  theme: 'modern',
+                  plugins: [
+                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+                  ],
+                  toolbar1: 'formatselect | fontselect | fontsizeselect | bold italic  strikethrough link | forecolor backcolor | alignleft aligncenter alignright alignjustify  | bullist numlist outdent indent  | removeformat',
+                  image_advtab: false,
+                  content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'
+                  ],
+                  images_upload_url: '<?php echo site_url('c_timeline/mediaUpload'); ?>',
+                });
                 </script>
             </div>		
         </div>

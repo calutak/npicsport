@@ -84,6 +84,7 @@ class C_tournament extends CI_Controller
 				'type' => $this->input->post('select2')
 			);
 			$data_setting = array(
+				'tournament_id' => 'NPICT'.(substr($this->input->post('id'), -1) + 1),
 				'max_team' => $this->input->post('max_team'),
 				'max_team_faculty' => $this->input->post('max_team_fac'),
 				'game_duration' => $this->input->post('game_dur')
@@ -105,6 +106,7 @@ class C_tournament extends CI_Controller
 				'type' => $this->input->post('select2')
 			);
 			$data_setting = array(
+				'tournament_id' => 'NPICT'.($this->m_tournament->get_row_tournament() + 1),
 				'max_team' => $this->input->post('max_team'),
 				'max_team_faculty' => $this->input->post('max_team_fac'),
 				'game_duration' => $this->input->post('game_dur')

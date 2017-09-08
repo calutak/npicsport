@@ -12,8 +12,8 @@ class C_timeline extends CI_Controller
 			redirect(site_url('sysladm'));
 		}
 
-		$this->load->helper('ckeditor');
-		$this->load->library('ckeditor');
+		// $this->load->helper('ckeditor');
+		// $this->load->library('ckeditor');
 
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');
@@ -25,14 +25,13 @@ class C_timeline extends CI_Controller
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tournament'] = $this->m_tournament->load_tournament();
  
-		$this->ckeditor->basePath = base_url().'assets/plugins/ckeditor/';
-		$this->ckeditor->config['toolbar'] = array(
-	                array( 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-')
-	                                                    );
-		$this->ckeditor->config['width'] = '100%';
-		$this->ckeditor->config['height'] = '350px';            
+		// $this->ckeditor->basePath = base_url().'assets/plugins/ckeditor/';
+		// $this->ckeditor->config['toolbar'] = array(
+	 //                array( 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-')
+	 //                                                    );
+		// $this->ckeditor->config['width'] = '100%';
+		// $this->ckeditor->config['height'] = '350px';            
 	}
-
 	public function create_post()
 	{
 		$this->template->load('Manage/template', 'Manage/timeline/create_timeline', $this->data);
@@ -48,7 +47,7 @@ class C_timeline extends CI_Controller
 		if($this->db->insert('tb_timeline', $datapost))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Timeline posted!</div>');
-			redirect(site_url('timeline/manage'));
+			redirect(site_url('adm/timeline/manage'));
 		}
 	}
 
@@ -75,7 +74,7 @@ class C_timeline extends CI_Controller
 		if($this->m_timeline->update_post($id,$datapost))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data has been updated!</div>');
-			redirect(site_url('timeline/manage'));
+			redirect(site_url('adm/timeline/manage'));
 		}
 	}
 
@@ -84,7 +83,17 @@ class C_timeline extends CI_Controller
 		if($this->m_timeline->delete_post($id))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data deleted!</div>');
-			redirect(site_url('timeline/manage'));
+			redirect(site_url('adm/timeline/manage'));
 		}
+	}
+
+	public function mediaUpload()
+	{
+		$config = array(
+			'ImagesPath' => '/assets/uploads',
+			'FilesPath' => '/assets/uploads',
+			'Path' => '/assets/uploads'
+		);
+		$this->load->library('TinyImageManager', $config);
 	}
 }

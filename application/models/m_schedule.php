@@ -11,9 +11,21 @@ class M_schedule extends CI_Model
 			);
 		return $this->db->where($options)->get('tb_team')->num_rows();
 	}
+	public function get_team_name($id)
+	{
+		$options = array(
+			'team_status'=>2,
+			'tournament_id'=>$id
+			);
+		return $this->db->where($options)->get('tb_team')->result_object();
+	}
 	public function get_schedule($id)
 	{
 		return $this->db->where('tournament_id', $id)->get('tb_schedule')->result_object();
+	}
+	public function get_max_id_schedule($id)
+	{
+		return $this->db->where('tournament_id', $id)->select_max('schedule_id', 'id')->get('tb_schedule')->row_object()->id;
 	}
 	public function get_row_schedule()
 	{
@@ -31,5 +43,18 @@ class M_schedule extends CI_Model
 	public function clear_table()
 	{
 		$this->db->truncate('tb_schedule');
+	}
+	public function add_setting($round, $bracket, $id)
+	{
+		$set_id = $this->db->where('tournament_id', $id)->get('tb_settings')->row_object();
+		$arrSet = array(
+			'id_settings' => $set_id->id_settings,
+			'tournament_id' => $id,
+			);
+		$arrData = array(
+			'bracket_size' => $bracket,
+			'round' => $round
+			);
+		return $this->db->where($arrSet)->update('tb_settings',$arrData);
 	}
 }

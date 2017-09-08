@@ -48,7 +48,7 @@
                 <div class=\'form-group col-md-2\'>'
                 // .form_label('Game Duration', 'gamedur')
                 // .form_input('gamedur', $row_tournament->game_duration, 'class=\'form-control\' disabled')
-                // .form_hidden('gameduration',$row_tournament->game_duration)
+                .form_hidden('gameduration',$setting->game_duration)
                 .'</div>
                 </div>
                 <div class=\'col-md-12\'>
@@ -94,7 +94,7 @@
                 .form_label('End Time', 'end_time')
                 .form_input('end_time', '', 'class=\'form-control\' id=\'end_time\' placeholder=\'End\' required')
                 .'</div>'
-                .'<div class=\'form-group col-md-2\'>'
+                .'<div class=\'form-group col-md-3\'>'
                 .form_label('Time Gap per Games', 'time_gap')
                 .form_input('time_gap', '', 'class=\'form-control\' placeholder=\'Gap in minutes\' required')
                 .form_hidden('tournament_id', $tid)

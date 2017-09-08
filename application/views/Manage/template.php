@@ -187,9 +187,21 @@ desired effect
         <li class="treeview">
           <a href="#"><i class="fa fa-calendar-o"></i> <span>Schedule</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <?php if($tnumrows>0) { ?>
-            <li><a href="#" data-toggle="modal" data-target="#tournament_found">Create Schedule</a></li>
-            <?php } else { ?>
+            <?php if($tnumrows>0) 
+            { 
+              if($schedule>0)
+              {
+              ?>
+              <li><a href="#" data-toggle="modal" data-target="#sch_found">Create Schedule</a></li>
+            <?php
+              }
+              else
+              {
+            ?>
+              <li><a href="#" data-toggle="modal" data-target="#tournament_found">Create Schedule</a></li>
+            <?php
+              } 
+            } else { ?>
             <li><a href="#" data-toggle="modal" data-target="#tournament_notfound">Create Schedule</a></li>
             <?php } ?>
             <?php if($schedule>0) { ?>

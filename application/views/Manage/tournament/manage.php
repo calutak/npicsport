@@ -18,6 +18,7 @@
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Manage Tournament</h3>
+        <a href="<?php echo site_url('adm/tournament/create'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Create</a>
       </div>
       <div class="box-body">
           <table id="catalog" class="table table-bordered table-striped">

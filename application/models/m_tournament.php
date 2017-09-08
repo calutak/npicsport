@@ -13,6 +13,10 @@ class M_tournament extends CI_Model
 	{
 		return $this->db->where('tournament_id', $id)->get('tb_tournament')->row_object();
 	}
+	public function get_setting_byID($id)
+	{
+		return $this->db->where('tournament_id', $id)->get('tb_settings')->row_object();
+	}
 	public function get_row_tournament()
 	{
 		return $this->db->get('tb_tournament')->num_rows();

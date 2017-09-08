@@ -46,5 +46,7 @@
 <script src="<?php echo site_url('assets/bootstrap/js/checkbutton.js'); ?>"></script>
 <!-- Time Picker -->
 <script src="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.js'); ?>"></script>
+<!-- TinyMCE -->
+<script src="<?php echo site_url('assets/plugins/tinymce/tinymce.min.js'); ?>"></script>
 </body>
 </html>

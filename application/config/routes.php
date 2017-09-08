@@ -53,7 +53,7 @@ $route['default_controller'] = 'fe_home';
 //admin section
 $route['sysladm'] = 'c_auth/index';
 $route['adm'] = 'c_dashboard/index';
-$route['syslogout'] = 'c_dashboard/logout';
+$route['adm/syslogout'] = 'c_dashboard/logout';
 //tournament
 $route['adm/tournament/create'] = 'c_tournament/create_tour';
 $route['adm/tournament/create/newpost'] = 'c_tournament/insert_new_tour';
@@ -66,8 +66,10 @@ $route['adm/tournament/history'] = 'c_tournament/show_history';
 $route['adm/tournament/history/findyear'] = 'c_tournament/find_tournament_year';
 //schedule
 $route['adm/schedule/create'] = 'c_schedule/form_create';
-$route['adm/schedule/create/add_new'] = 'c_schedule/create_schedule';
+$route['adm/schedule/create/add_new'] = 'c_schedule/create_match';
 $route['adm/schedule/manage'] = 'c_schedule/form_manage';
+$route['adm/schedule/clear'] = 'c_schedule/clear_schedule';
+$route['adm/schedule/renderBracket'] = 'c_schedule/renderBracket';
 //timeline
 $route['adm/timeline/create'] = 'c_timeline/create_post';
 $route['adm/timeline/create/post'] = 'c_timeline/posting_timeline';
@@ -79,6 +81,14 @@ $route['adm/timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
 $route['adm/message/broadcast'] = 'c_message/form_broadcast';
 //validate
 $route['adm/validate/team'] = 'c_validate/manage_team';
+
+// FRONT END //
+$route['team'] = 'fe_team';
+
 //default
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+//Plugin routing
+$route['js/tiny_mce/plugins/images/connector/php/index[.]php'] = "c_timeline/mediaUpload";
+$route['js/tiny_mce/plugins/images/connector/php'] = "c_timeline/mediaUpload";

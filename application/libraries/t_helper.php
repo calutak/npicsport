@@ -1,11 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Sch_helper {
+class T_helper {
 	
 	public $bracketSize = 2;
 	public $rounds = 1;
 	public $byes = 0;
+	public $tid = 0;
 
+	function set_tid($id)
+	{
+		$this->tid = $id;
+	}
 	function set_bracket_size($size)
 	{
 		$this->bracketSize = $size;
@@ -34,5 +39,10 @@ class Sch_helper {
 	function get_num_byes()
 	{
 		return $this->bye;
+	}
+
+	function get_tid()
+	{
+		return $this->tid;
 	}
 }

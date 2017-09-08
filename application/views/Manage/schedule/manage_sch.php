@@ -21,58 +21,41 @@
         <?php form_open(); ?>
         <div class="box-body">
             <div class="col-xs-9">
-            <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Responsive Hover Table</h3>
-
-                  <div class="box-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                      <div class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.box-header -->
+            <div class="box no-border box-list">
                 <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover">
-                    <tr>
-                      <th>ID</th>
-                      <th>User</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Reason</th>
+                  <table class="table table-hover no-border">
+                  <?php
+                  foreach ($list_match as $matches) 
+                  { ?>
+                    <tr class="bg-gray-active color-palette">
+                      <th>
+                      <?php 
+                        if(empty($matches->dates))
+                        {
+                          echo 'TBD';
+                        }
+                        else
+                        {
+                          echo date('l, d/M/Y', $matches->dates);
+                        } 
+                      ?>
+                      </th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                    <tr class="bg-gray color-palette">
+                      <td class="pull-left"><?php echo $matches->loc; ?></td>
+                      <td><?php echo date('h:i A', $matches->times); ?></td>
+                      <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
                     </tr>
                     <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="label label-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                      <td class="pull-left"><?php echo $matches->teamA; ?></td>
+                      <td> 0 VS 0</td>
+                      <td class="pull-right"><?php echo $matches->teamB; ?></td>
                     </tr>
-                    <tr>
-                      <td>219</td>
-                      <td>Alexander Pierce</td>
-                      <td>11-7-2014</td>
-                      <td><span class="label label-warning">Pending</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>657</td>
-                      <td>Bob Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="label label-primary">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>175</td>
-                      <td>Mike Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="label label-danger">Denied</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
+                  <?php 
+                  } 
+                  ?>
                   </table>
                 </div>
                 <!-- /.box-body -->
@@ -95,7 +78,34 @@
             <?php
                 echo form_submit('sd','sd','class=\'btn btn-info\'');
                 form_close();
+                echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'');
+                echo anchor(site_url('adm/schedule/renderBracket'),'Render Bracket','class=\'btn btn-warning\'');
             ?>
         </div>
     </div>
 </section>
+
+<script>
+  $(document).ready(function () {
+    $('.delete').on("click", function(e) {
+      e.preventDefault();
+      var url = $(this).attr('href');
+      swal({
+          title: 'Are you sure to clear all the schedule data?',
+          text: "This will also clear all the match data!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            swal("Deleted!", "All data cleared!", "success");
+            setTimeout(function(){ window.location.replace(url); }, 1000);
+          } else {
+            swal("Cancel", "No data deleted.", "error");
+          }
+        });
+    });
+  });
+</script>
