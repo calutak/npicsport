@@ -79,7 +79,7 @@
                 echo form_submit('sd','sd','class=\'btn btn-info\'');
                 form_close();
                 echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'');
-                echo anchor(site_url('adm/schedule/renderBracket'),'Render Bracket','class=\'btn btn-warning\'');
+                echo anchor(site_url('adm/schedule/renderBracket/'.$tid),'Render Bracket','class=\'btn btn-warning\'');
             ?>
         </div>
     </div>

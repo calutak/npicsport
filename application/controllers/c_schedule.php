@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class C_schedule extends CI_Controller
 {
 	public $data = array();
+	public $winArr = array(array(1,2));
 
 	function __construct()
 	{
@@ -43,26 +44,7 @@ class C_schedule extends CI_Controller
 		$this->data['setting'] = $this->m_tournament->get_setting_byID($this->input->post('select2'));
 		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
 	}
-	public function renderBracket()
-	{
-		$tid = $this->t_helper->get_tid();
-		$roundSize = $this->m_match->get_round_count($tid);
-		$matchesCount = $this->m_match->get_1st_match_count();
 
-		for ($i=1; $i <= $roundSize ; $i++) { 
-			for($j=0; $j < $matchesCount; $j++) {
-				if($i!=$this->m_match->get_round($j, $i, $tid))
-				{
-					echo '<br>';
-				}
-				else
-				{
-					echo 'team_a vs team_b<br>';
-				}
-			}
-			$matchesCount/=2;
-		}
-	}
 	public function getBracket($nteam) 
 	{
 		$p = range(1, $nteam);
@@ -160,13 +142,12 @@ class C_schedule extends CI_Controller
 		foreach ($arrTeam as $data_team) {
 			$randTeam[] = $data_team->team_name;
 		}
-
+		//shuffle team for tournament
 		shuffle($randTeam);
-
-		$matches = $this->getBracket($participant);
-
+		//chunk array to get exact number of group bracket
+		$matches = array_chunk($this->getBracket($participant),2);
+		//define first schedule id
 		$index_date = $this->m_schedule->get_row_schedule();
-		$s = $this->m_match->get_1st_match_count($tid)+1;
 		if($index_date!=0)
 		{
 			$sid = $this->m_schedule->get_max_id_schedule($tid);
@@ -175,63 +156,93 @@ class C_schedule extends CI_Controller
 		{
 			$sid = 0;
 		}
+		//end define first schedule ID
 		$sch_date = $this->getSchedule();
-
-		$s=0;
-		$x=0;
-		$n=0;
-		while($s<count($matches))
+		//get total round for tournament
+		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
+		//get match order
+		if($this->m_match->get_1st_match_count($tid)==0)
 		{
-			if(($x/2)%2!=0)
+			$max_order = 0;
+		}
+		else
+		{
+			$max_order = $this->m_match->get_max_order_group($tid);
+		}
+		//looping to create empty bracket
+		for ($rnd=1; $rnd <= $max_round; $rnd++) 
+		{ 
+			$y=0;
+			for ($i=0; $i < count($matches); $i++) 
 			{
-				if(empty($matches[$s][0]))
+				for($j=0; $j < count($matches[$i]); $j++) 
 				{
-					$data = array(
-						'team_b' => $randTeam[$matches[$s][1] - 1],
-						'winner' => $randTeam[$matches[$s][1] - 1],
-						'match_score' => 0,
-						'match_status' => 1,
-						'match_order' => $n,
-						'result' => 4,
-						'tournament_id' => $tid
-						);	
+					if($rnd==1)
+					{
+						if(empty($matches[$i][$j][0]) || empty($matches[$i][$j][1]))
+						{
+							if(empty($matches[$i][$j][0]))
+							{
+								$randTeam[$matches[$i][$j][0]-1] = 'byes';
+								$winner = array('winner' => $randTeam[$matches[$i][$j][1]-1]);
+								$this->winArr[$y] = $randTeam[$matches[$i][$j][1]-1];
+							}
+							if(empty($matches[$i][$j][1]))
+							{
+								$randTeam[$matches[$i][$j][1]-1] = 'byes';
+								$winner = array('winner' => $randTeam[$matches[$i][$j][0]-1]);
+								$this->winArr[$y] = $randTeam[$matches[$i][$j][0]-1];
+							}
+							$dataTemp = array(
+								'team_a' => $randTeam[$matches[$i][$j][0]-1],
+								'team_b' => $randTeam[$matches[$i][$j][1]-1],
+								'match_score' => 0,
+								'match_status' => 0,
+								'match_order' => $max_order,
+								'round' => $rnd,
+								'result' => 4,
+								'tournament_id' => $tid
+							);
+							$data = array_merge($dataTemp,$winner);
+						}
+						else
+						{
+							$sid++;
+							$data = array(
+								'team_a' => $randTeam[$matches[$i][$j][0]-1],
+								'team_b' => $randTeam[$matches[$i][$j][1]-1],
+								'winner' => '',
+								'match_score' => 0,
+								'match_status' => 0,
+								'match_order' => $max_order,
+								'round' => $rnd,
+								'result' => 0,
+								'schedule_id' => $sid,
+								'tournament_id' => $tid
+							);
+							$this->winArr[$y] = '';
+						}	
+						$y++;
+					} 
+					else
+					{
+						$data = array(
+							'team_a' => '',
+							'team_b' => '',
+							'winner' => '',
+							'match_score' => 0,
+							'match_status' => 0,
+							'match_order' => $max_order,
+							'round' => $rnd,
+							'result' => 0,
+							'tournament_id' => $tid
+						);
+					}
 					$this->db->insert('tb_match', $data);
 				}
-				elseif (empty($matches[$s][1])) {
-					$data = array(
-						'team_a' => $randTeam[$matches[$s][0] - 1],
-						'winner' => $randTeam[$matches[$s][0] - 1],
-						'match_score' => 0,
-						'match_status' => 1,
-						'match_order' => $n,
-						'result' => 4,
-						'tournament_id' => $tid
-						);	
-					$this->db->insert('tb_match', $data);
-				}
-				else
-				{
-					$sid++;
-					$data = array(
-						'team_a' => $randTeam[$matches[$s][0] - 1],
-						'team_b' => $randTeam[$matches[$s][1] - 1],
-						'match_score' => 0,
-						'match_status' => 0,
-						'match_order' => $n,
-						'result' => 0,
-						'schedule_id' => $sid,
-						'tournament_id' => $tid
-						);	
-					$this->db->insert('tb_match', $data);
-				}
-				$s++;
-				$x++;
+				$max_order++;
 			}
-			else 
-			{
-				$x++;
-				$n++;
-			}
+			$matches = array_chunk($matches, 2);
 		}
 		redirect('adm');
 	}
@@ -243,11 +254,61 @@ class C_schedule extends CI_Controller
 		redirect('adm');
 	}
 
-	public function add_to_bracket()
+	public function add_to_bracket($tid)
 	{
-		for($r = 1; $r <= $this->t_helper->get_rounds(); $r++)
-		{
+		$this->update_bracket($tid);
+	}
 
+	public function update_bracket($tid)
+	{
+		$min_order = $this->m_match->get_min_order_group($tid);
+		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
+		$winArr = array();
+		$sid = $this->m_match->get_max_id_schedule_match($tid);
+		for ($rnd=1; $rnd <= $max_round; $rnd++) 
+		{
+			$y=1;
+			$matchesList = $this->m_match->get_match_data($tid, $rnd);
+			$matches = array();
+
+			foreach ($matchesList as $key) {
+				$matches[] = $key;
+			}
+			$matches = array_chunk($matches, 2);
+			$x=0;
+			for ($i=0; $i < count($matches); $i++) 
+			{
+				for($j=0; $j < count($matches[$i]); $j++) 
+				{
+					if($rnd == 1)
+					{
+						$winArr[$y-1] = $matches[$i][$j]['winner'];
+					}
+					elseif($rnd==($max_round - floor($max_round/2)))
+					{
+						$sid++;
+						$this->set_next_round_team($winArr[$x][0], 0, $matches[$i][$j]['match_id'], $sid);
+						$this->set_next_round_team($winArr[$x][1], 1, $matches[$i][$j]['match_id'], $sid);
+					}
+					$x++;
+					$y++;
+				}
+				$min_order++;
+			}
+			$winArr = array_chunk($winArr, 2);	
+		}
+		redirect('adm/schedule/manage');
+	}
+
+	public function set_next_round_team($team, $j, $mid, $sid)
+	{
+		if($j == 0)
+		{
+			return $this->m_match->update_a($team, $mid, $sid);
+		}
+		elseif($j == 1)
+		{
+			return $this->m_match->update_b($team, $mid, $sid);
 		}
 	}
 

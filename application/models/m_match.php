@@ -5,23 +5,19 @@ class M_match extends CI_Model
 {
 	public function show_match_list()
 	{
-		return $this->db->order_by('stat','ASC')->get('match_list')->result_object();
+		return $this->db->order_by('round','ASC')->get('match_list')->result_object();
 	}
-	public function get_round($round, $id)
+	public function get_1st_match_count($id)
+	{
+		return $this->db->where('tournament_id', $id)->get('tb_match')->num_rows();
+	}
+	public function get_match_data($id, $round)
 	{
 		$arrCond = array(
 			'round' => $round,
 			'tournament_id' => $id
 			);
-		return $this->db->where($arrCond)->get('tb_match')->row_object()->round;
-	}
-	public function get_round_count($id)
-	{
-		return $this->db->where('tournament_id', $id)->get('tb_settings')->list_fields('round');
-	}
-	public function get_1st_match_count($id)
-	{
-		return $this->db->where('tournament_id', $id)->get('tb_match')->num_rows();
+		return $this->db->order_by('match_order','ASC')->where($arrCond)->get('tb_match')->result_array();
 	}
 	public function get_match_data_by_order_group($id, $order)
 	{
@@ -31,12 +27,36 @@ class M_match extends CI_Model
 			);
 		return $this->db->where($arrCond)->get('tb_match')->row_object();
 	}
-	public function clear_match_by_tournament_id($id)
+	public function check_win_team($id)
 	{
-		// if($this->db->get('tb_match')->num_rows() == 0)
-		// {
-		// 	return $this->db->truncate('tb_match');
-		// }
-		return $this->db->where('tournament_id', $id)->delete('tb_match');
+		return $this->db->order_by('match_order','ASC')->where('tournament_id',$id)->get('tb_match')->list_fields('winner');
+	}
+	public function get_max_order_group($id)
+	{
+		return $this->db->select_max('match_order','mo')->where('tournament_id', $id)->get('tb_match')->list_fields('mo');
+	}
+	public function get_min_order_group($id)
+	{
+		return $this->db->select_min('match_order','mi')->where('tournament_id', $id)->get('tb_match')->list_fields('mi');
+	}
+	public function update_a($team, $id, $schedule)
+	{
+		$data = array(
+			'team_a' => $team,
+			'schedule_id' => $schedule
+		);
+		return $this->db->where('match_id', $id)->update('tb_match', $data);
+	}	
+	public function update_b($team, $id, $schedule)
+	{
+		$data = array(
+			'team_b' => $team,
+			'schedule_id' => $schedule
+		);
+		return $this->db->where('match_id', $id)->update('tb_match', $data);
+	}
+	public function get_max_id_schedule_match($tid)
+	{
+		return $this->db->where('tournament_id', $tid)->select_max('schedule_id', 'id')->get('tb_match')->row_object()->id;
 	}
 }
