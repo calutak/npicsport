@@ -14,6 +14,7 @@
 <!-- Main content -->
 <section class="content">
     <?php echo $this->session->flashdata('response'); ?>
+    <div class="row">
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Manage Timeline</h3>
@@ -35,7 +36,7 @@
               '<tr>
                 <td>'.$row->timeline_id.'</td>
                 <td>'.$row->timeline_title.'</td>
-                <td>'.substr($row->timeline_details,0,50).'</td>
+                <td>'.$row->timeline_details.'</td>
                 <td>'.date('d/M/Y',$row->timeline_date).'</td>
                 <td><center>
                   <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'"><button class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</button></a>
@@ -52,6 +53,7 @@
         <!-- /.box-body -->
       </div>
       <!-- /.box -->
+      </div>
 </section>
 <!-- /.content -->
 

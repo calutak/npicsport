@@ -19,7 +19,7 @@
 		<h3 class="box-title">Create Timeline</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('adm/timeline/create/post'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/timeline/create/post'); ?>" role="form" enctype="multipart/form-data">
 		<div class="form-group col-md-12">
             <div class="box-header">
 				<label>Title</label>
@@ -28,26 +28,38 @@
             <!-- /.box-header -->
             <div class="box-body pad">
 				<label>Description</label>
-                <textarea name="description" class="description" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                <textarea name="description" enctype="multipart/form-data" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                <input name="image" type="file" id="upload" class="hidden" onchange="">
                 <?php //echo $this->ckeditor->editor("description"); ?>
                 <script type="text/javascript">
-                    // $('.description').wysihtml5();
-                tinymce.init({ selector: 'textarea',
-                  height: 500,
-                  theme: 'modern',
-                  plugins: [
-                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                    'searchreplace wordcount visualblocks visualchars code fullscreen',
-                    'insertdatetime media nonbreaking save table contextmenu directionality',
-                    'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
-                  ],
-                  toolbar1: 'formatselect | fontselect | fontsizeselect | bold italic  strikethrough link | forecolor backcolor | alignleft aligncenter alignright alignjustify  | bullist numlist outdent indent  | removeformat',
-                  image_advtab: false,
-                  content_css: [
-                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                    '//www.tinymce.com/css/codepen.min.css'
-                  ],
-                  images_upload_url: '<?php echo site_url('c_timeline/mediaUpload'); ?>',
+                tinymce.init({
+                    selector: "textarea",
+                    theme: "modern",
+                    paste_data_images: true,
+                    plugins: [
+                      "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                      "searchreplace wordcount visualblocks visualchars code fullscreen",
+                      "insertdatetime media nonbreaking save table contextmenu directionality",
+                      "emoticons template paste textcolor colorpicker textpattern"
+                    ],
+                    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                    toolbar2: "print preview media | forecolor backcolor emoticons",
+                    image_advtab: false,
+                    file_picker_callback: function(callback, value, meta) {
+                      if (meta.filetype == 'image') {
+                        $('#upload').trigger('click');
+                        $('#upload').on('change', function() {
+                          var file = this.files[0];
+                          var reader = new FileReader();
+                          reader.onload = function(e) {
+                            callback(e.target.result, {
+                              alt: ''
+                            });
+                          };
+                          reader.readAsDataURL(file);
+                        });
+                      }
+                    }
                 });
                 </script>
             </div>		

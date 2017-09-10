@@ -5,7 +5,7 @@ class M_match extends CI_Model
 {
 	public function show_match_list()
 	{
-		return $this->db->order_by('round','ASC')->get('match_list')->result_object();
+		return $this->db->where('dates <>','null')->get('match_list')->result_object();
 	}
 	public function get_1st_match_count($id)
 	{

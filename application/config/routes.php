@@ -69,7 +69,7 @@ $route['adm/schedule/create'] = 'c_schedule/form_create';
 $route['adm/schedule/create/add_new'] = 'c_schedule/create_match';
 $route['adm/schedule/manage'] = 'c_schedule/form_manage';
 $route['adm/schedule/clear'] = 'c_schedule/clear_schedule';
-$route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/add_to_bracket/$1';
+//$route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/render_bracket/$1';
 //timeline
 $route['adm/timeline/create'] = 'c_timeline/create_post';
 $route['adm/timeline/create/post'] = 'c_timeline/posting_timeline';
@@ -90,5 +90,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //Plugin routing
+$route['mediaUpload'] = 'c_timeline/mediaUpload';
 $route['js/tiny_mce/plugins/images/connector/php/index[.]php'] = "c_timeline/mediaUpload";
 $route['js/tiny_mce/plugins/images/connector/php'] = "c_timeline/mediaUpload";

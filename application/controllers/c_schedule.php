@@ -196,7 +196,7 @@ class C_schedule extends CI_Controller
 							$dataTemp = array(
 								'team_a' => $randTeam[$matches[$i][$j][0]-1],
 								'team_b' => $randTeam[$matches[$i][$j][1]-1],
-								'match_score' => 0,
+								'match_score' => '0v0',
 								'match_status' => 0,
 								'match_order' => $max_order,
 								'round' => $rnd,
@@ -212,7 +212,7 @@ class C_schedule extends CI_Controller
 								'team_a' => $randTeam[$matches[$i][$j][0]-1],
 								'team_b' => $randTeam[$matches[$i][$j][1]-1],
 								'winner' => '',
-								'match_score' => 0,
+								'match_score' => '0v0',
 								'match_status' => 0,
 								'match_order' => $max_order,
 								'round' => $rnd,
@@ -230,7 +230,7 @@ class C_schedule extends CI_Controller
 							'team_a' => '',
 							'team_b' => '',
 							'winner' => '',
-							'match_score' => 0,
+							'match_score' => '0v0',
 							'match_status' => 0,
 							'match_order' => $max_order,
 							'round' => $rnd,
@@ -244,6 +244,8 @@ class C_schedule extends CI_Controller
 			}
 			$matches = array_chunk($matches, 2);
 		}
+		json_encode($matches);
+		$this->update_bracket($tid);
 		redirect('adm');
 	}
 
@@ -254,17 +256,12 @@ class C_schedule extends CI_Controller
 		redirect('adm');
 	}
 
-	public function add_to_bracket($tid)
-	{
-		$this->update_bracket($tid);
-	}
-
 	public function update_bracket($tid)
 	{
 		$min_order = $this->m_match->get_min_order_group($tid);
 		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
 		$winArr = array();
-		$sid = $this->m_match->get_max_id_schedule_match($tid);
+		$sid = $this->m_match->get_max_id_schedule_match($tid)+3;
 		for ($rnd=1; $rnd <= $max_round; $rnd++) 
 		{
 			$y=1;
@@ -311,7 +308,6 @@ class C_schedule extends CI_Controller
 			return $this->m_match->update_b($team, $mid, $sid);
 		}
 	}
-
 //Reserved for Round Robin - Group Stage Tournament
 	// public function matching_up($n)
 	// {	

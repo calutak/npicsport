@@ -49,9 +49,20 @@
                       <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
                     </tr>
                     <tr>
-                      <td class="pull-left"><?php echo $matches->teamA; ?></td>
-                      <td> 0 VS 0</td>
-                      <td class="pull-right"><?php echo $matches->teamB; ?></td>
+                      <?php
+                      $score = explode('v', $matches->score);
+                      if(!empty($matches->teamA)) {
+                        echo '<td class="pull-left">'.$matches->teamA.'</td>';
+                      } else {
+                        echo '<td class="pull-left"> Waiting Opponent </td>';
+                      }
+                      echo '<td>'.$score[0].' VS '.$score[1].'</td>';
+                      if(!empty($matches->teamB)) {
+                        echo '<td class="pull-right">'.$matches->teamB.'</td>';
+                      } else {
+                        echo '<td class="pull-right"> Waiting Opponent </td>';
+                      } 
+                      ?>
                     </tr>
                   <?php 
                   } 
@@ -76,9 +87,10 @@
         </div>
         <div class="box-footer with-border">
             <?php
-                echo form_submit('sd','sd','class=\'btn btn-info\'');
+                echo form_submit('update','Update Schedule','class=\'btn btn-info\'');
                 form_close();
-                echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'');
+                echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'')
+                .'&nbsp';
                 echo anchor(site_url('adm/schedule/renderBracket/'.$tid),'Render Bracket','class=\'btn btn-warning\'');
             ?>
         </div>
@@ -107,5 +119,7 @@
           }
         });
     });
+
+    
   });
 </script>

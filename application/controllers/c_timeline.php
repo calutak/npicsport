@@ -86,14 +86,4 @@ class C_timeline extends CI_Controller
 			redirect(site_url('adm/timeline/manage'));
 		}
 	}
-
-	public function mediaUpload()
-	{
-		$config = array(
-			'ImagesPath' => '/assets/uploads',
-			'FilesPath' => '/assets/uploads',
-			'Path' => '/assets/uploads'
-		);
-		$this->load->library('TinyImageManager', $config);
-	}
 }
