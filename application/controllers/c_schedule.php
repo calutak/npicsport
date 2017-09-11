@@ -18,6 +18,7 @@ class C_schedule extends CI_Controller
 		$this->load->model('m_tournament');
 		$this->load->model('m_schedule');
 		$this->load->model('m_match');
+		$this->load->model('m_team');
 
 		//setTournamentID Data
 		$this->t_helper->set_tid($this->input->post('select2'));
@@ -41,6 +42,7 @@ class C_schedule extends CI_Controller
 		$this->data['tid'] = $this->t_helper->get_tid();
 		$this->data['team_count'] = $this->m_schedule->get_team_count($this->data['tid']);
 		$this->data['row_tournament'] = $this->m_tournament->get_row_byID($this->input->post('select2'));
+		$this->data['registered_team'] = $this->m_team->load_team_by_tid($this->t_helper->get_tid());
 		$this->data['setting'] = $this->m_tournament->get_setting_byID($this->input->post('select2'));
 		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
 	}

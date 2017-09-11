@@ -20,6 +20,50 @@
             <button data-toggle="modal" data-target="#setting" class="btn btn-default pull-right"><i class="fa fa-gear"></i> Settings</button>
         </div>
         <div class="box-body">
+            <div class="col-md-12">
+                <h4><strong>Team List</strong></h4>
+                <hr>
+                <div class="box-body">
+                    <?php 
+                        foreach ($variable as $key) {
+                            # code...
+                        }
+                    ?>
+                    <div class="col-md-3 bg-teal text-muted">
+                        
+                    </div>
+                    <div class="col-md-3 bg-teal text-muted">
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                    </div>
+                    <div class="col-md-3 bg-teal text-muted">
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                    </div>
+                    <div class="col-md-3 bg-teal text-muted">
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                        <h4>asoaskdoakso</h4>
+                    </div>
+                </div>
+            </div>
         	<?php
             $list_type = array('Knockout' => 'Knockout'); 
         	echo form_open(site_url('adm/schedule/create/add_new'))

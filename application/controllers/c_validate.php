@@ -22,6 +22,11 @@ class C_validate extends CI_Controller
 		$this->data['tournament'] = $this->m_tournament->load_tournament();		
 	}
 
+	public function form_team_register()
+	{
+		$this->template->load('Manage/template', 'Manage/validate/add_team', $this->data);
+	}
+
 	public function manage_team() 
 	{
 		$this->data['team_list'] = $this->m_team->load_team();

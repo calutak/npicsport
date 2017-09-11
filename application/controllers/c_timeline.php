@@ -49,6 +49,7 @@ class C_timeline extends CI_Controller
 			$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Timeline posted!</div>');
 			redirect(site_url('adm/timeline/manage'));
 		}
+
 	}
 
 	public function view_post()

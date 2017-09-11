@@ -79,8 +79,9 @@ $route['adm/timeline/manage/save'] = 'c_timeline/update_post';
 $route['adm/timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
 //message
 $route['adm/message/broadcast'] = 'c_message/form_broadcast';
-//validate
+//team
 $route['adm/validate/team'] = 'c_validate/manage_team';
+$route['adm/team/new'] = 'c_validate/form_team_register';
 
 // FRONT END //
 $route['team'] = 'fe_team';

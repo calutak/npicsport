@@ -31,12 +31,13 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach($show_timeline_post as $row) { 
+            <?php foreach($show_timeline_post as $row) {
+            $data = explode(' />', $row->timeline_details); 
             echo 
               '<tr>
                 <td>'.$row->timeline_id.'</td>
                 <td>'.$row->timeline_title.'</td>
-                <td>'.$row->timeline_details.'</td>
+                <td>'.substr($data[1], 0, 50).'</td>
                 <td>'.date('d/M/Y',$row->timeline_date).'</td>
                 <td><center>
                   <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'"><button class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</button></a>
