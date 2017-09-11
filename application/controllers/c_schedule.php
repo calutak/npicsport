@@ -308,6 +308,30 @@ class C_schedule extends CI_Controller
 			return $this->m_match->update_b($team, $mid, $sid);
 		}
 	}
+
+	public function fill_bracket_team($tid)
+	{
+		$return = array();
+		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
+		for ($rnd=1; $rnd <= $max_round; $rnd++) 
+		{
+			$matchesList = $this->m_match->get_match_data($tid, $rnd);
+			$matches = array();
+
+			foreach ($matchesList as $key) {
+				$matches[] = $key;
+			}
+			$return['team'][$rnd] = $matches;
+			$matches = array_chunk($matches, 2);
+		}
+		$this->session->set_userdata('isBracketCreated', true);
+
+		$return['round'] = $max_round;
+
+		$this->data['return'] = json_encode($return);
+		echo json_encode($return);
+		exit;
+	}
 //Reserved for Round Robin - Group Stage Tournament
 	// public function matching_up($n)
 	// {	

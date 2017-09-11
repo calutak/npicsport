@@ -14,87 +14,88 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">Manage Schedule</h3>
-        </div>
-        <?php form_open(); ?>
-        <div class="box-body">
-            <div class="col-xs-9">
-            <div class="box no-border box-list">
-                <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover no-border">
-                  <?php
-                  foreach ($list_match as $matches) 
-                  { ?>
-                    <tr class="bg-gray-active color-palette">
-                      <th>
-                      <?php 
-                        if(empty($matches->dates))
-                        {
-                          echo 'TBD';
-                        }
-                        else
-                        {
-                          echo date('l, d/M/Y', $matches->dates);
-                        } 
-                      ?>
-                      </th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                    <tr class="bg-gray color-palette">
-                      <td class="pull-left"><?php echo $matches->loc; ?></td>
-                      <td><?php echo date('h:i A', $matches->times); ?></td>
-                      <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
-                    </tr>
-                    <tr>
-                      <?php
-                      $score = explode('v', $matches->score);
-                      if(!empty($matches->teamA)) {
-                        echo '<td class="pull-left">'.$matches->teamA.'</td>';
-                      } else {
-                        echo '<td class="pull-left"> Waiting Opponent </td>';
+  <div class="box box-primary">
+      <div class="box-header with-border">
+          <h3 class="box-title">Manage Schedule</h3>
+      </div>
+      <?php form_open(); ?>
+      <div class="box-body">
+          <div class="col-xs-9">
+          <div class="box no-border box-list">
+              <div class="box-body table-responsive no-padding">
+                <table class="table table-hover no-border">
+                <?php
+                foreach ($list_match as $matches) 
+                { ?>
+                  <tr class="bg-gray-active color-palette">
+                    <th>
+                    <?php 
+                      if(empty($matches->dates))
+                      {
+                        echo 'TBD';
                       }
-                      echo '<td>'.$score[0].' VS '.$score[1].'</td>';
-                      if(!empty($matches->teamB)) {
-                        echo '<td class="pull-right">'.$matches->teamB.'</td>';
-                      } else {
-                        echo '<td class="pull-right"> Waiting Opponent </td>';
+                      else
+                      {
+                        echo date('l, d/M/Y', $matches->dates);
                       } 
-                      ?>
-                    </tr>
-                  <?php 
-                  } 
-                  ?>
-                  </table>
-                </div>
-                <!-- /.box-body -->
+                    ?>
+                    </th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr class="bg-gray color-palette">
+                    <td class="pull-left"><?php echo $matches->loc; ?></td>
+                    <td><?php echo date('h:i A', $matches->times); ?></td>
+                    <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
+                  </tr>
+                  <tr>
+                    <?php
+                    $score = explode('v', $matches->score);
+                    if(!empty($matches->teamA)) {
+                      echo '<td class="pull-left">'.$matches->teamA.'</td>';
+                    } else {
+                      echo '<td class="pull-left"> Waiting Opponent </td>';
+                    }
+                    echo '<td>'.$score[0].' VS '.$score[1].'</td>';
+                    if(!empty($matches->teamB)) {
+                      echo '<td class="pull-right">'.$matches->teamB.'</td>';
+                    } else {
+                      echo '<td class="pull-right"> Waiting Opponent </td>';
+                    } 
+                    ?>
+                  </tr>
+                <?php 
+                } 
+                ?>
+                </table>
               </div>
-              <!-- /.box -->
+              <!-- /.box-body -->
             </div>
-            <div class="col-xs-3">
-            <div class="box-list pull-right">
-            <h4>List Uncsheduled Dates & Times</h4>
-            <?php
-                foreach ($list_schedule as $schedule) 
-                {
-                    echo date('h:i A', $schedule->schedule_time).' - '.date('d/M/Y', $schedule->schedule_date).'<br>';
-                }
-            ?>
-            </div>
-            </div>
-        </div>
-        <div class="box-footer with-border">
-            <?php
-                echo form_submit('update','Update Schedule','class=\'btn btn-info\'');
-                form_close();
-                echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'')
-                .'&nbsp';
-                echo anchor(site_url('adm/schedule/renderBracket/'.$tid),'Render Bracket','class=\'btn btn-warning\'');
-            ?>
-        </div>
-    </div>
+            <!-- /.box -->
+          </div>
+          <div class="col-xs-3">
+          <div class="box-list pull-right">
+          <h4>List Uncsheduled Dates & Times</h4>
+          <?php
+              foreach ($list_schedule as $schedule) 
+              {
+                  echo date('h:i A', $schedule->schedule_time).' - '.date('d/M/Y', $schedule->schedule_date).'<br>';
+              }
+          ?>
+          </div>
+          </div>
+      </div>
+      <div class="box-footer with-border">
+          <?php
+              echo form_submit('update','Update Schedule','class=\'btn btn-info\'');
+              form_close();
+              echo anchor(site_url('adm/schedule/clear'),'Erase Schedule','class=\'btn btn-danger delete\'')
+              .'&nbsp';
+              echo anchor(site_url('adm/schedule/renderBracket/'.$tid),'Render Bracket','class=\'btn btn-warning\' id=\'render\'');
+          ?>
+      </div>
+  </div>
+  <div class="brackets" id="brackets"></div>
 </section>
 
 <script>
@@ -119,7 +120,43 @@
           }
         });
     });
+    $('#render').on('click', function(e) {
+      e.preventDefault();
+      // console.log($(this).attr('href'));
+      $.get($(this).attr('href'), function(data) {
+          var d = JSON.parse(data);
+          console.log(d);
+          // console.log(d.team);
+          // console.log(rounds);
 
-    
+          var group = $('<div class="group'+d.round+'"></div>');
+          for(r=1;r<=d.round;r++)
+          {
+            var round = $('<div class="r'+r+'"></div>');
+            for(i=0;i<d.team[r].length;i++)
+            {
+              if(d.team[r][i].team_a =='')
+              {
+                round.append('<div><div class="bracketbox"><span class="info"> </span><span class="teama">'+d.team[r][i].team_a+'</span><span class="teamb">'+d.team[r][i].team_b+'</span></div></div>');
+              }
+              else if(d.team[r][i].team_b =='')
+              {
+                round.append('<div><div class="bracketbox"><span class="info"> </span><span class="teama">'+d.team[r][i].team_a+'</span><span class="teamb">'+d.team[r][i].team_b+'</span></div></div>');
+              } 
+              else if (d.team[r][i].team_a=='byes' || d.team[r][i].team_b=='byes')
+              {
+                round.append('<div></div>');
+              }
+              else
+              {
+                round.append('<div><div class="bracketbox"><span class="info"> </span><span class="teama">'+d.team[r][i].team_a+'</span><span class="teamb">'+d.team[r][i].team_b+'</span></div></div>');
+              }
+            }
+            group.append(round);
+          }
+          
+          $('#brackets').append(group);
+      });
+    });
   });
 </script>

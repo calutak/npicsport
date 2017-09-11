@@ -4,20 +4,13 @@
 	width: 100%;
 	height: 430px;
 }
-
-html, body, .brackets {
+html, body {
 	width: 100%;
 	min-height: 100%;
 	font-family: "Arial", sans-serif;
 }
-.metroBtn {
-	background-color: #2E7BCC;
-	color: #fff;
-	font-size: 1.1em;
-	padding: 10px;
-	display: inline-block;
-	margin-bottom: 30px;
-	cursor: pointer;
+div .brackets {
+	width: 50%;
 }
 .brackets > div {
 	vertical-align: top;

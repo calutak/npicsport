@@ -69,7 +69,7 @@ $route['adm/schedule/create'] = 'c_schedule/form_create';
 $route['adm/schedule/create/add_new'] = 'c_schedule/create_match';
 $route['adm/schedule/manage'] = 'c_schedule/form_manage';
 $route['adm/schedule/clear'] = 'c_schedule/clear_schedule';
-//$route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/render_bracket/$1';
+$route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/fill_bracket_team/$1';
 //timeline
 $route['adm/timeline/create'] = 'c_timeline/create_post';
 $route['adm/timeline/create/post'] = 'c_timeline/posting_timeline';
