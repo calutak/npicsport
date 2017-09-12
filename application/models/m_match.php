@@ -59,4 +59,15 @@ class M_match extends CI_Model
 	{
 		return $this->db->where('tournament_id', $tid)->select_max('schedule_id', 'id')->get('tb_match')->row_object()->id;
 	}
+	public function clear_match_data($tid)
+	{
+		$cek = $this->db->get('tb_match')->num_rows();
+		if($cek == 0){
+			return $this->db->truncate('tb_match');
+		}
+		else
+		{
+			return $this->db->where('tournament_id', $tid)->delete('tb_match');
+		}
+	}	
 }

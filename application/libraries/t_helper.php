@@ -2,10 +2,10 @@
 
 class T_helper {
 	
-	public $bracketSize = 2;
-	public $rounds = 1;
-	public $byes = 0;
-	public $tid = 0;
+	private $bracketSize = 2;
+	private $rounds = 1;
+	private $byes = 0;
+	private $tid = 0;
 
 	function set_tid($id)
 	{

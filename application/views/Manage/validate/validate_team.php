@@ -24,7 +24,7 @@
             <tr>
               <th>Team Name</th>
               <th>Team Email</th>
-              <th>Team Banner</th>
+              <th>Team Faculty</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -38,10 +38,10 @@
                   '<tr>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
-                    <td>'.$row->team_banner.'</td>
+                    <td>'.$row->faculty.'</td>
                     <td><center><a href="#" class="btn btn-xs btn-danger">Registered</a></center></td>
                     <td><center>
-                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-warning"><i class="fa fa-edit"></i> Validate</a>
+                      <a href="'.site_url("validate/team/validate/".$row->team_id).'" class="btn btn-xs btn-warning"><i class="fa fa-edit"></i> Validate</a>
                     </center></td>
                   </tr>';
               }
@@ -51,10 +51,10 @@
                   '<tr>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
-                    <td>'.$row->team_banner.'</td>
+                    <td>'.$row->faculty.'</td>
                     <td><center><a href="#" class="btn btn-xs btn-warning">Paid</a></center></td>
                     <td><center>
-                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Activate</a>
+                      <a href="'.site_url("adm/team/account/activate/".$row->team_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Activate</a>
                     </center></td>
                   </tr>';
               } 
@@ -64,10 +64,10 @@
                   '<tr>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
-                    <td>'.$row->team_banner.'</td>
+                    <td>'.$row->faculty.'</td>
                     <td><center><a href="#" class="btn btn-xs btn-success">Approved</a></center></td>
                     <td><center>
-                      <a href="'.site_url("validate/team/validate".$row->team_id).'" class="btn btn-xs btn-info"><i class="fa fa-info"></i> &nbsp;Reset Password</a>
+                      <a href="'.site_url("adm/team/account/reset_passwd/".$row->team_id).'" class="btn btn-xs btn-info"><i class="fa fa-info"></i> &nbsp;Reset Password</a>
                     </center></td>
                   </tr>';
               }
@@ -83,3 +83,8 @@
       <!-- /.box -->
 </section>
 <!-- /.content -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    
+  });
+</script>

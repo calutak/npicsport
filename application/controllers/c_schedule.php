@@ -251,9 +251,9 @@ class C_schedule extends CI_Controller
 		redirect('adm');
 	}
 
-	public function clear_schedule()
+	public function clear_schedule($tid)
 	{
-		$tid = $this->t_helper->get_tid();
+		$this->m_match->clear_match_data($tid);
 		$this->m_schedule->clear_table();
 		redirect('adm');
 	}
