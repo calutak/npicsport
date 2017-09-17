@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class C_schedule extends CI_Controller
 {
 	public $data = array();
-	public $winArr = array(array(1,2));
 
 	function __construct()
 	{
@@ -26,25 +25,34 @@ class C_schedule extends CI_Controller
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
-		$this->data['tournament'] = $this->m_tournament->load_tournament();
+		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
+		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
+		$this->data['team_count'] = $this->m_schedule->get_team_count($this->t_helper->get_tid());
 	}
 
 	public function form_manage()
 	{
 		$this->data['tid'] = $this->t_helper->get_tid();
 		$this->data['list_schedule'] = $this->m_schedule->get_schedule($this->input->post('select2'));
-		$this->data['list_match'] = $this->m_match->show_match_list();
+		$this->data['list_match'] = $this->m_match->show_match_list($this->input->post('select2'));
 		$this->template->load('Manage/template', 'Manage/schedule/manage_sch', $this->data);
 	}
 
 	public function form_create()
 	{
 		$this->data['tid'] = $this->t_helper->get_tid();
-		$this->data['team_count'] = $this->m_schedule->get_team_count($this->data['tid']);
-		$this->data['row_tournament'] = $this->m_tournament->get_row_byID($this->input->post('select2'));
-		$this->data['registered_team'] = $this->m_team->load_team_by_tid($this->t_helper->get_tid());
-		$this->data['setting'] = $this->m_tournament->get_setting_byID($this->input->post('select2'));
-		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
+		if($this->m_match->mlist_count($this->data['tid']) > 0)
+		{
+			return $this->form_manage();
+		}
+		else
+		{		
+			$this->data['row_tournament'] = $this->m_tournament->get_row_byID($this->input->post('select2'));
+			$this->data['registered_team'] = $this->m_schedule->get_team_name($this->t_helper->get_tid());
+			$this->data['setting'] = $this->m_tournament->get_setting_byID($this->input->post('select2'));
+			$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
+		}
 	}
 
 	public function getBracket($nteam) 
@@ -246,7 +254,6 @@ class C_schedule extends CI_Controller
 			}
 			$matches = array_chunk($matches, 2);
 		}
-		json_encode($matches);
 		$this->update_bracket($tid);
 		redirect('adm');
 	}
@@ -296,7 +303,27 @@ class C_schedule extends CI_Controller
 			}
 			$winArr = array_chunk($winArr, 2);	
 		}
-		redirect('adm/schedule/manage');
+		redirect('adm');
+	}
+
+	public function set_round_name($rnd, $count)
+	{
+		if($count > 7) 
+		{
+			return 'Round '.$rnd;
+		}
+		elseif($count > 3)
+		{
+			return 'Quarter Final';
+		}
+		elseif($count > 1)
+		{
+			return 'Semi Final';
+		}
+		else
+		{
+			return 'Final';
+		}
 	}
 
 	public function set_next_round_team($team, $j, $mid, $sid)

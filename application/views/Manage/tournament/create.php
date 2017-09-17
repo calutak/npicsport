@@ -20,7 +20,7 @@
 	</div>
 	<div class="box-body">
 		<form method="post" action="<?php echo site_url('adm/tournament/create/newpost'); ?>" role="form">
-		<input type="hidden" name="id" value="<?php echo $tmax->id; ?>">
+		<input type="hidden" name="id" value="<?php echo substr($tmax->id, 5); ?>">
 		<div class="form-group col-md-4">
 			<label>* Tournament Name</label>
 			<input type="text" name="t_name" class="form-control" placeholder="Name" required>
@@ -56,6 +56,10 @@
 		<div class="form-group col-xs-2">
 			<label>* Max Team</label>
 			<input type="text" name="max_team" class="form-control col-xs-2" placeholder="Max Team">
+		</div>
+		<div class="form-group col-xs-2">
+			<label>* Max Member</label>
+			<input type="text" name="max_mem" class="form-control col-xs-2" placeholder="Max Member">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Game Duration</label>

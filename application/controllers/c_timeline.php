@@ -12,9 +12,6 @@ class C_timeline extends CI_Controller
 			redirect(site_url('sysladm'));
 		}
 
-		// $this->load->helper('ckeditor');
-		// $this->load->library('ckeditor');
-
 		$this->load->view('Manage/header');
 		$this->load->view('Manage/footer');
 		$this->load->model('m_tournament');
@@ -23,14 +20,11 @@ class C_timeline extends CI_Controller
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
-		$this->data['tournament'] = $this->m_tournament->load_tournament();
- 
-		// $this->ckeditor->basePath = base_url().'assets/plugins/ckeditor/';
-		// $this->ckeditor->config['toolbar'] = array(
-	 //                array( 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-')
-	 //                                                    );
-		// $this->ckeditor->config['width'] = '100%';
-		// $this->ckeditor->config['height'] = '350px';            
+		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
+		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
+		$this->data['team_count'] = $this->m_schedule->get_team_count($this->t_helper->get_tid());
+    
 	}
 	public function create_post()
 	{

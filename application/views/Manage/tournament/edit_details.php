@@ -53,30 +53,41 @@
 				<option value="Football (Soccer)" selected>Football (Soccer)</option>
 			</select>
 		</div>
-		<div class="form-group col-xs-4">
-			<label>* Game durations</label>
-			<input type="text" name="game_dur" class="form-control col-xs-3" value="<?php echo $rowbyid->game_duration; ?>" required>
+		<div class="form-group col-xs-2">
+			<label>* Max Team / Faculty</label>
+			<input type="text" name="max_team_fac" class="form-control col-xs-2" value="<?php echo $setting->max_team_faculty; ?>">
+		</div>
+		<div class="form-group col-xs-2">
+			<label>* Max Team</label>
+			<input type="text" name="max_team" class="form-control col-xs-2" value="<?php echo $setting->max_team; ?>">
+		</div>
+		<div class="form-group col-xs-2">
+			<label>* Max Member</label>
+			<input type="text" name="max_mem" class="form-control col-xs-2" value="<?php echo $setting->max_member; ?>">
+		</div>
+		<div class="form-group col-xs-2">
+			<label>* Game Duration</label>
+			<input type="text" name="game_dur" class="form-control col-xs-3" value="<?php echo $setting->game_duration; ?>" required>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Description</label>
-			<textarea name="description" class="form-control" rows="3" required><?php echo $rowbyid->tournament_desc; ?></textarea>
+			<textarea name="description" class="form-control" rows="3"><?php echo $rowbyid->tournament_desc; ?></textarea>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Rules</label>
-			<textarea name="rules" class="form-control" rows="6" required><?php echo $rowbyid->tournament_rules; ?></textarea>
+			<textarea name="rules" class="form-control" rows="6"><?php echo $rowbyid->tournament_rules; ?></textarea>
 		</div>
 		<div class="form-group col-md-12">
 			<label>Requirements</label>
-			<textarea name="req" class="form-control" rows="6" required><?php echo $rowbyid->tournament_req; ?></textarea>
-		</div>
+			<textarea name="req" class="form-control" rows="6"><?php echo $rowbyid->tournament_req; ?></textarea>
+	</div>
+	<div class="box-footer">
 		<div class="form-group col-md-1">
 			<button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Save</button>
 		</div>
 		</form>
 		<div class="form-group col-md-1">
-			<a href="<?php echo site_url('tournament/manage'); ?>">
-				<button class="btn btn-danger"><i class="fa fa-times"></i> Cancel</button>
-			</a>
+			<a href="<?php echo site_url('adm/tournament/manage'); ?>" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
 		</div>
 	</div>
 	</div>

@@ -18,7 +18,10 @@ class C_dashboard extends CI_Controller
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
-		$this->data['tournament'] = $this->m_tournament->load_tournament();
+		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
+		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
+		$this->data['team_count'] = $this->m_schedule->get_team_count($this->t_helper->get_tid());
 	}
 
 	public function index()

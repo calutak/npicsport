@@ -3,9 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_match extends CI_Model
 {
-	public function show_match_list()
+	public function show_match_list($id)
 	{
-		return $this->db->where('dates <>','null')->get('match_list')->result_object();
+		$cond = array(
+			'rs' => 0,
+			'tId' => $id
+		);
+		return $this->db->where($cond)->get('match_list')->result_object();
 	}
 	public function get_1st_match_count($id)
 	{
@@ -69,5 +73,9 @@ class M_match extends CI_Model
 		{
 			return $this->db->where('tournament_id', $tid)->delete('tb_match');
 		}
-	}	
+	}
+	public function mlist_count($id)
+	{
+		return $this->db->where('tournament_id', $id)->get('tb_match')->num_rows();
+	}
 }

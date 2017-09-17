@@ -17,14 +17,13 @@ class C_tournament extends CI_Controller
 		$this->load->model('m_schedule');
 		//load data table
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
+		$this->data['tournament'] = $this->m_tournament->load_tournament();
+		$this->data['team_count'] = $this->m_schedule->get_team_count($this->t_helper->get_tid());
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tmax'] = $this->m_tournament->get_max_id();
-		$this->data['tournament'] = $this->m_tournament->load_tournament();
-	}
-
-	public function index() 
-	{
-		$this->load->view('home');
+		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
+		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
 	}
 
 	public function create_tour() 
@@ -35,12 +34,8 @@ class C_tournament extends CI_Controller
 	public function edit_data_tour($id)
 	{
 		$this->data['rowbyid'] = $this->m_tournament->get_row_byID($id);
+		$this->data['setting'] = $this->m_tournament->get_setting_byID($id);
 		$this->template->load('Manage/template', 'Manage/tournament/edit_details', $this->data);
-	}
-
-	public function show_details($id)
-	{
-		$this->data['rowbyid'] = $this->m_tournament->get_row_byID($id);
 	}
 
 	public function manage()
@@ -50,28 +45,49 @@ class C_tournament extends CI_Controller
 
 	public function show_history()
 	{
+		$this->data['yearlist'] = $this->m_tournament->get_tyear_list();
 		$this->template->load('Manage/template', 'Manage/tournament/history', $this->data);
 	}
 
 	public function find_tournament_year()
 	{
-		// $year = $this->input->post('select2');
-		// $this->data['yearfilteredData'] = $this->m_tournament->filteryearTournament($year);
-		// $this->data['form_findtourhistory'] = ;
-		// $this->template->load('Manage/template', 'Manage/tournament/history', $this->data);
+		$year = $this->input->post('year');
+		$history = $this->m_tournament->filteryearTournament($year);
+		if(!empty($history))
+		{
+			echo json_encode($history);
+		}
+		else
+		{
+			$history['year'] = $year;
+			$history['status'] = 'nodata';
+			echo json_encode($history);
+		}
+		exit;
+	}
+
+	public function get_details($id)
+	{
+		$data = $this->m_tournament->get_row_byID($id);
+		$data->tournament_start = date('d/M/Y', $data->tournament_start);
+		$data->tournament_end = date('d/M/Y', $data->tournament_end);
+		$data->registration_start = date('d/M/Y', $data->registration_start);
+		$data->registration_end = date('d/M/Y', $data->registration_end);
+		echo json_encode($data);
+		exit;
 	}
 
 	public function insert_new_tour()
 	{
-		$autoNumber = substr($this->input->post('tournament_id'), -1);
 		$t_startdate = strtotime(substr($this->input->post('tdate'),0,10));
 		$t_enddate = strtotime(substr($this->input->post('tdate'),-10));
 		$r_startdate = strtotime(substr($this->input->post('rdate'),0,10));
 		$r_enddate = strtotime(substr($this->input->post('rdate'),-10));
+		$zeroCount = $this->t_helper->autonumber_id($this->input->post('id'));
 		if($this->m_tournament->get_row_tournament() > 0) 
 		{
 			$data_tournament = array(
-				'tournament_id' => 'NPICT'.(substr($this->input->post('id'), -1) + 1),
+				'tournament_id' => 'NPICT'.$zeroCount,
 				'tournament_name' => $this->input->post('t_name'),
 				'tournament_start' => $t_startdate,
 				'tournament_desc' => $this->input->post('description'),
@@ -84,16 +100,17 @@ class C_tournament extends CI_Controller
 				'type' => $this->input->post('select2')
 			);
 			$data_setting = array(
-				'tournament_id' => 'NPICT'.(substr($this->input->post('id'), -1) + 1),
+				'tournament_id' => 'NPICT'.$zeroCount,
 				'max_team' => $this->input->post('max_team'),
 				'max_team_faculty' => $this->input->post('max_team_fac'),
-				'game_duration' => $this->input->post('game_dur')
+				'game_duration' => $this->input->post('game_dur'),
+				'max_member' => $this->input->post('max_mem')
 			);
 		} 
 		else 
 		{
 			$data_tournament = array(
-				'tournament_id' => 'NPICT'.($this->m_tournament->get_row_tournament() + 1),
+				'tournament_id' => 'NPICT000'.($this->m_tournament->get_row_tournament() + 1),
 				'tournament_name' => $this->input->post('t_name'),
 				'tournament_start' => $t_startdate,
 				'tournament_desc' => $this->input->post('description'),
@@ -106,10 +123,11 @@ class C_tournament extends CI_Controller
 				'type' => $this->input->post('select2')
 			);
 			$data_setting = array(
-				'tournament_id' => 'NPICT'.($this->m_tournament->get_row_tournament() + 1),
+				'tournament_id' => 'NPICT000'.($this->m_tournament->get_row_tournament() + 1),
 				'max_team' => $this->input->post('max_team'),
 				'max_team_faculty' => $this->input->post('max_team_fac'),
-				'game_duration' => $this->input->post('game_dur')
+				'game_duration' => $this->input->post('game_dur'),
+				'max_member' => $this->input->post('max_mem')
 			);
 		}
 		if($this->db->insert('tb_tournament', $data_tournament) && $this->db->insert('tb_settings', $data_setting)) 
@@ -149,12 +167,16 @@ class C_tournament extends CI_Controller
 				'tournament_year' => date('Y', $t_enddate),
 				'registration_start' => $r_startdate,
 				'registration_end' => $r_enddate,
-				// 'min_games' => $this->input->post('min_games'),
-				'game_duration' => $this->input->post('game_dur'),
 				'type' => $this->input->post('select2')
 			);
+		$data_setting = array(
+				'max_team' => $this->input->post('max_team'),
+				'max_team_faculty' => $this->input->post('max_team_fac'),
+				'game_duration' => $this->input->post('game_dur'),
+				'max_member' => $this->input->post('max_mem')
+			);
 		$id = $this->input->post('t_id');
-		if($this->m_tournament->update_data_tour($id, $data_tournament))
+		if($this->m_tournament->update_data_tour($id, $data_tournament) && $this->m_tournament->update_data_setting($id, $data_setting))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data has been updated!</div>');
 			redirect(site_url('adm/tournament/manage'));

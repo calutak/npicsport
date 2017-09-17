@@ -17,51 +17,26 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Create Schedule</h3>
-            <button data-toggle="modal" data-target="#setting" class="btn btn-default pull-right"><i class="fa fa-gear"></i> Settings</button>
         </div>
         <div class="box-body">
             <div class="col-md-12">
                 <h4><strong>Team List</strong></h4>
-                <hr>
                 <div class="box-body">
+                    <h4> Registered Team </h4>
                     <?php 
-                        foreach ($variable as $key) {
-                            # code...
+                    if(!empty($registered_team))
+                    {
+                        foreach ($registered_team as $row) {
+                            echo '<div class="col-md-3 bg-teal text-muted">';
+                            echo '<h4>'.$row->team_name.'</h4>';
+                            echo '</div>';
                         }
+                    }
+                    else
+                    {
+                        echo '<h4 class=\'text-red\'> No Team validated team for this Tournament! </h4>';
+                    }
                     ?>
-                    <div class="col-md-3 bg-teal text-muted">
-                        
-                    </div>
-                    <div class="col-md-3 bg-teal text-muted">
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                    </div>
-                    <div class="col-md-3 bg-teal text-muted">
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                    </div>
-                    <div class="col-md-3 bg-teal text-muted">
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                        <h4>asoaskdoakso</h4>
-                    </div>
                 </div>
             </div>
         	<?php
@@ -90,8 +65,6 @@
                 .form_hidden('end_tour',$row_tournament->tournament_end)
                 .'</div>
                 <div class=\'form-group col-md-2\'>'
-                // .form_label('Game Duration', 'gamedur')
-                // .form_input('gamedur', $row_tournament->game_duration, 'class=\'form-control\' disabled')
                 .form_hidden('gameduration',$setting->game_duration)
                 .'</div>
                 </div>
@@ -187,34 +160,3 @@
         });
     });
 </script>
-
-<!-- MODAL Section -->
-<!-- Setting Modal -->
-<div class="modal modal-default fade" id="setting">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Tournament Setting</h3>
-      </div>
-      <div class="modal-body">
-        <?php 
-            echo 
-            form_open()
-            .form_label('Bracket Size', 'bracket_size')
-            .form_input('bracket_size', '', 'class=\'form-control\''); 
-        ?>
-      </div>
-      <div class="modal-footer">
-        <?php
-            echo 
-            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
-            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
-            .form_close(); 
-        ?>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Setting Modal -->
-<!-- End MODAL Section -->

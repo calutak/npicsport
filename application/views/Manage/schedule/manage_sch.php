@@ -16,9 +16,14 @@
 <section class="content">
   <div class="box box-primary">
       <div class="box-header with-border">
-          <h3 class="box-title">Manage Schedule</h3>
+        <h3 class="box-title">Manage Schedule</h3>
+        <div class="pull-right">
+        <?php
+            echo anchor(site_url('adm/schedule/clear/'.$tid),'Erase Schedule','class=\'btn btn-danger delete\'');
+        ?>
+        <button data-toggle="modal" data-target="#setting" class="btn btn-default"><i class="fa fa-gear"></i></button> &nbsp;
+        </div>
       </div>
-      <?php form_open(); ?>
       <div class="box-body">
           <div class="col-xs-9">
           <div class="box no-border box-list">
@@ -41,12 +46,12 @@
                     ?>
                     </th>
                     <th></th>
-                    <th></th>
+                    <th class="pull-right"><?php echo $matches->round; ?></th>
                   </tr>
                   <tr class="bg-gray color-palette">
                     <td class="pull-left"><?php echo $matches->loc; ?></td>
                     <td><?php echo date('h:i A', $matches->times); ?></td>
-                    <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
+                    <td class="pull-right"><a class="bg-gray" id="edit" data-toggle="tooltip" data-placement="left" title="Edit Schedule" href="<?php echo $matches->mId; ?>"><i class="fa fa-edit"></i></a></td>
                   </tr>
                   <tr>
                     <?php
@@ -86,11 +91,6 @@
           </div>
       </div>
       <div class="box-footer with-border">
-          <?php
-              echo form_submit('update','Update Schedule','class=\'btn btn-info\'');
-              form_close();
-              echo anchor(site_url('adm/schedule/clear/'.$tid),'Erase Schedule','class=\'btn btn-danger delete\'');
-          ?>
       </div>
   </div>
 </section>
@@ -100,6 +100,7 @@
     $('.delete').on("click", function(e) {
       e.preventDefault();
       var url = $(this).attr('href');
+      console.log(url);
       swal({
           title: 'Are you sure to clear all the schedule data?',
           text: "This will also clear all the match data!",
@@ -119,3 +120,62 @@
     });
   });
 </script>
+
+<!-- MODAL Section -->
+<!-- Setting Modal -->
+<div class="modal modal-default fade" id="setting">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Tournament Setting</h3>
+      </div>
+      <div class="modal-body">
+        <?php 
+            echo 
+            form_open()
+            .form_label('Bracket Size', 'bracket_size')
+            .form_input('bracket_size', '', 'class=\'form-control\''); 
+        ?>
+      </div>
+      <div class="modal-footer">
+        <?php
+            echo 
+            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
+            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
+            .form_close(); 
+        ?>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Setting Modal -->
+<!-- Edit Modal -->
+<div class="modal modal-default fade" id="edit_schedule">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Edit Schedule For Match ID</h3>
+      </div>
+      <div class="modal-body">
+        <?php 
+            echo 
+            form_open()
+            .form_label('Bracket Size', 'bracket_size')
+            .form_input('bracket_size', '', 'class=\'form-control\''); 
+        ?>
+      </div>
+      <div class="modal-footer">
+        <?php
+            echo 
+            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
+            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
+            .form_close(); 
+        ?>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Edit Modal -->
+<!-- End MODAL Section

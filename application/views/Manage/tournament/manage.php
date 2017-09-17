@@ -14,68 +14,66 @@
 
 <!-- Main content -->
 <section class="content">
-    <?php echo $this->session->flashdata('response'); ?>
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">Manage Tournament</h3>
-        <a href="<?php echo site_url('adm/tournament/create'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Create</a>
+  <?php echo $this->session->flashdata('response'); ?>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Manage Tournament</h3>
+      <a href="<?php echo site_url('adm/tournament/create'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Create</a>
+    </div>
+    <div class="box-body">
+        <table id="catalog" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th>Tournament ID</th>
+            <th>Tournament Name</th>
+            <th>Registration Date</th>
+            <th>Tournament Date</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <?php foreach($tournament as $row) { 
+          echo 
+            '<tr>
+              <td>'.$row->tournament_id.'</td>
+              <td>'.$row->tournament_name.'</td>
+              <td>'.date('d/M/Y',$row->registration_start).' - '.date('d/M/Y',$row->registration_end).'</td>
+              <td>'.date('d/M/Y',$row->tournament_start).' - '.date('d/M/Y',$row->tournament_end).'</td>
+              <td><center>
+                <a href="'.site_url("adm/tournament/get_details/".$row->tournament_id).'" data-toggle="tooltip" data-placement="left" data-target="#show_details" class="modal_details btn btn-xs btn-info" title="Details">&nbsp;<i class="fa fa-info"></i>&nbsp;</a> 
+                <a href="'.site_url("adm/tournament/edit/".$row->tournament_id).'" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                <a href="'.site_url("adm/tournament/delete/".$row->tournament_id).'" class="delete btn btn-xs btn-danger" data-toggle="tooltip" data-placement="right" title="Delete!"><i class="fa fa-times"></i></a>
+              </center></td>
+            </tr>';
+            } 
+          ?>
+          </tbody>
+          <tfoot>
+            <!-- <tr>
+              <td colspan="4">
+                <a href="<?php //echo site_url('#'); ?>"><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i> Insert Data</button></a>
+              </td>
+            </tr> -->
+          </tfoot>
+        </table>
       </div>
-      <div class="box-body">
-          <table id="catalog" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th>Tournament ID</th>
-              <th>Tournament Name</th>
-              <th>Registration Date</th>
-              <th>Tournament Date</th>
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($tournament as $row) { 
-            echo 
-              '<tr>
-                <td>'.$row->tournament_id.'</td>
-                <td>'.$row->tournament_name.'</td>
-                <td>'.date('d/M/Y',$row->registration_start).' - '.date('d/M/Y',$row->registration_end).'</td>
-                <td>'.date('d/M/Y',$row->tournament_start).' - '.date('d/M/Y',$row->tournament_end).'</td>
-                <td><center>
-                  <a href="#" id="'.$row->tournament_id.'" data-toggle="modal" data-target="#show_details" class="modal_details btn btn-xs btn-info"><i class="fa fa-edit"></i> Details</a> 
-                  <a href="'.site_url("adm/tournament/edit/".$row->tournament_id).'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
-                  <a href="'.site_url("adm/tournament/delete/".$row->tournament_id).'" class="delete btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</a>
-                </center></td>
-              </tr>';
-              } 
-            ?>
-            </tbody>
-            <tfoot>
-              <!-- <tr>
-                <td colspan="4">
-                  <a href="<?php //echo site_url('#'); ?>"><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i> Insert Data</button></a>
-                </td>
-              </tr> -->
-            </tfoot>
-          </table>
-        </div>
-        <!-- /.box-body -->
-      </div>
+      <!-- /.box-body -->
+    </div>
       <!-- /.box -->
 </section>
 <!-- /.content -->
 
 <!-- START MODAL Section -->
-<div class="modal modal-info fade" id="show_details">
+<div class="modal modal-default fade" id="show_details">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">
-          <div class="txt_ttitle"></div>
       </div>
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-        <a href="<?php echo site_url('adm/tournament/edit/'); ?>" class="btn btn-outline">Edit</button></a>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        <a href="<?php echo site_url('adm/tournament/edit/'); ?>" class="btn btn-info edit">Edit</button></a>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -86,9 +84,28 @@
 
 <script>
   $(document).ready(function () {
-    $('.modal_details').click(function (){
-      var id = $(this).attr('id');
-      var title = $('.t_name'+id).val();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.modal_details').click(function (e){
+      e.preventDefault();
+      $.get($(this).attr('href'), function(data) {
+        var d = JSON.parse(data);
+        htmlData = '<dl class=\'dl-horizontal\'><dt>Tournament Name</dt><dd>: '+d.tournament_name+'</dd><dt>Tournament</dt><dd>: '+d.tournament_start+' - '+d.tournament_end+'</dd><dt>Registration Date</dt><dd>: '+d.registration_start+' - '+d.registration_end+'</dd><dt>Tournament Type</dt><dd>: '+d.type+'</dd><dt>Tournament Year</dt><dd>: '+d.tournament_year+'</dd><dt>Description</dt><dd>: '+d.tournament_desc+'</dd><dt>Rules</dt><dd>: '+d.tournament_rules+'</dd><dt>Requirements</dt><dd>: '+d.tournament_req+'</dd>';
+        $('#show_details').find('.modal-header').html('<h3 class="modal-title">Details for Tournament ID <strong>'+d.tournament_id+'</strong></h3>');
+        $('#show_details').find('.modal-body').html(htmlData);
+        $('.edit').click(function(e) {
+          e.preventDefault();
+          var url = $(this).attr('href')+'/'+d.tournament_id;
+          $.ajax({
+            type:'get',
+            url:$(this).attr('href')+d.tournament_id,
+            data:$(this).serialize(),
+            success:function(){
+              window.location.replace(url);
+            }
+          });
+        });
+        $('#show_details').modal().show();
+      });
     });
     $('.delete').on("click", function(e) {
       e.preventDefault();

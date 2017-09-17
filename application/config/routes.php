@@ -61,15 +61,17 @@ $route['adm/tournament/manage'] = 'c_tournament/manage';
 $route['adm/tournament/edit/(:any)'] = 'c_tournament/edit_data_tour/$1';
 $route['adm/tournament/delete/(:any)'] = 'c_tournament/delete/$1';
 $route['adm/tournament/update/confirm'] = 'c_tournament/update';
-$route['adm/tournament/show_details/(:any)'] = 'c_tournament/show_details/$1';
+$route['adm/tournament/get_details/(:any)'] = 'c_tournament/get_details/$1';
 $route['adm/tournament/history'] = 'c_tournament/show_history';
-$route['adm/tournament/history/findyear'] = 'c_tournament/find_tournament_year';
+$route['adm/tournament/history/filter'] = 'c_tournament/find_tournament_year/';
 //schedule
 $route['adm/schedule/create'] = 'c_schedule/form_create';
 $route['adm/schedule/create/add_new'] = 'c_schedule/create_match';
 $route['adm/schedule/manage'] = 'c_schedule/form_manage';
 $route['adm/schedule/clear/(:any)'] = 'c_schedule/clear_schedule/$1';
 $route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/fill_bracket_team/$1';
+//match
+$route['adm/match/update'] = 'c_match';
 //timeline
 $route['adm/timeline/create'] = 'c_timeline/create_post';
 $route['adm/timeline/create/post'] = 'c_timeline/posting_timeline';
@@ -80,9 +82,12 @@ $route['adm/timeline/manage/delete/(:any)'] = 'c_timeline/delete_post/$1';
 //message
 $route['adm/message/broadcast'] = 'c_message/form_broadcast';
 //team
-$route['adm/validate/team'] = 'c_validate/manage_team';
+$route['adm/manage/team'] = 'c_validate/manage_team';
 $route['adm/team/new'] = 'c_validate/form_team_register';
 $route['adm/team/new/add'] = 'c_validate/do_register';
+$route['adm/team/account/delete/(:any)'] = 'c_validate/delete_team/$1';
+$route['adm/team/details/(:any)'] = 'c_validate/get_team_details/$1';
+$route['adm/team/validate/(:any)/(:any)/(:num)'] = 'c_validate/validate_team/$1/$2/$3';
 
 // FRONT END //
 $route['team'] = 'fe_team';

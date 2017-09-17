@@ -22,7 +22,7 @@
         <?php
           echo form_open_multipart(site_url('adm/team/new/add'));
           foreach ($tournament as $key) {
-            $tournament_list = array($key->tournament_id => $key->tournament_name); 
+            $tournament_list[$key->tournament_id] = $key->tournament_name;
           }
 
           echo '<div class=\'form-group col-sm-12\'>';
@@ -64,12 +64,12 @@
           echo '<div class=\'form-group col-sm-12\'>';
           echo '<div class=\'form-group col-sm-3\'>';
           echo form_label('Choose Tournament', 'trName');
-          echo form_dropdown('trName', $tournament_list, '0', 'class=\'form-control select2\'');
+          echo form_dropdown('trName', $tournament_list, '', 'class=\'form-control select2\'');
           echo form_error('trName');
           echo '</div>';
           echo '<div class=\'form-group col-sm-2\'>';
           echo form_label('Number of Member', 'tnMember');
-          echo form_input('tnMember', set_value('tnMember'), ' class=\'form-control\'');
+          echo form_input('tnMember', set_value('tnMember'), 'class=\'form-control\' placeholder=\'Num of Member\'');
           echo form_error('tnMember');
           echo '</div>';
           echo '</div>';

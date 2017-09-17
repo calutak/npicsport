@@ -45,4 +45,17 @@ class T_helper {
 	{
 		return $this->tid;
 	}
+
+	function autonumber_id($str)
+	{
+		$max = strlen($str);
+		$end = strlen($str + 1);
+		$zeroCount = '';
+
+		for($i=0;$i<$max-$end;$i++)
+		{
+			$zeroCount .= '0';
+		}
+		return $zeroCount.($str+1);
+	}
 }

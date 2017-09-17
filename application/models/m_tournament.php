@@ -5,9 +5,19 @@ class M_tournament extends CI_Model
 {
 	public function load_tournament()
 	{
-		$data = $this->db->get('tb_tournament')->result_object();
-
-		return $data;
+		return $this->db->get('tb_tournament')->result_object();
+	}
+	public function load_dropdown_tlist()
+	{
+		return $this->db->query('select t.tournament_id, t.tournament_name from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id and (select count(team_id) as tcount from tb_team having tcount > 1) group by t.tournament_id')->result_object();
+	}
+	public function load_dropdown_mlist()
+	{
+		return $this->db->query('select t.tournament_id, t.tournament_name from tb_tournament t join tb_match m on t.tournament_id = m.tournament_id and (select count(match_id) as tcount from tb_match having tcount > 0) group by t.tournament_id')->result_object();
+	}
+	public function load_match_tournament()	
+	{
+		return $this->db->query('select * from tb_match m join tb_tournament t on m.`tournament_id` = t.`tournament_id`')->result_object();
 	}
 	public function get_row_byID($id)
 	{
@@ -19,7 +29,8 @@ class M_tournament extends CI_Model
 	}
 	public function get_row_tournament()
 	{
-		return $this->db->get('tb_tournament')->num_rows();
+		// return $this->db->get('tb_tournament')->num_rows();
+		return $this->db->query('select t.tournament_id, t.tournament_name from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id and (select count(team_id) as tcount from tb_team having tcount > 1) group by t.tournament_id')->num_rows();
 	}
 	public function get_max_id()
 	{
@@ -29,12 +40,24 @@ class M_tournament extends CI_Model
 	{
 		return $this->db->where('tournament_id', $id)->update('tb_tournament', $data);
 	}
+	public function update_data_setting($id, $data)
+	{
+		return $this->db->where('tournament_id', $id)->update('tb_settings', $data);
+	}
 	public function delete_row($id)
 	{
 		return $this->db->where('tournament_id', $id)->delete('tb_tournament');
 	}
 	public function filteryearTournament($year)
 	{
-		return $this->db->where('tournament_year', $year)->get('tb_tournament')->result_object();
+		$cond = array(
+			'tournament_year'=>$year,
+			'status'=>1
+		);
+		return $this->db->where($cond)->get('tb_tournament')->result_object();
+	}
+	public function get_tyear_list()
+	{
+		return $this->db->group_by('tournament_year')->get('tb_tournament')->result_object();
 	}
 }

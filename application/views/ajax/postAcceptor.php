@@ -2,7 +2,7 @@
   /*******************************************************
    * Only these origins will be allowed to upload images *
    ******************************************************/
-  $accepted_origins = array("http://localhost/npicsport", "http://192.168.1.1", "http://example.com");
+  $accepted_origins = array("http://localhost/npicsport/", "http://192.168.1.1", "http://example.com");
 
   /*********************************************
    * Change this line to set the upload folder *
