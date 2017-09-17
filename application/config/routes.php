@@ -68,6 +68,7 @@ $route['adm/tournament/history/filter'] = 'c_tournament/find_tournament_year/';
 $route['adm/schedule/create'] = 'c_schedule/form_create';
 $route['adm/schedule/create/add_new'] = 'c_schedule/create_match';
 $route['adm/schedule/manage'] = 'c_schedule/form_manage';
+$route['adm/schedule/edit/(:any)/(:any)'] = 'c_schedule/edit_schedule/$1/$2';
 $route['adm/schedule/clear/(:any)'] = 'c_schedule/clear_schedule/$1';
 $route['adm/schedule/renderBracket/(:any)'] = 'c_schedule/fill_bracket_team/$1';
 //match

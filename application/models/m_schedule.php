@@ -57,4 +57,8 @@ class M_schedule extends CI_Model
 			);
 		return $this->db->where($arrSet)->update('tb_settings',$arrData);
 	}
+	public function get_filtered_schedule($id)
+	{
+		return $this->db->query('select s.schedule_id, s.schedule_date, s.schedule_time, s.tournament_id FROM tb_schedule s LEFT JOIN tb_match m ON s.schedule_id=m.schedule_id WHERE m.schedule_id IS NULL and s.tournament_id=\''.$id.'\'')->result_object();
+	}
 }

@@ -21,7 +21,7 @@
         <?php
             echo anchor(site_url('adm/schedule/clear/'.$tid),'Erase Schedule','class=\'btn btn-danger delete\'');
         ?>
-        <button data-toggle="modal" data-target="#setting" class="btn btn-default"><i class="fa fa-gear"></i></button> &nbsp;
+        <!-- <button data-toggle="modal" data-target="#setting" class="btn btn-default"><i class="fa fa-gear"></i></button> &nbsp; -->
         </div>
       </div>
       <div class="box-body">
@@ -51,7 +51,7 @@
                   <tr class="bg-gray color-palette">
                     <td class="pull-left"><?php echo $matches->loc; ?></td>
                     <td><?php echo date('h:i A', $matches->times); ?></td>
-                    <td class="pull-right"><a class="bg-gray" id="edit" data-toggle="tooltip" data-placement="left" title="Edit Schedule" href="<?php echo $matches->mId; ?>"><i class="fa fa-edit"></i></a></td>
+                    <td class="pull-right"><a class="bg-gray" id="edit" data-toggle="tooltip" data-placement="left" title="Edit Schedule" href="<?php echo site_url('adm/schedule/edit/').$tid.'/'.$matches->mId; ?>"><i class="fa fa-edit"></i></a></td>
                   </tr>
                   <tr>
                     <?php
@@ -95,6 +95,25 @@
   </div>
 </section>
 
+<!-- MODAL Section -->
+<!-- Edit Modal -->
+<div class="modal modal-default fade" id="edit_schedule">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Edit Schedule For Match ID</h3>
+      </div>
+      <?php echo form_open(); ?>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+      <?php echo form_close(); ?>
+    </div>
+  </div>
+</div>
+<!-- End Edit Modal -->
+<!-- End MODAL Section -->
+
 <script>
   $(document).ready(function () {
     $('.delete').on("click", function(e) {
@@ -118,10 +137,45 @@
           }
         });
     });
+    $('#edit').click(function(e) {
+      e.preventDefault();
+      var url = $(this).attr('href');
+      $.get(url, function(data) {
+        var d = JSON.parse(data);
+        var dm = d['detail_match'];
+        var body = $('.modal-body');
+        var foot = $('.modal-footer');
+        body.append('<input type=\'hidden\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\'>');
+        body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
+        body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
+        
+        //footer section //
+        foot.append('<button type=\'cancel\' class=\'btn btn-default pull-left\' data-dismiss=\'modal\'>Cancel</button>');
+        foot.append('<button type=\'submit\' class=\'btn btn-warning pull-right\'>Update Schedule</button>');
+        $('#edit_schedule').modal().show();
+      });
+    });
   });
 </script>
 
-<!-- MODAL Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Setting Modal -->
 <div class="modal modal-default fade" id="setting">
   <div class="modal-dialog">
@@ -150,32 +204,3 @@
   </div>
 </div>
 <!-- End Setting Modal -->
-<!-- Edit Modal -->
-<div class="modal modal-default fade" id="edit_schedule">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Edit Schedule For Match ID</h3>
-      </div>
-      <div class="modal-body">
-        <?php 
-            echo 
-            form_open()
-            .form_label('Bracket Size', 'bracket_size')
-            .form_input('bracket_size', '', 'class=\'form-control\''); 
-        ?>
-      </div>
-      <div class="modal-footer">
-        <?php
-            echo 
-            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
-            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
-            .form_close(); 
-        ?>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Edit Modal -->
-<!-- End MODAL Section

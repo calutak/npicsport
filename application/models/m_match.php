@@ -78,4 +78,8 @@ class M_match extends CI_Model
 	{
 		return $this->db->where('tournament_id', $id)->get('tb_match')->num_rows();
 	}
+	public function get_match_data_byID($mid)
+	{
+		return $this->db->where('match_id', $mid)->get('tb_match')->row();
+	}
 }

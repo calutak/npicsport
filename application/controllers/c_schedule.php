@@ -34,7 +34,7 @@ class C_schedule extends CI_Controller
 	public function form_manage()
 	{
 		$this->data['tid'] = $this->t_helper->get_tid();
-		$this->data['list_schedule'] = $this->m_schedule->get_schedule($this->input->post('select2'));
+		$this->data['list_schedule'] = $this->m_schedule->get_filtered_schedule($this->input->post('select2'));
 		$this->data['list_match'] = $this->m_match->show_match_list($this->input->post('select2'));
 		$this->template->load('Manage/template', 'Manage/schedule/manage_sch', $this->data);
 	}
@@ -361,6 +361,15 @@ class C_schedule extends CI_Controller
 		echo json_encode($return);
 		exit;
 	}
+
+	public function edit_schedule($tid, $mid)
+	{
+		$this->data['detail_match'] = $this->m_match->get_match_data_byID($mid);
+		$this->data['list_schedule'] = $this->m_schedule->get_filtered_schedule($this->input->post('select2'));
+		echo json_encode($this->data);
+		exit;
+	}
+
 //Reserved for Round Robin - Group Stage Tournament
 	// public function matching_up($n)
 	// {	
