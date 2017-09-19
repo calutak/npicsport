@@ -364,9 +364,7 @@ class C_schedule extends CI_Controller
 
 	public function edit_schedule($tid, $mid)
 	{
-		$this->data['detail_match'] = $this->m_match->get_match_data_byID($mid);
-		$this->data['list_schedule'] = $this->m_schedule->get_filtered_schedule($this->input->post('select2'));
-		echo json_encode($this->data);
+		echo json_encode($this->m_match->get_match_with_schedule($mid));
 		exit;
 	}
 

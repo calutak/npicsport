@@ -48,5 +48,12 @@
 <script src="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.js'); ?>"></script>
 <!-- TinyMCE -->
 <script src="<?php echo site_url('assets/plugins/tinymce/tinymce.min.js'); ?>"></script>
+<!-- Input File -->
+<script src="<?php echo site_url('assets/plugins/fileInput/piexif.min.js'); ?>"></script>
+<script src="<?php echo site_url('assets/plugins/fileInput/purify.min.js'); ?>"></script>
+<script src="<?php echo site_url('assets/plugins/fileInput/sortable.min.js'); ?>"></script>
+<script src="<?php echo site_url('assets/fileinput.min.js'); ?>"></script>
+<script src="<?php echo site_url('assets/locales/LANG.js'); ?>"></script>
+<script src="<?php echo site_url('assets/plugins/fileInput/fa/theme.min.js'); ?>"></script>
 </body>
 </html>

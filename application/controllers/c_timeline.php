@@ -33,10 +33,13 @@ class C_timeline extends CI_Controller
 
 	public function posting_timeline()
 	{
+		$picture = $this->upload_image('assets/uploads/ThumbnailPost/');
 		$datapost = array( 
 			'timeline_details' => $this->input->post('description'),
 			'timeline_title' => $this->input->post('title'),
-			'timeline_date' => strtotime('now')
+			'timeline_date' => strtotime('now'),
+			'timeline_cat' => $this->input->post('cat'),
+			'timeline_thumbnail' => $picture['path'].$picture['name']
 			);
 		if($this->db->insert('tb_timeline', $datapost))
 		{
@@ -61,10 +64,13 @@ class C_timeline extends CI_Controller
 	public function update_post()
 	{
 		$id = $this->input->post('id');
+		$picture = $this->upload_image('assets/uploads/ThumbnailPost/');
 		$datapost = array (
 				'timeline_details' => $this->input->post('description'),
 				'timeline_title' => $this->input->post('title'),
-				'timeline_date' => strtotime('now')
+				'timeline_date' => strtotime('now'),
+				'timeline_cat' => $this->input->post('cat'),
+				'timeline_thumbnail' => $picture['path'].$picture['name']
 			);
 		if($this->m_timeline->update_post($id,$datapost))
 		{
@@ -80,5 +86,59 @@ class C_timeline extends CI_Controller
 			$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data deleted!</div>');
 			redirect(site_url('adm/timeline/manage'));
 		}
+	}
+
+	public function upload_image($path)
+	{
+		$upload_path 					= $path;
+		$config['upload_path']          = './'.$upload_path;
+        $config['allowed_types']        = 'gif|jpg|png';
+        $config['max_size']             = 0;
+        $config['max_filename']			= 255;
+	    $config['file_name'] 			= $_FILES['thumbnailpost']['name'];
+	    $image_data = array();
+	    $is_file_error = FALSE;
+
+	    if($_FILES) 
+	    {
+	    	$is_file_error = TRUE;
+	    	//$this->handle_error('Select an Image file');
+	    }
+	    if($is_file_error) 
+	    {
+	        $this->load->library('upload', $config);
+	        $this->upload->initialize($config);
+		    if(!$this->upload->do_upload('thumbnailpost'))
+		    {
+		    	//$this->handle_error($this->upload->display_errors());
+                $is_file_error = TRUE;
+		    }
+		    else
+		    {
+		    	$image_data = $this->upload->data();
+		    	$config['image_library'] = 'gd2';
+                $config['source_image'] = $image_data['full_path']; //get original image
+                $config['maintain_ratio'] = TRUE;
+                $config['width'] = 150;
+                $config['height'] = 100;
+                $this->load->library('image_lib', $config);
+                if (!$this->image_lib->resize()) {
+
+                } 
+		    }
+	    }
+        if ($is_file_error) {
+            if ($image_data) {
+                $file = $image_data['file_name'];
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+        } else {
+            $file = $image_data['file_name'];
+        }
+        $picture_data['name'] = $file;
+     	$picture_data['path'] = $upload_path;  
+        return $picture_data;
 	}
 }

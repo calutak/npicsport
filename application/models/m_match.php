@@ -82,4 +82,11 @@ class M_match extends CI_Model
 	{
 		return $this->db->where('match_id', $mid)->get('tb_match')->row();
 	}
+	public function get_match_with_schedule($mid)
+	{
+		$cond = array(
+			'`mId`' => $mid
+		);
+		return $this->db->where($cond)->get('match_list')->result_object();
+	}
 }

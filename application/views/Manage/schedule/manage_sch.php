@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="box-body">
-          <div class="col-xs-9">
+          <!-- <div class="col-xs-9"> -->
           <div class="box no-border box-list">
               <div class="box-body table-responsive no-padding">
                 <table class="table table-hover no-border">
@@ -77,18 +77,18 @@
               <!-- /.box-body -->
             </div>
             <!-- /.box -->
-          </div>
-          <div class="col-xs-3">
+          <!-- </div> -->
+          <!-- <div class="col-xs-3">
           <div class="box-list pull-right">
           <h4>List Uncsheduled Dates & Times</h4>
           <?php
-              foreach ($list_schedule as $schedule) 
-              {
-                  echo date('h:i A', $schedule->schedule_time).' - '.date('d/M/Y', $schedule->schedule_date).'<br>';
-              }
+              // foreach ($list_schedule as $schedule) 
+              // {
+              //     echo date('h:i A', $schedule->schedule_time).' - '.date('d/M/Y', $schedule->schedule_date).'<br>';
+              // }
           ?>
           </div>
-          </div>
+          </div> -->
       </div>
       <div class="box-footer with-border">
       </div>
@@ -105,7 +105,9 @@
           <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Edit Schedule For Match ID</h3>
       </div>
       <?php echo form_open(); ?>
-      <div class="modal-body"></div>
+      <div class="modal-body">
+        <?php $json = json_decode('detail_match', true); var_dump($json); ?>
+      </div>
       <div class="modal-footer"></div>
       <?php echo form_close(); ?>
     </div>
@@ -145,13 +147,23 @@
         var dm = d['detail_match'];
         var body = $('.modal-body');
         var foot = $('.modal-footer');
-        body.append('<input type=\'hidden\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\'>');
-        body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
-        body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
+        // body.append('<input type=\'hidden\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\'>');
+        // body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
+        // body.append('<label for=\'m_id\'>Match Dates</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
         
-        //footer section //
-        foot.append('<button type=\'cancel\' class=\'btn btn-default pull-left\' data-dismiss=\'modal\'>Cancel</button>');
-        foot.append('<button type=\'submit\' class=\'btn btn-warning pull-right\'>Update Schedule</button>');
+        // //footer section //
+        // foot.append('<button type=\'cancel\' class=\'btn btn-default pull-left\' data-dismiss=\'modal\'>Cancel</button>');
+        // foot.append('<button type=\'submit\' class=\'btn btn-warning pull-right\'>Update Schedule</button>');
+        $('#start_time').timepicker({
+          timeFormat: 'h:mm p',
+          interval: 60,
+          minTime: '8',
+          maxTime: '6:00pm',
+          startTime: '08:00',
+          dynamic: false,
+          dropdown: true,
+          scrollbar: true
+        }); 
         $('#edit_schedule').modal().show();
       });
     });

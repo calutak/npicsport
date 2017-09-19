@@ -40,4 +40,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/bootstrap-toggle.min.css'); ?>">
   <!-- Datetime Picker -->
   <link rel="stylesheet" href="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.css'); ?>">
+  <!-- InputFile -->
+  <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/bootstrap/css/fileinput.min.css'); ?>" media="all">
 </head>

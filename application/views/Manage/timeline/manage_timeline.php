@@ -14,7 +14,6 @@
 <!-- Main content -->
 <section class="content">
     <?php echo $this->session->flashdata('response'); ?>
-    <div class="row">
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Manage Timeline</h3>
@@ -32,16 +31,15 @@
             </thead>
             <tbody>
             <?php foreach($show_timeline_post as $row) {
-            $data = explode(' />', $row->timeline_details); 
             echo 
               '<tr>
                 <td>'.$row->timeline_id.'</td>
                 <td>'.$row->timeline_title.'</td>
-                <td>'.substr($data[1], 0, 50).'</td>
+                <td>'.$row->timeline_details.'</td>
                 <td>'.date('d/M/Y',$row->timeline_date).'</td>
                 <td><center>
-                  <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'"><button class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</button></a>
-                  <a href="'.site_url("adm/timeline/manage/delete/".$row->timeline_id).'"><button class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</button></a>
+                  <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="left" title="Edit"><i class="fa fa-edit"></i></a>
+                  <a href="'.site_url("adm/timeline/manage/delete/".$row->timeline_id).'" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fa fa-times"></i></a>
                 </center></td>
               </tr>';
               } 
@@ -54,7 +52,6 @@
         <!-- /.box-body -->
       </div>
       <!-- /.box -->
-      </div>
 </section>
 <!-- /.content -->
 
