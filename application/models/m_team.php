@@ -42,4 +42,8 @@ class M_team extends CI_Model
 	{
 		return $this->db->select_max('team_id','ti')->where('tournament_id', $trid)->get('tb_team')->row_object();
 	}
+	public function count_major($str, $tid)
+	{
+		return $this->db->where('tournament_id', $tid)->where('major', $str)->get('tb_team')->num_rows();
+	}
 }

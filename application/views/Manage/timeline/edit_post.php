@@ -35,7 +35,10 @@
       <input id="ths" name="thumbnailpost" type="file">
       <script>
         $(document).ready(function(){
-          $("#ths").fileinput({showCaption: false, showUpload: false});
+          $("#ths").fileinput({
+            showCaption: false, 
+            showUpload: false
+          });
         })
       </script>
     </div>        

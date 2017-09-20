@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'fe_home';
+//backgroundtask
+$route['check_date'] = 'c_dashboard/check_regist_date';
 //admin section
 $route['sysladm'] = 'c_auth/index';
 $route['adm'] = 'c_dashboard/index';
@@ -85,6 +87,7 @@ $route['adm/message/broadcast'] = 'c_message/form_broadcast';
 //team
 $route['adm/manage/team'] = 'c_validate/manage_team';
 $route['adm/team/new'] = 'c_validate/form_team_register';
+$route['adm/team/add/(:any)/member'] = 'c_validate/form_add_member/$1';
 $route['adm/team/new/add'] = 'c_validate/do_register';
 $route['adm/team/account/delete/(:any)'] = 'c_validate/delete_team/$1';
 $route['adm/team/details/(:any)'] = 'c_validate/get_team_details/$1';

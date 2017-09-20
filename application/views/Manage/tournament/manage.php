@@ -28,17 +28,31 @@
             <th>Tournament Name</th>
             <th>Registration Date</th>
             <th>Tournament Date</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
           </thead>
           <tbody>
-          <?php foreach($tournament as $row) { 
+          <?php foreach($tournament as $row) {
+          if($row->status==0)
+          {
+            $status = '<td><center><span class="label label-success">Running</span></center></td>';
+          } 
+          elseif($row->status==1)
+          {
+            $status = '<td><center><span class="label label-warning">Registration OFF</span></center></td>';
+          }
+          elseif($row->status==2)
+          {
+            $status = '<td><center><span class="label label-danger">Ended</span></center></td>';
+          }
           echo 
             '<tr>
               <td>'.$row->tournament_id.'</td>
               <td>'.$row->tournament_name.'</td>
               <td>'.date('d/M/Y',$row->registration_start).' - '.date('d/M/Y',$row->registration_end).'</td>
               <td>'.date('d/M/Y',$row->tournament_start).' - '.date('d/M/Y',$row->tournament_end).'</td>
+              '.$status.'
               <td><center>
                 <a href="'.site_url("adm/tournament/get_details/".$row->tournament_id).'" data-toggle="tooltip" data-placement="left" data-target="#show_details" class="modal_details btn btn-xs btn-info" title="Details">&nbsp;<i class="fa fa-info"></i>&nbsp;</a> 
                 <a href="'.site_url("adm/tournament/edit/".$row->tournament_id).'" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>

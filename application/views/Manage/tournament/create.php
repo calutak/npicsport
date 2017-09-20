@@ -51,11 +51,11 @@
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team / Faculty</label>
-			<input type="text" name="max_team_fac" class="form-control col-xs-2" placeholder="Max Team Faculty">
+			<input type="text" id="mtfc" name="max_team_fac" class="form-control col-xs-2" placeholder="Max Team Faculty">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team</label>
-			<input type="text" name="max_team" class="form-control col-xs-2" placeholder="Max Team">
+			<input type="text" id="mt" name="max_team" class="form-control col-xs-2" placeholder="Max Team">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Member</label>
@@ -96,5 +96,10 @@ $('#reservation2').daterangepicker({
     "endDate": "08/30/2017"
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+});
+$('#mtfc').change(function() {
+	var n = parseInt($('#mtfc').val());
+	var total = n * 9;
+	$('#mt').val(total);
 });
 </script>

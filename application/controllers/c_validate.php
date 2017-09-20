@@ -28,7 +28,14 @@ class C_validate extends CI_Controller
 
 	public function form_team_register()
 	{
+		$this->data['tournament'] = $this->m_tournament->filterstatusTournament(0);
 		$this->template->load('Manage/template', 'Manage/validate/add_team', $this->data);
+	}
+
+	public function form_add_member($mid)
+	{
+		$this->data['mid'] = $mid;
+		$this->template->load('Manage/template', 'Manage/validate/add_team_member', $this->data);
 	}
 
 	public function manage_team() 
@@ -37,77 +44,77 @@ class C_validate extends CI_Controller
 		$this->template->load('Manage/template', 'Manage/validate/validate_team', $this->data);
 	}
 
-	public function upload_image()
-	{
-		$upload_path 					= 'assets/uploads/TeamBanner/';
-		$config['upload_path']          = './'.$upload_path;
-        $config['allowed_types']        = 'gif|jpg|png';
-        $config['max_size']             = 0;
-        $config['max_filename']			= 255;
-	    $config['file_name'] 			= $_FILES['tBanner']['name'];
-	    $image_data = array();
-	    $is_file_error = FALSE;
+	// public function upload_image()
+	// {
+	// 	$upload_path 					= 'assets/uploads/TeamBanner/';
+	// 	$config['upload_path']          = './'.$upload_path;
+ //        $config['allowed_types']        = 'gif|jpg|png';
+ //        $config['max_size']             = 0;
+ //        $config['max_filename']			= 255;
+	//     $config['file_name'] 			= $_FILES['tBanner']['name'];
+	//     $image_data = array();
+	//     $is_file_error = FALSE;
 
-	    if($_FILES) 
-	    {
-	    	$is_file_error = TRUE;
-	    	//$this->handle_error('Select an Image file');
-	    }
-	    if($is_file_error) 
-	    {
-	        $this->load->library('upload', $config);
-	        $this->upload->initialize($config);
-		    if(!$this->upload->do_upload('tBanner'))
-		    {
-		    	//$this->handle_error($this->upload->display_errors());
-                $is_file_error = TRUE;
-		    }
-		    else
-		    {
-		    	$image_data = $this->upload->data();
-		    	$config['image_library'] = 'gd2';
-                $config['source_image'] = $image_data['full_path']; //get original image
-                $config['maintain_ratio'] = TRUE;
-                $config['width'] = 150;
-                $config['height'] = 100;
-                $this->load->library('image_lib', $config);
-                if (!$this->image_lib->resize()) {
+	//     if($_FILES) 
+	//     {
+	//     	$is_file_error = TRUE;
+	//     	//$this->handle_error('Select an Image file');
+	//     }
+	//     if($is_file_error) 
+	//     {
+	//         $this->load->library('upload', $config);
+	//         $this->upload->initialize($config);
+	// 	    if(!$this->upload->do_upload('tBanner'))
+	// 	    {
+	// 	    	//$this->handle_error($this->upload->display_errors());
+ //                $is_file_error = TRUE;
+	// 	    }
+	// 	    else
+	// 	    {
+	// 	    	$image_data = $this->upload->data();
+	// 	    	$config['image_library'] = 'gd2';
+ //                $config['source_image'] = $image_data['full_path']; //get original image
+ //                $config['maintain_ratio'] = TRUE;
+ //                $config['width'] = 150;
+ //                $config['height'] = 100;
+ //                $this->load->library('image_lib', $config);
+ //                if (!$this->image_lib->resize()) {
 
-                } 
-		    }
-	    }
-        if ($is_file_error) {
-            if ($image_data) {
-                $file = $image_data['file_name'];
-                if (file_exists($file)) {
-                    unlink($file);
-                }
-            }
-        } else {
-            $file = $image_data['file_name'];
-        }
-        $picture_data['name'] = $file;
-     	$picture_data['path'] = $upload_path;  
-        return $picture_data;
-	}
+ //                } 
+	// 	    }
+	//     }
+ //        if ($is_file_error) {
+ //            if ($image_data) {
+ //                $file = $image_data['file_name'];
+ //                if (file_exists($file)) {
+ //                    unlink($file);
+ //                }
+ //            }
+ //        } else {
+ //            $file = $image_data['file_name'];
+ //        }
+ //        $picture_data['name'] = $file;
+ //     	$picture_data['path'] = $upload_path;  
+ //        return $picture_data;
+	// }
 
 	public function do_register()
 	{
-		$picture = array();
+		// $picture = array();
 
 		// seting rules for input field //
 		$this->form_validation->set_error_delimiters('<div class=\'form-group has-error\'><span class=\'help-block\'>', '</span></div>');
 		$this->form_validation->set_rules('trName', 'Tournament Name', 'required', array('required' => 'You must select {field}'));
-		$this->form_validation->set_rules('tName', 'Team Name', 'required|min_length[2]|max_length[30]');
+		$this->form_validation->set_rules('tName', 'Team Name', 'required|min_length[2]|max_length[30]|callback__check_name');
 		$this->form_validation->set_rules('tEmail', 'Team Email', 'required|valid_email|min_length[2]|max_length[30]');
-		if(empty($_FILES))
-		{
-			$this->form_validation->set_rules('tBanner', 'Team Banner', 'required|min_length[2]|max_length[350]');
-		}
-		$this->form_validation->set_rules('tFaculty', 'Faculty', 'required|min_length[2]|max_length[30]');
-		$this->form_validation->set_rules('tMajor', 'Major', 'required|min_length[2]|max_length[30]');
+		// if(empty($_FILES))
+		// {
+		// 	$this->form_validation->set_rules('tBanner', 'Team Banner', 'required|min_length[2]|max_length[350]');
+		// }
+		// $this->form_validation->set_rules('tFaculty', 'Faculty', 'required|min_length[2]|max_length[30]');
+		$this->form_validation->set_rules('tMajor', 'Major', 'required|callback___check_max_major');
 		$this->form_validation->set_rules('tYear', 'Year', 'required|max_length[1]|numeric');
-		$this->form_validation->set_rules('tnMember', 'Total Team Member', 'required|max_length[2]|numeric');
+		$this->form_validation->set_rules('tnMember', 'Total Team Member', 'required|max_length[2]|numeric|callback__check_max_member');
 		// end rules set //
 
 		// $tName = $this->check_name($this->input->post('tName'), $this->input->post('trName'));
@@ -121,52 +128,43 @@ class C_validate extends CI_Controller
 			$tName = $this->input->post('tName');
 			$trId = $this->input->post('trName');
 			$tEmail = $this->input->post('tEmail');
-			$tFaculty = $this->input->post('tFaculty');
 			$tMajor = $this->input->post('tMajor');
 			$tYear = $this->input->post('tYear');
 			$tnMember = $this->input->post('tnMember');
 			$tId = $this->m_team->get_max_id($trId)->ti;
 			
-			if($this->check_name($tName, $trId) == TRUE)
+			if(empty($tId))
 			{
-				if(empty($tId))
-				{
-					$tId = '0001';
-				}
-				else
-				{
-					$tId = $this->t_helper->autonumber_id(substr($this->m_team->get_max_id($trId)->ti, 11));
-				}
-				$picture = $this->upload_image();
-				$data_team = array(
-					'team_id' => $trId.'TE'.$tId,
-					'team_name' => $tName,
-					'tournament_id' => $trId,
-					'team_email' => $tEmail,
-					'faculty' => $tFaculty,
-					'major' => $tMajor,
-					'year' => $tYear,
-					'team_banner' => $picture['path'].$picture['name']
-				);
-				$setting = array(
-					'team_id' => $trId.'TE'.$tId,
-					'num_member' => $tnMember
-				);
-				if($this->db->insert('tb_team', $data_team) && $this->db->insert('tb_team_settings', $setting))
-				{
-					$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Added team!</div>');
-					redirect(site_url('adm/manage/team'));		
-				}
-				else
-				{
-					$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>There is an input error!</div>');
-					redirect(site_url('adm/manage/team'));
-				}		
+				$tId = '0001';
 			}
 			else
 			{
-				$this->template->load('Manage/template', 'Manage/validate/add_team', $this->data);
+				$tId = $this->t_helper->autonumber_id(substr($this->m_team->get_max_id($trId)->ti, 11));
 			}
+			// $picture = $this->upload_image();
+			$data_team = array(
+				'team_id' => $trId.'TE'.$tId,
+				'team_name' => $tName,
+				'tournament_id' => $trId,
+				'team_email' => $tEmail,
+				'major' => $tMajor,
+				'year' => $tYear
+				// 'team_banner' => $picture['path'].$picture['name']
+			);
+			$setting = array(
+				'team_id' => $trId.'TE'.$tId,
+				'num_member' => $tnMember
+			);
+			if($this->db->insert('tb_team', $data_team) && $this->db->insert('tb_team_settings', $setting))
+			{
+				$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Added team!</div>'); 
+				redirect(site_url('adm/team/add/'.$trId.'TE'.$tId.'/member'));		
+			}
+			else
+			{
+				$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>There is an input error!</div>');
+				redirect(site_url('adm/manage/team'));
+			}		
 		}
 	}
 	//next work
@@ -185,18 +183,6 @@ class C_validate extends CI_Controller
 		return $this->m_team->create_user_pass($userName, $randPasswd, $id);
 	}
 
-	public function check_name($tName, $tId)
-	{
-		$check = $this->m_team->check_name($tName, $tId);
-		if($check > 0)
-		{
-			return FALSE;
-		}
-		else 
-		{
-			return TRUE;
-		}
-	}
 	// Next work for register team modul
 	public function send_mail_to_user($id)
 	{
@@ -219,7 +205,7 @@ class C_validate extends CI_Controller
 		}
 		else
 		{
-			return $this->m_team->rejected_team($id);
+			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>No changes!</div>');
 		}
 	}
 
@@ -228,6 +214,57 @@ class C_validate extends CI_Controller
 		$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data '.$id.' deleted!</div>');
 		$this->db->where('team_id', $id)->delete('tb_team');
 		redirect('adm/manage/team');
+	}
+
+	// Callback 
+
+	public function __check_max_major($str)
+	{
+		$tId = $this->input->post('trName');
+		$maxMajor = $this->m_tournament->get_setting_byID($tId);
+		$fieldCount = $this->m_team->count_major($str, $tId);
+
+		if($fieldCount<$maxMajor->max_team_faculty)
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('__check_max_major', 'Team required for {field} already reach its limit!');
+			return FALSE;
+		}
+	}
+
+	public function _check_max_member($str)
+	{
+		$tId = $this->input->post('trName');
+		$max_member = $this->m_tournament->get_setting_byID($tId)->max_member;
+		$countMember = $this->input->post('tnMember');
+
+		if($countMember <= $max_member)
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('_check_max_member', '{field} has too many member!');
+			return FALSE;
+		}
+	}
+
+	public function _check_name($tName)
+	{
+		$tId = $this->input->post('trName');
+		$check = $this->m_team->check_name($tName, $tId);
+		if($check > 0)
+		{
+			$this->form_validation->set_message('_check_name',  $tName.' for {field} in this Tournament already taken!');
+			return FALSE;
+		}
+		else 
+		{
+			return TRUE;
+		}
 	}
 }
 ?>

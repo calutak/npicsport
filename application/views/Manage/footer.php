@@ -55,5 +55,19 @@
 <script src="<?php echo site_url('assets/fileinput.min.js'); ?>"></script>
 <script src="<?php echo site_url('assets/locales/LANG.js'); ?>"></script>
 <script src="<?php echo site_url('assets/plugins/fileInput/fa/theme.min.js'); ?>"></script>
+
+<script>
+	$(document).ready(function() {
+		var loc = window.location;
+		var path = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+		var basePath = loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - path.length));
+		setInterval(function() {
+			$.get(basePath+'check_date', {}, function() {
+
+			});
+		}, 20000);
+	});
+</script>
+
 </body>
 </html>

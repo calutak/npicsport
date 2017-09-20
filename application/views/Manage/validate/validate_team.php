@@ -115,7 +115,7 @@
         var d = JSON.parse(data);
         htmlData = '<div class=\'form-group\'><center><img src=\'../../'+d.team_banner+'\' alt=\'\' /></center></div><div class=\'form-group\'><label class=\'control-label\'>Team ID</label><input class=\'form-control\' type=\'text\' value=\''+d.team_id+'\' disabled></div>'+
         '<div class=\'form-group\'><label class=\'control-label\'>Team Email</label><input class=\'form-control\' type=\'text\' value=\''+d.team_email+'\' disabled></div>'+
-        '<div class=\'form-group\'><label class=\'control-label\'>Team Faculty</label><input class=\'form-control\' type=\'text\' value=\''+d.faculty+'\' disabled></div>'+
+        '<div class=\'form-group\'><label class=\'control-label\'>Team Faculty</label><input class=\'form-control\' type=\'text\' value=\''+d.major+'\' disabled></div>'+
         '<div class=\'form-group\'><label class=\'control-label\'>Team Year</label><input class=\'form-control\' type=\'text\' value=\''+d.year+'\' disabled></div>';
         team_detail.find('.modal-body').html(htmlData);
         $('#validating').click(function(e) {

@@ -34,4 +34,21 @@ class C_dashboard extends CI_Controller
 		$this->session->sess_destroy();
 		redirect(site_url('sysladm'));
 	}
+
+	public function check_regist_date()
+	{
+		$curdate = strtotime('now');
+		$tournament = $this->m_tournament->filterstatusTournament(0);
+		if(!empty($tournament))
+		{
+			foreach ($tournament as $t) 
+			{
+				if($t->registration_end <= $curdate)
+				{
+					$status = array('status'=>1);
+					return $this->m_tournament->update_status($status, $t->tournament_id);
+				}
+			}
+		}
+	}
 }

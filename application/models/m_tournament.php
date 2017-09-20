@@ -52,12 +52,23 @@ class M_tournament extends CI_Model
 	{
 		$cond = array(
 			'tournament_year'=>$year,
-			'status'=>1
+			'status'=>2
+		);
+		return $this->db->where($cond)->get('tb_tournament')->result_object();
+	}
+	public function filterstatusTournament($stat)
+	{
+		$cond = array(
+			'status'=>$stat
 		);
 		return $this->db->where($cond)->get('tb_tournament')->result_object();
 	}
 	public function get_tyear_list()
 	{
 		return $this->db->group_by('tournament_year')->get('tb_tournament')->result_object();
+	}
+	public function update_status($status, $id)
+	{
+		return $this->db->where('tournament_id', $id)->update('tb_tournament', $status);
 	}
 }

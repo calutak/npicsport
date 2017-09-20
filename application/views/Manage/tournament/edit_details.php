@@ -55,11 +55,11 @@
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team / Faculty</label>
-			<input type="text" name="max_team_fac" class="form-control col-xs-2" value="<?php echo $setting->max_team_faculty; ?>">
+			<input type="text" id="mtfc" name="max_team_fac" class="form-control col-xs-2" value="<?php echo $setting->max_team_faculty; ?>">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team</label>
-			<input type="text" name="max_team" class="form-control col-xs-2" value="<?php echo $setting->max_team; ?>">
+			<input type="text" id="mt" name="max_team" class="form-control col-xs-2" value="<?php echo $setting->max_team; ?>">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Member</label>
@@ -101,5 +101,10 @@ $('#reservation').daterangepicker({
 $('#reservation2').daterangepicker({
     "startDate": "<?php echo date('m/d/Y',$rowbyid->registration_start); ?>",
     "endDate": "<?php echo date('m/d/Y',$rowbyid->registration_end); ?>"
+});
+$('#mtfc').change(function() {
+	var n = parseInt($('#mtfc').val());
+	var total = n * 9;
+	$('#mt').val(total);
 });
 </script>

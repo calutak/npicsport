@@ -21,6 +21,17 @@
     <div class="box-body">
         <?php
           echo form_open_multipart(site_url('adm/team/new/add'));
+          $majorList = array(
+            'AE' => 'Automobile Engineering',
+            'CAD' => 'CAD/CAM (High Diploma Degree)',
+            'CE' => 'Civil Engineering',
+            'CA' => 'Culinary Arts',
+            'ELC' => 'Electronic Engineering',
+            'ELE' => 'Electrical Engineering',
+            'CS' => 'Computer Science',
+            'GME' => 'General Mechanical Engineering',
+            'TH' => 'Tourism and Hospitality'
+          );
           foreach ($tournament as $key) {
             $tournament_list[$key->tournament_id] = $key->tournament_name;
           }
@@ -36,22 +47,12 @@
           echo form_input('tEmail', set_value('tEmail'), 'placeholder=\'Team Email\' class=\'form-control\'');
           echo form_error('tEmail');
           echo '</div>';
-          echo '<div class=\'form-group col-sm-4\'>';
-          echo form_label('Team Banner', 'tBanner');
-          echo form_upload('tBanner', '', 'placeholder=\'Banner for Team\' class=\'form-control\'');
-          echo form_error('tBanner');
-          echo '</div>';
           echo '</div>';
 
           echo '<div class=\'form-group col-sm-12\'>';
-          echo '<div class=\'form-group col-sm-3\'>';
-          echo form_label('Faculty', 'tFaculty');
-          echo form_input('tFaculty', set_value('tFaculty'), 'placeholder=\'Faculty\' class=\'form-control\'');
-          echo form_error('tFaculty');
-          echo '</div>';
-          echo '<div class=\'form-group col-sm-3\'>';
+          echo '<div class=\'form-group col-sm-4\'>';
           echo form_label('Major', 'tMajor');
-          echo form_input('tMajor', set_value('tMajor'), 'placeholder=\'Major\' class=\'form-control\'');
+          echo form_dropdown('tMajor', $majorList, 'AE', 'class=\'form-control\' select2');
           echo form_error('tMajor');
           echo '</div>';
           echo '<div class=\'form-group col-sm-2\'>';

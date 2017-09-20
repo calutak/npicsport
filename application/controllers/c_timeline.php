@@ -95,7 +95,7 @@ class C_timeline extends CI_Controller
         $config['allowed_types']        = 'gif|jpg|png';
         $config['max_size']             = 0;
         $config['max_filename']			= 255;
-	    $config['file_name'] 			= $_FILES['thumbnailpost']['name'];
+	    $config['file_name'] 			= $_FILES['name'];
 	    $image_data = array();
 	    $is_file_error = FALSE;
 
