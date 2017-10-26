@@ -21,13 +21,12 @@
         <?php
             echo anchor(site_url('adm/schedule/clear/'.$tid),'Erase Schedule','class=\'btn btn-danger delete\'');
         ?>
-        <!-- <button data-toggle="modal" data-target="#setting" class="btn btn-default"><i class="fa fa-gear"></i></button> &nbsp; -->
         </div>
       </div>
       <div class="box-body">
           <!-- <div class="col-xs-9"> -->
-          <div class="box no-border box-list">
-              <div class="box-body table-responsive no-padding">
+          <div class="box no-border">
+              <div class="box-body table-responsive no-padding" id="box-list" >
                 <table class="table table-hover no-border">
                 <?php
                 foreach ($list_match as $matches) 
@@ -51,7 +50,7 @@
                   <tr class="bg-gray color-palette">
                     <td class="pull-left"><?php echo $matches->loc; ?></td>
                     <td><?php echo date('h:i A', $matches->times); ?></td>
-                    <td class="pull-right"><a class="bg-gray" id="edit" data-toggle="tooltip" data-placement="left" title="Edit Schedule" href="<?php echo site_url('adm/schedule/edit/').$tid.'/'.$matches->mId; ?>"><i class="fa fa-edit"></i></a></td>
+                    <td class="pull-right"><a class="bg-gray edit" id="<?php echo $matches->tId.'-'.$matches->mId.'-'.$matches->sId; ?>" data-toggle="tooltip" data-placement="left" title="Edit Schedule" href="<?php echo site_url('adm/schedule/edit')?>"><i class="fa fa-edit"></i> Edit</a></td>
                   </tr>
                   <tr>
                     <?php
@@ -77,18 +76,6 @@
               <!-- /.box-body -->
             </div>
             <!-- /.box -->
-          <!-- </div> -->
-          <!-- <div class="col-xs-3">
-          <div class="box-list pull-right">
-          <h4>List Uncsheduled Dates & Times</h4>
-          <?php
-              // foreach ($list_schedule as $schedule) 
-              // {
-              //     echo date('h:i A', $schedule->schedule_time).' - '.date('d/M/Y', $schedule->schedule_date).'<br>';
-              // }
-          ?>
-          </div>
-          </div> -->
       </div>
       <div class="box-footer with-border">
       </div>
@@ -97,19 +84,15 @@
 
 <!-- MODAL Section -->
 <!-- Edit Modal -->
-<div class="modal modal-default fade" id="edit_schedule">
+<div class="modal modal-default fade" id="edit_schedule" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
           <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Edit Schedule For Match ID</h3>
       </div>
-      <?php echo form_open(); ?>
-      <div class="modal-body">
-        <?php $json = json_decode('detail_match', true); var_dump($json); ?>
+      <div class="modal_container">
       </div>
-      <div class="modal-footer"></div>
-      <?php echo form_close(); ?>
     </div>
   </div>
 </div>
@@ -139,80 +122,61 @@
           }
         });
     });
-    $('#edit').click(function(e) {
+    $('#box-list').slimScroll({
+      height: '400px'
+    });
+    $('.edit').click(function(e) {
       e.preventDefault();
       var url = $(this).attr('href');
-      $.get(url, function(data) {
-        var d = JSON.parse(data);
-        var dm = d['detail_match'];
-        var body = $('.modal-body');
-        var foot = $('.modal-footer');
-        // body.append('<input type=\'hidden\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\'>');
-        // body.append('<label for=\'m_id\'>Match ID</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
-        // body.append('<label for=\'m_id\'>Match Dates</label><input type=\'text\' value=\''+dm.match_id+'\' name=\'m_id\' class=\'form-control\' disabled>');
-        
-        // //footer section //
-        // foot.append('<button type=\'cancel\' class=\'btn btn-default pull-left\' data-dismiss=\'modal\'>Cancel</button>');
-        // foot.append('<button type=\'submit\' class=\'btn btn-warning pull-right\'>Update Schedule</button>');
-        $('#start_time').timepicker({
-          timeFormat: 'h:mm p',
-          interval: 60,
-          minTime: '8',
-          maxTime: '6:00pm',
-          startTime: '08:00',
-          dynamic: false,
-          dropdown: true,
-          scrollbar: true
-        }); 
-        $('#edit_schedule').modal().show();
+      var id = $(this).attr('id');
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+          id: id
+        },
+        success:function(data) {
+          var d = data.split('</form>');
+          $('.modal_container').html(d[0]+'</form>').promise().done(function(){     
+            $('#schedule-list').slimScroll({
+              height: '160px'
+            });
+            $('#dates').datepicker({
+              format: 'mm/dd/yyyy',
+              autoclose: true,
+              startDate: $("#sDate").val(),
+              endDate: $("#eDate").val()
+            });
+            $('#times').timepicker({
+              timeFormat: 'h:i A',
+              minTime: '08:00 AM',
+              maxTime: '05:00 PM',
+              scrollbar: true
+            }).on("change", function() {
+              $.post('<?php echo site_url('adm/schedule/check_date'); ?>',
+                {
+                  tid:'<?php echo $tid; ?>',
+                  date: $('#dates').val(),
+                  time: $(this).val()
+                },function(data){
+                  var stat = JSON.parse(data);
+                  console.log(stat);
+                  if(stat.response)
+                  {
+                    $('#error_time').show();
+                  }
+                  else 
+                  {
+                    $('#error_time').hide();
+                  } 
+                });
+            });
+            $('.date_err').hide();
+            $('.time_err').hide();
+            $("#edit_schedule").modal("show");
+          });
+        }
       });
     });
   });
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Setting Modal -->
-<div class="modal modal-default fade" id="setting">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          <h3 class="box-title"><i class="fa fa-gear"></i>&nbsp; Tournament Setting</h3>
-      </div>
-      <div class="modal-body">
-        <?php 
-            echo 
-            form_open()
-            .form_label('Bracket Size', 'bracket_size')
-            .form_input('bracket_size', '', 'class=\'form-control\''); 
-        ?>
-      </div>
-      <div class="modal-footer">
-        <?php
-            echo 
-            form_button('cancel','Cancel','class=\'btn btn-default pull-left\' data-dismiss=\'modal\'')
-            .form_submit('set_setting','Set','class=\'btn btn-default pull-right\'') 
-            .form_close(); 
-        ?>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Setting Modal -->

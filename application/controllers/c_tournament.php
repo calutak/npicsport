@@ -22,6 +22,7 @@ class C_tournament extends CI_Controller
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tmax'] = $this->m_tournament->get_max_id();
 		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['ddropdown'] = $this->m_tournament->load_dropdown_dlist();
 		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
 		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
 	}
@@ -41,29 +42,6 @@ class C_tournament extends CI_Controller
 	public function manage()
 	{
 		$this->template->load('Manage/template', 'Manage/tournament/manage', $this->data);
-	}
-
-	public function show_history()
-	{
-		$this->data['yearlist'] = $this->m_tournament->get_tyear_list();
-		$this->template->load('Manage/template', 'Manage/tournament/history', $this->data);
-	}
-
-	public function find_tournament_year()
-	{
-		$year = $this->input->post('year');
-		$history = $this->m_tournament->filteryearTournament($year);
-		if(!empty($history))
-		{
-			echo json_encode($history);
-		}
-		else
-		{
-			$history['year'] = $year;
-			$history['status'] = 'nodata';
-			echo json_encode($history);
-		}
-		exit;
 	}
 
 	public function get_details($id)
@@ -142,10 +120,7 @@ class C_tournament extends CI_Controller
 		if($this->m_tournament->delete_row($id))
 		{
 			$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data deleted!</div>');
-			if ($this->m_schedule->get_row_schedule() == 0) 
-			{
-				$this->m_schedule->clear_table();
-			}
+			$this->m_schedule->clear_schedule($id);
 			redirect(site_url('adm/tournament/manage'));
 		}
 	}
@@ -167,6 +142,7 @@ class C_tournament extends CI_Controller
 				'tournament_year' => date('Y', $t_enddate),
 				'registration_start' => $r_startdate,
 				'registration_end' => $r_enddate,
+				'status' => 0,
 				'type' => $this->input->post('select2')
 			);
 		$data_setting = array(
@@ -181,6 +157,23 @@ class C_tournament extends CI_Controller
 			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data has been updated!</div>');
 			redirect(site_url('adm/tournament/manage'));
 		}
+	}
+
+	public function clear_tournament_data()
+	{
+		if(!empty($_POST['sel']))
+		{
+			for ($i=0; $i < count($_POST['sel']); $i++) { 
+				$this->m_tournament->delete_row($_POST['sel'][$i]);
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('response','<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>No Data Selected!</div>');
+			redirect(site_url('adm/tournament/manage'));
+		}
+		$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data deleted!</div>');
+		redirect(site_url('adm/tournament/manage'));
 	}
 }
 ?>

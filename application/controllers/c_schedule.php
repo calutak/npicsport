@@ -26,77 +26,58 @@ class C_schedule extends CI_Controller
 		$this->data['tnumrows'] = $this->m_tournament->get_row_tournament();
 		$this->data['schedule'] = $this->m_schedule->get_row_schedule();
 		$this->data['tdropdown'] = $this->m_tournament->load_dropdown_tlist();
+		$this->data['ddropdown'] = $this->m_tournament->load_dropdown_dlist();
 		$this->data['mdropdown'] = $this->m_tournament->load_dropdown_mlist();
 		$this->data['mtour'] = $this->m_tournament->load_match_tournament();
 		$this->data['team_count'] = $this->m_schedule->get_team_count($this->t_helper->get_tid());
 	}
 
-	public function form_manage()
+	public function find_schedule()
 	{
-		$this->data['tid'] = $this->t_helper->get_tid();
-		$this->data['list_schedule'] = $this->m_schedule->get_filtered_schedule($this->input->post('select2'));
-		$this->data['list_match'] = $this->m_match->show_match_list($this->input->post('select2'));
+		$dataPost = $this->input->post();
+		$json['id'] = $dataPost['tournamentid'];
+		$json['url'] = site_url('adm/schedule/manage/').$dataPost['tournamentid'];
+		echo json_encode($json);
+		exit;
+	}
+
+	public function find_tournament()
+	{
+		$dataPost = $this->input->post();
+		$json['id'] = $dataPost['tournamentid'];
+		if($this->m_match->mlist_count($json['id']) <= 0)
+		{
+			$this->session->set_flashdata('response','<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>You need to did the drawing Team First!</div>');
+			$json['url'] = site_url('adm/drawing');
+		}
+		else
+		{
+			$json['url'] = site_url('adm/schedule/create/').$dataPost['tournamentid'];
+		}
+		echo json_encode($json);
+		exit;
+	}
+
+	public function form_manage($tournamentid)
+	{
+		$this->data['tid'] = $tournamentid;
+		$this->data['list_match'] = $this->m_match->show_match_list($tournamentid);
+		$this->data['team_count'] = $this->m_schedule->get_team_count($tournamentid);
 		$this->template->load('Manage/template', 'Manage/schedule/manage_sch', $this->data);
 	}
 
-	public function form_create()
+	public function form_create($tid)
 	{
-		$this->data['tid'] = $this->t_helper->get_tid();
-		if($this->m_match->mlist_count($this->data['tid']) > 0)
-		{
-			return $this->form_manage();
-		}
-		else
-		{		
-			$this->data['row_tournament'] = $this->m_tournament->get_row_byID($this->input->post('select2'));
-			$this->data['registered_team'] = $this->m_schedule->get_team_name($this->t_helper->get_tid());
-			$this->data['setting'] = $this->m_tournament->get_setting_byID($this->input->post('select2'));
-			$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
-		}
+		$this->data['tid'] = $tid;
+		$this->data['row_tournament'] = $this->m_tournament->get_row_byID($tid);
+		$this->data['match'] = $this->m_match->get_match_data($tid,1);
+		$this->data['setting'] = $this->m_tournament->get_setting_byID($tid);
+		$this->data['team_count'] = $this->m_schedule->get_team_count($tid);
+		$this->template->load('Manage/template', 'Manage/schedule/sched_create',$this->data);
 	}
 
-	public function getBracket($nteam) 
+	public function createSchedule($tid, &$i)
 	{
-		$p = range(1, $nteam);
-		$pCount = count($p);
-
-		$this->t_helper->set_rounds(ceil(log($pCount)/log(2)));
-		$this->t_helper->set_bracket_size(pow(2, $this->t_helper->get_rounds()));
-		$this->t_helper->set_num_byes($this->t_helper->get_bracket_size() - $pCount);
-		$this->m_schedule->add_setting($this->t_helper->get_rounds(), $this->t_helper->get_bracket_size(), $this->input->post('tournament_id'));
-		if($pCount < 2) 
-		{
-			return array();
-		}
-		
-		$matches = array(array(1,2));
-		$s=0;
-		for($r = 1; $r < $this->t_helper->get_rounds(); $r++)
-		{
-			$roundMatches = array();
-			$sum = pow(2, ($r+1)) + 1;
-			foreach ($matches as $match) 
-			{
-				$home = $this->changeIntoBye($match[0], $pCount);
-	            $away = $this->changeIntoBye($sum - $match[0], $pCount);
-	            $roundMatches[] = array($home, $away);
-	            $home = $this->changeIntoBye($sum - $match[1], $pCount);
-	            $away = $this->changeIntoBye($match[1], $pCount);
-	            $roundMatches[] = array($home, $away);
-			}
-			$matches = $roundMatches;
-		}
-		return $matches;
-	}
-
-	function changeIntoBye($seed, $pCount)
-	{ 
-	    return $seed <= $pCount ?  $seed : null;
-	}
-
-	public function getSchedule()
-	{
-		$tid = $this->input->post('tournament_id');
 		$loc = $this->input->post('venue');
 		$t_start = $this->input->post('start_tour');
 		$t_end = $this->input->post('end_tour');
@@ -122,7 +103,6 @@ class C_schedule extends CI_Controller
 						$time = $start;
 						while ($time < $end) {
 							$this->m_schedule->insert_schedule($t_start, $time, $tid);
-							$arrDate[$i] = date('h:i A', $time).'&'.date('d/M/Y', $t_start);
 							$time = strtotime('+'.$tot_gap.' minutes', $time);
 							$i++;
 						}
@@ -135,7 +115,6 @@ class C_schedule extends CI_Controller
 				'venue' => $loc
 				);
 			$this->db->where('tournament_id',$tid)->update('tb_settings', $dataSetting);
-			return $arrDate;
 		} 
 		else
 		{
@@ -143,228 +122,111 @@ class C_schedule extends CI_Controller
 		}
 	}
 
-	public function create_match()
+	public function append_schedule($tid)
 	{
-		$tid = $this->input->post('tournament_id');
-		$participant = $this->input->post('team_count');
-		$arrTeam = $this->m_schedule->get_team_name($tid);
-		$randTeam = array();
-		foreach ($arrTeam as $data_team) {
-			$randTeam[] = $data_team->team_name;
-		}
-		//shuffle team for tournament
-		shuffle($randTeam);
-		//chunk array to get exact number of group bracket
-		$matches = array_chunk($this->getBracket($participant),2);
-		//define first schedule id
-		$index_date = $this->m_schedule->get_row_schedule();
-		if($index_date!=0)
-		{
-			$sid = $this->m_schedule->get_max_id_schedule($tid);
-		}
-		else
-		{
-			$sid = 0;
-		}
-		//end define first schedule ID
-		$sch_date = $this->getSchedule();
 		//get total round for tournament
 		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
-		//get match order
-		if($this->m_match->get_1st_match_count($tid)==0)
+		//set sid
+		$index_date = $this->m_schedule->get_row_schedule();
+		$this->createSchedule($tid, $i);
+		if($index_date!=0)
 		{
-			$max_order = 0;
+			$sid = $this->m_schedule->get_min_id_schedule($tid);
 		}
 		else
 		{
-			$max_order = $this->m_match->get_max_order_group($tid);
+			$sid = 1;
 		}
-		//looping to create empty bracket
-		for ($rnd=1; $rnd <= $max_round; $rnd++) 
-		{ 
-			$y=0;
-			for ($i=0; $i < count($matches); $i++) 
+		for ($rnd=1; $rnd <= $max_round+1; $rnd++) { 
+			$matches = $this->m_match->get_match_data($tid,$rnd);
+			foreach ($matches as $m) 
 			{
-				for($j=0; $j < count($matches[$i]); $j++) 
-				{
-					if($rnd==1)
-					{
-						if(empty($matches[$i][$j][0]) || empty($matches[$i][$j][1]))
-						{
-							if(empty($matches[$i][$j][0]))
-							{
-								$randTeam[$matches[$i][$j][0]-1] = 'byes';
-								$winner = array('winner' => $randTeam[$matches[$i][$j][1]-1]);
-								$this->winArr[$y] = $randTeam[$matches[$i][$j][1]-1];
-							}
-							if(empty($matches[$i][$j][1]))
-							{
-								$randTeam[$matches[$i][$j][1]-1] = 'byes';
-								$winner = array('winner' => $randTeam[$matches[$i][$j][0]-1]);
-								$this->winArr[$y] = $randTeam[$matches[$i][$j][0]-1];
-							}
-							$dataTemp = array(
-								'team_a' => $randTeam[$matches[$i][$j][0]-1],
-								'team_b' => $randTeam[$matches[$i][$j][1]-1],
-								'match_score' => '0v0',
-								'match_status' => 0,
-								'match_order' => $max_order,
-								'round' => $rnd,
-								'result' => 4,
-								'tournament_id' => $tid
-							);
-							$data = array_merge($dataTemp,$winner);
-						}
-						else
-						{
-							$sid++;
-							$data = array(
-								'team_a' => $randTeam[$matches[$i][$j][0]-1],
-								'team_b' => $randTeam[$matches[$i][$j][1]-1],
-								'winner' => '',
-								'match_score' => '0v0',
-								'match_status' => 0,
-								'match_order' => $max_order,
-								'round' => $rnd,
-								'result' => 0,
-								'schedule_id' => $sid,
-								'tournament_id' => $tid
-							);
-							$this->winArr[$y] = '';
-						}	
-						$y++;
-					} 
-					else
-					{
-						$data = array(
-							'team_a' => '',
-							'team_b' => '',
-							'winner' => '',
-							'match_score' => '0v0',
-							'match_status' => 0,
-							'match_order' => $max_order,
-							'round' => $rnd,
-							'result' => 0,
-							'tournament_id' => $tid
-						);
-					}
-					$this->db->insert('tb_match', $data);
-				}
-				$max_order++;
-			}
-			$matches = array_chunk($matches, 2);
+				$this->m_schedule->append_schedule($m['match_id'], $sid);
+				$sid++;
+			}	
 		}
-		$this->update_bracket($tid);
-		redirect('adm');
+		$status = array('status'=>3);
+		$this->m_tournament->update_status($status, $tid);
+		redirect(site_url('adm'));
 	}
 
 	public function clear_schedule($tid)
 	{
 		$this->m_match->clear_match_data($tid);
-		$this->m_schedule->clear_table();
+		$this->m_schedule->clear_schedule($tid);
+		$status = array('status'=>1);
+		$this->m_tournament->update_status($status, $tid);
 		redirect('adm');
 	}
 
-	public function update_bracket($tid)
+	public function edit_schedule()
 	{
-		$min_order = $this->m_match->get_min_order_group($tid);
-		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
-		$winArr = array();
-		$sid = $this->m_match->get_max_id_schedule_match($tid)+3;
-		for ($rnd=1; $rnd <= $max_round; $rnd++) 
-		{
-			$y=1;
-			$matchesList = $this->m_match->get_match_data($tid, $rnd);
-			$matches = array();
-
-			foreach ($matchesList as $key) {
-				$matches[] = $key;
-			}
-			$matches = array_chunk($matches, 2);
-			$x=0;
-			for ($i=0; $i < count($matches); $i++) 
-			{
-				for($j=0; $j < count($matches[$i]); $j++) 
-				{
-					if($rnd == 1)
-					{
-						$winArr[$y-1] = $matches[$i][$j]['winner'];
-					}
-					elseif($rnd==($max_round - floor($max_round/2)))
-					{
-						$sid++;
-						$this->set_next_round_team($winArr[$x][0], 0, $matches[$i][$j]['match_id'], $sid);
-						$this->set_next_round_team($winArr[$x][1], 1, $matches[$i][$j]['match_id'], $sid);
-					}
-					$x++;
-					$y++;
-				}
-				$min_order++;
-			}
-			$winArr = array_chunk($winArr, 2);	
-		}
-		redirect('adm');
-	}
-
-	public function set_round_name($rnd, $count)
-	{
-		if($count > 7) 
-		{
-			return 'Round '.$rnd;
-		}
-		elseif($count > 3)
-		{
-			return 'Quarter Final';
-		}
-		elseif($count > 1)
-		{
-			return 'Semi Final';
-		}
-		else
-		{
-			return 'Final';
-		}
-	}
-
-	public function set_next_round_team($team, $j, $mid, $sid)
-	{
-		if($j == 0)
-		{
-			return $this->m_match->update_a($team, $mid, $sid);
-		}
-		elseif($j == 1)
-		{
-			return $this->m_match->update_b($team, $mid, $sid);
-		}
-	}
-
-	public function fill_bracket_team($tid)
-	{
-		$return = array();
-		$max_round = $this->m_tournament->get_setting_byID($tid)->round;
-		for ($rnd=1; $rnd <= $max_round; $rnd++) 
-		{
-			$matchesList = $this->m_match->get_match_data($tid, $rnd);
-			$matches = array();
-
-			foreach ($matchesList as $key) {
-				$matches[] = $key;
-			}
-			$return['team'][$rnd] = $matches;
-			$matches = array_chunk($matches, 2);
-		}
-		$this->session->set_userdata('isBracketCreated', true);
-
-		$return['round'] = $max_round;
-
-		$this->data['return'] = json_encode($return);
-		echo json_encode($return);
+		$dataAjax = array();
+		$fromAjax = explode('-', $this->input->post('id'));
+		$dataAjax['tid'] = $fromAjax[0];
+		$dataAjax['mid'] = $fromAjax[1];
+		$dataAjax['sid'] = $fromAjax[2];
+		$dataAjax['row_schedule'] = $this->m_schedule->get_schedule_byID($dataAjax['sid']);
+		$dataAjax['list_schedule'] = $this->m_schedule->get_filtered_schedule($dataAjax['tid']);
+		$dataAjax['data_tournament'] = $this->m_tournament->get_row_byID($dataAjax['tid']);
+		echo $this->load->view('ajax/modal_edit_schedule', $dataAjax, true);
+		// foreach ($this->m_schedule->get_schedule($dataAjax['tid']) as $key) {
+		// 	$temp[] = $key->schedule_time;
+		// }
+		// sort($temp);
+		// $res = array_unique($temp);
+		// foreach ($res as $key) {
+		// 	$result[] = date('h:i a', $key);
+		// }
+		// echo json_encode($result);
 		exit;
 	}
 
-	public function edit_schedule($tid, $mid)
+	public function update_schedule($sid, $mid, $tid)
 	{
-		echo json_encode($this->m_match->get_match_with_schedule($mid));
+		$data = array(
+			'schedule_date' => strtotime($this->input->post('date')),
+			'schedule_time' => strtotime($this->input->post('time'))
+		);
+		if($this->m_schedule->upd_schedule($sid, $data))
+		{
+			$this->session->set_flashdata('response','<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Data Member Updated!</div>');
+			redirect(site_url('adm/schedule/manage/').$tid);
+		}
+	}
+
+	public function date_time_check()
+	{
+		$datetime = array(
+			'schedule_date'=>strtotime($this->input->post('date')),
+			'schedule_time'=>strtotime($this->input->post('time'))
+		);
+		$tid = $this->input->post('tid');
+		$gap = $this->m_tournament->get_setting_byID($tid)->gap_per_game;
+		$gamedur = $this->m_tournament->get_setting_byID($tid)->game_duration;
+		$total = $gap+$gamedur;
+		$checkT = $this->m_schedule->schedule_check($datetime,$tid);
+		//query in between buat periksa jam supaya aman
+		//skip dulu bray, ini dri db nya
+		if($checkT>0)
+		{
+			$stat['response'] = true;
+		}
+		else
+		{
+			$checkD = $this->m_schedule->schedule_check($datetime,$tid);
+			if($checkT>0)
+			{
+				$stat['response'] = true;
+				$stat['datetime'] = $datetime;
+			}
+			else
+			{
+				$stat['response'] = false;
+				$stat['datetime'] = $datetime;
+			}
+		}
+		echo json_encode($stat);
 		exit;
 	}
 

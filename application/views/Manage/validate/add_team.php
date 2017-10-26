@@ -13,7 +13,11 @@
 
 <!-- Main content -->
 <section class="content">
-  <?php echo $this->session->flashdata('response'); ?>
+  <?php 
+    echo $this->session->flashdata('response'); 
+    if(!empty($tournament))
+    {
+  ?>
   <div class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title">Register Team</h3>
@@ -52,7 +56,7 @@
           echo '<div class=\'form-group col-sm-12\'>';
           echo '<div class=\'form-group col-sm-4\'>';
           echo form_label('Major', 'tMajor');
-          echo form_dropdown('tMajor', $majorList, 'AE', 'class=\'form-control\' select2');
+          echo form_dropdown('tMajor', $majorList, 'AE', 'class=\'form-control\'');
           echo form_error('tMajor');
           echo '</div>';
           echo '<div class=\'form-group col-sm-2\'>';
@@ -65,7 +69,7 @@
           echo '<div class=\'form-group col-sm-12\'>';
           echo '<div class=\'form-group col-sm-3\'>';
           echo form_label('Choose Tournament', 'trName');
-          echo form_dropdown('trName', $tournament_list, '', 'class=\'form-control select2\'');
+          echo form_dropdown('trName', $tournament_list, '', 'class=\'form-control\'');
           echo form_error('trName');
           echo '</div>';
           echo '<div class=\'form-group col-sm-2\'>';
@@ -83,6 +87,17 @@
     ?>
     </div>
   </div>
+  <?php 
+  }
+  else
+  { ?>
+  <div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title">No open tournament available!</h3>
+    </div>
+  </div>
+  <?php } ?>
   <!-- /.box -->
 </section>
 <!-- /.content -->
+

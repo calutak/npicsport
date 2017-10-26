@@ -7,13 +7,21 @@ class M_tournament extends CI_Model
 	{
 		return $this->db->get('tb_tournament')->result_object();
 	}
+	public function load_t_for_broadcast()
+	{
+		return $this->db->query('select t.tournament_id, t.tournament_name, count(team.team_id) as tcount, t.status from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id group by tournament_id having (tcount > 2) and t.status <> 5')->result_object();
+	}
 	public function load_dropdown_tlist()
 	{
-		return $this->db->query('select t.tournament_id, t.tournament_name from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id and (select count(team_id) as tcount from tb_team having tcount > 1) group by t.tournament_id')->result_object();
+		return $this->db->query('select t.tournament_id, t.tournament_name, count(team.team_id) as tcount, t.status from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id group by tournament_id having (tcount = 2 or tcount = 4 or tcount = 8 or tcount = 16 or tcount = 32) and t.status = 1')->result_object();
+	}
+	public function load_dropdown_dlist()
+	{
+		return $this->db->query('select t.tournament_id, t.tournament_name, count(team.team_id) as tcount, t.status from tb_tournament t join tb_team team on t.tournament_id = team.tournament_id group by tournament_id having (tcount = 2 or tcount = 4 or tcount = 8 or tcount = 16) and t.status = 2')->result_object();
 	}
 	public function load_dropdown_mlist()
 	{
-		return $this->db->query('select t.tournament_id, t.tournament_name from tb_tournament t join tb_match m on t.tournament_id = m.tournament_id and (select count(match_id) as tcount from tb_match having tcount > 0) group by t.tournament_id')->result_object();
+		return $this->db->query('select t.tournament_id, t.tournament_name, count(m.match_id) as mcount, t.status from tb_tournament t join tb_match m on t.tournament_id = m.tournament_id group by tournament_id having mcount > 0 and t.status >= 3 and t.status < 5')->result_object();
 	}
 	public function load_match_tournament()	
 	{

@@ -21,9 +21,11 @@
       <a href="<?php echo site_url('adm/tournament/create'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Create</a>
     </div>
     <div class="box-body">
+      <form id="tournament_data" method="post">
         <table id="catalog" class="table table-bordered table-striped">
           <thead>
           <tr>
+            <th><i class="fa fa-check"></i></th>
             <th>Tournament ID</th>
             <th>Tournament Name</th>
             <th>Registration Date</th>
@@ -36,18 +38,31 @@
           <?php foreach($tournament as $row) {
           if($row->status==0)
           {
-            $status = '<td><center><span class="label label-success">Running</span></center></td>';
+            $status = '<td><center><span class="label label-info">Registration Open</span></center></td>';
           } 
           elseif($row->status==1)
           {
-            $status = '<td><center><span class="label label-warning">Registration OFF</span></center></td>';
+            $status = '<td><center><span class="label label-success">Drawing Match</span></center></td>';
           }
           elseif($row->status==2)
+          {
+            $status = '<td><center><span class="label label-warning">Drawing End</span></center></td>';
+          }
+          elseif($row->status==3)
+          {
+            $status = '<td><center><span class="label label-info">Scheduled</span></center></td>';
+          }
+          elseif($row->status==4)
+          {
+            $status = '<td><center><span class="label label-success">Started</span></center></td>';
+          }
+          elseif($row->status==5)
           {
             $status = '<td><center><span class="label label-danger">Ended</span></center></td>';
           }
           echo 
             '<tr>
+              <td>'.form_checkbox('sel[]',$row->tournament_id,false).'</td>
               <td>'.$row->tournament_id.'</td>
               <td>'.$row->tournament_name.'</td>
               <td>'.date('d/M/Y',$row->registration_start).' - '.date('d/M/Y',$row->registration_end).'</td>
@@ -63,13 +78,15 @@
           ?>
           </tbody>
           <tfoot>
-            <!-- <tr>
-              <td colspan="4">
-                <a href="<?php //echo site_url('#'); ?>"><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i> Insert Data</button></a>
+            <tr>
+              <th>Extra</th>
+              <td>
+                <a href="<?php echo site_url('adm/tournament/multi_delete'); ?>" class="btn btn-danger multi_delete pull-right"><i class="fa fa-close"></i>&nbsp; Delete Selected</a>
               </td>
-            </tr> -->
+            </tr>
           </tfoot>
         </table>
+        </form>
       </div>
       <!-- /.box-body -->
     </div>
@@ -141,5 +158,31 @@
           }
         });
     });
+    $('.multi_delete').on("click", function(e) {
+      e.preventDefault();
+      var url = $(this).attr('href');
+      swal({
+          title: 'Delete selected data',
+          text: "Are you sure?",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, clear it!'
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            $('#tournament_data').prop('action', url);
+            $('#tournament_data').submit();
+            swal("Deleted!", "Tournament data has been deleted!", "success");
+            setTimeout(function(){ window.location.replace(url); }, 1000);
+          } else {
+            swal("Cancel", "No data deleted.", "error");
+          }
+        });
+    });
+    // setInterval(function(){
+    //    $( "#catalog" ).load("manage #catalog");
+    //    console.log('asdasd');
+    // }, 10000);
   });
 </script>

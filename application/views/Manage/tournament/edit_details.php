@@ -49,7 +49,7 @@
 		</div>
 		<div class="form-group col-xs-4">
 			<label>* Sport type</label>
-			<select name="select2" class="form-control select2">
+			<select name="select2" class="form-control">
 				<option value="Football (Soccer)" selected>Football (Soccer)</option>
 			</select>
 		</div>
@@ -59,7 +59,7 @@
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team</label>
-			<input type="text" id="mt" name="max_team" class="form-control col-xs-2" value="<?php echo $setting->max_team; ?>">
+			<input type="text" id="mt" name="max_team" class="form-control col-xs-2" value="<?php echo $setting->max_team; ?>" readonly>
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Member</label>
@@ -95,16 +95,26 @@
 
 <script>
 $('#reservation').daterangepicker({
+	"minDate": "<?php echo date('m/d/Y',$rowbyid->tournament_start); ?>",
     "startDate": "<?php echo date('m/d/Y',$rowbyid->tournament_start); ?>",
     "endDate": "<?php echo date('m/d/Y',$rowbyid->tournament_end); ?>"
 });
 $('#reservation2').daterangepicker({
+	"minDate": "<?php echo date('m/d/Y',$rowbyid->registration_start); ?>",
     "startDate": "<?php echo date('m/d/Y',$rowbyid->registration_start); ?>",
     "endDate": "<?php echo date('m/d/Y',$rowbyid->registration_end); ?>"
 });
 $('#mtfc').change(function() {
 	var n = parseInt($('#mtfc').val());
 	var total = n * 9;
+	if (total <= 9) 
+	{
+		total = 8;
+	} 
+	else
+	{
+		total = 16;
+	}
 	$('#mt').val(total);
 });
 </script>

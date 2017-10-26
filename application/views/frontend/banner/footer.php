@@ -1,60 +1,50 @@
 
-<footer class="main-footer styel-2">
+	<!-- Footer -->
+	<footer class="main-footer style-2">
 
 		<!-- Footer Columns -->
 		<div class="container">
 
 			<!-- Footer columns -->
-			<div class="theme-padding-top footer-column">
-				<div class="row">
-
+			<div class="footer-column border-0">
 					<!-- Footer Column -->
-					<div class="col-lg-3 col-xs-6 r-full-width">
+					<div class="col-sm-4 col-xs-6 r-full-width-2 r-full-width pull-right" style="text-align: right;">
 						<div class="column-widget h-white">
-							<h5>INFORMATION</h5>
-							<ul class="footer-links">
-								<li><a href="#">Home</a></li>
-								<li><a href="#">Contact</a></li>
-								<li><a href="#">About</a></li>
-								<li><a href="team.html">team</a></li>
-								<li><a href="#">Gallery</a></li>
-								<li><a href="#">News</a></li>
-								<li><a href="#">FAQS</a></li>
-								<li><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-					<!-- Footer Column -->
-
-					<!-- Footer Column -->
-					<div class="col-lg-3 col-xs-6 r-full-width">
-						<div class="column-widget h-white">
-							<h5>Contact us</h5>
-							<div class="address style-2 p-white">
-								<ul class="address-list">
-									<li><i class="fa fa-map-marker"></i>1782 Harrison Street  Sun Prairie, WI 53590</li>
-									<li><i class="fa fa-phone"></i>49 30 47373795</li>
-									<li><i class="fa fa-envelope"></i>moin@blindtextgenerator.de</li>
+							<div class="logo-column p-white">
+								<ul class="address-list style-2">
+									<li><span>Address:</span>Phum Prey Popel, SK. Somrong Krom, Khan Po Sen Chey, (Near Wat Pun Phnom), Phnom Penh 12000</li>
+									<li><span>Phone Number:</span>+855 239 615 193</li>
+									<li><span>Email Address:</span>npicsport@gmail.com</li>
+								</ul>
+								<span class="follow-us">follow us </span>
+								<ul class="social-icons pull-right">
+									<li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+									<li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a class="youtube" href="#"><i class="fa fa-youtube-play"></i></a></li>
+									<li><a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i></a></li>
+									<li><a class="tumblr" href="#"><i class="fa fa-tumblr"></i></a></li>
 								</ul>
 							</div>
 						</div>
 					</div>
 					<!-- Footer Column -->
-
-				</div>
 			</div>
+			<div class="clearfix"></div>
 			<!-- Footer columns -->
 
 		</div>
 		<!-- Footer Columns -->
 
 		<!-- Copy Rights -->
-		<div class="copy-rights style-2">
+		<div class="copy-rights">
 			<div class="container">
-				<p>© Copyright by <i class="red-color">FineLayers</i> All rights reserved.</p>
-				<a class="back-to-top scrollup" href="#">Back to Top<i class="fa fa-arrow-circle-up"></i></a>
+				<p>© Copyright by <i class="red-color">SuperSaiyaan</i> All rights reserved.</p>
+				<a class="back-to-top scrollup" href="#"><i class="fa fa-angle-up"></i></a>
 			</div>
 		</div>
 		<!-- Copy Rights -->
 
-	</footer>
+	</footer> 
+	<!-- Footer -->
+
+</div>

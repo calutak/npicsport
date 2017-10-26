@@ -19,7 +19,7 @@
 		<h3 class="box-title">Edit Timeline</h3>
 	</div>
 	<div class="box-body">
-		<form method="post" action="<?php echo site_url('adm/timeline/manage/save'); ?>" role="form">
+		<form method="post" action="<?php echo site_url('adm/timeline/manage/save'); ?>" role="form" enctype="multipart/form-data">
 		<div class="form-group col-md-12">
       <input type="hidden" name="id" value="<?php echo $tlrow->timeline_id; ?>">
     <div class="form-group">
@@ -28,20 +28,37 @@
     </div>
     <div class="form-group">
       <label>Label Post</label>
-      <select class="form-control select2" name="cat">
+      <select class="form-control" name="cat">
         <option value="news">News</option>
       </select>
       <label class="control-label">Select Thumbnail</label>
-      <input id="ths" name="thumbnailpost" type="file">
+      <input id="ths" name="thumbnailpost" type="file" required>
       <script>
         $(document).ready(function(){
           $("#ths").fileinput({
             showCaption: false, 
-            showUpload: false
+            showUpload: false,
+            defaultPreviewContent: '<img src="<?php echo site_url('assets/uploads/ThumbnailPost/'.$tlrow->timeline_thumbnail); ?>" alt="Your Avatar">'
           });
         })
       </script>
-    </div>        
+    </div>
+    <div class="checkbox">
+    <?php
+    if($tlrow->isHeadline == 0)
+    {
+    ?>
+      <label><input type="checkbox" name="check_headlines" >Set as Top Headlines</label>
+    <?php
+    }
+    else
+    {
+    ?>
+      <label><input type="checkbox" name="check_headlines" checked>Set as Top Headlines</label>
+    <?php
+    }
+    ?>    
+    </div>    
     <!-- /.box-header -->
     <div class="box-body pad">
 				<label>Description</label>
@@ -73,6 +90,7 @@
       </div> 
 		<div class="form-group col-md-4">
 			<button type="submit" class="btn btn-info">Save</button>
+      <a href="<?php echo site_url('adm/timeline/manage'); ?>" class="btn btn-warning"> Cancel</a>
 		</div>
 		</form>
 	</div>

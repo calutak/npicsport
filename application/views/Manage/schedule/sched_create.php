@@ -20,28 +20,25 @@
         </div>
         <div class="box-body">
             <div class="col-md-12">
-                <h4><strong>Team List</strong></h4>
                 <div class="box-body">
-                    <h4> Registered Team </h4>
+                    <h4> Match Found </h4>
                     <?php 
-                    if(!empty($registered_team))
-                    {
-                        foreach ($registered_team as $row) {
-                            echo '<div class="col-md-3 bg-teal text-muted">';
-                            echo '<h4>'.$row->team_name.'</h4>';
+                    $i = 0;
+                        foreach ($match as $m) {
+                            echo '<div class="col-sm-3">';
+                            echo '<label>'.($i+1).' Group</label>';
+                            echo '<input type=\'text\' value=\''.$m['team_a'].'\' class=\'form-control\' disabled>';
+                            echo '<center><h4>VS</h4></center>';
+                            echo '<input type=\'text\' value=\''.$m['team_b'].'\' class=\'form-control\'disabled>';
                             echo '</div>';
+                            $i++;
                         }
-                    }
-                    else
-                    {
-                        echo '<h4 class=\'text-red\'> No Team validated team for this Tournament! </h4>';
-                    }
                     ?>
                 </div>
             </div>
         	<?php
             $list_type = array('Knockout' => 'Knockout'); 
-        	echo form_open(site_url('adm/schedule/create/add_new'))
+        	echo form_open(site_url('adm/schedule/create/'.$tid.'/add_new'))
                 .'<div class=\'col-md-12\'>
                 <h4><strong>Tournament Information</strong></h4>
                 <hr>'
@@ -114,7 +111,6 @@
                 .'<div class=\'form-group col-md-3\'>'
                 .form_label('Time Gap per Games', 'time_gap')
                 .form_input('time_gap', '', 'class=\'form-control\' placeholder=\'Gap in minutes\' required')
-                .form_hidden('tournament_id', $tid)
                 .'</div>
                 <div class=\'col-md-12\'>
                 <h4><strong>Action</strong></h4>
@@ -139,24 +135,16 @@
 <script type="text/javascript">
     $(function () {
         $('#start_time').timepicker({
-            timeFormat: 'h:mm p',
-            interval: 60,
-            minTime: '8',
-            maxTime: '6:00pm',
-            startTime: '08:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
+            timeFormat: 'h:i a',
+              minTime: '08:00am',
+              maxTime: '02:00pm',
+              scrollbar: true
         });
         $('#end_time').timepicker({
-            timeFormat: 'h:mm p',
-            interval: 60,
-            minTime: '8',
-            maxTime: '6:00pm',
-            startTime: '08:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
+            timeFormat: 'h:i a',
+              minTime: '12:00pm',
+              maxTime: '05:00pm',
+              scrollbar: true
         });
     });
 </script>

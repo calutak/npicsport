@@ -17,11 +17,14 @@
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Validate Registered Team</h3>
+        <a href="<?php echo site_url('adm/team/new'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Add Team</a>
       </div>
       <div class="box-body">
+          <form id="team_data" method="post">
           <table id="catalog" class="table table-bordered table-striped">
             <thead>
             <tr>
+              <th><i class="fa fa-check"></i></th>
               <th>Team Name</th>
               <th>Team Email</th>
               <th>Tournament ID</th>
@@ -36,6 +39,7 @@
               {
                 echo 
                   '<tr>
+                    <td>'.form_checkbox('sel[]',$row->team_id,false).'</td>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
                     <td>'.$row->tournament_id.'</td>
@@ -50,6 +54,7 @@
               {
                 echo 
                   '<tr>
+                    <td>'.form_checkbox('sel[]',$row->team_id,false).'</td>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
                     <td>'.$row->tournament_id.'</td>
@@ -64,12 +69,14 @@
               {
                 echo 
                   '<tr>
+                    <td>'.form_checkbox('sel[]',$row->team_id,false).'</td>
                     <td>'.$row->team_name.'</td>
                     <td>'.$row->team_email.'</td>
                     <td>'.$row->tournament_id.'</td>
                     <td><center><span class="label label-success">Approved</span></center></td>
                     <td><center>
-                      <a href="'.site_url("adm/team/account/reset_passwd/".$row->team_id).'" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="left" title="Reset Password"><i class="fa fa-refresh"></i></a>
+                      <a href="'.site_url("adm/manage/team/".$row->team_id).'" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="left" title="Manage Member"><i class="fa fa-user"></i></a>
+                      <a href="'.site_url("adm/manage/team/edit/".$row->team_id).'" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit Team"><i class="fa fa-edit"></i></a>
                       <a href="'.site_url("adm/team/account/delete/".$row->team_id).'" class="btn btn-xs btn-danger delete" data-toggle="tooltip" data-placement="right" title="Delete!"><i class="fa fa-close"></i></a>
                     </center></td>
                   </tr>';
@@ -80,6 +87,9 @@
             <tfoot>
             </tfoot>
           </table>
+            <hr>
+              <a href="<?php echo site_url('adm/team/multi_delete'); ?>" class="btn btn-danger delete_selected"><i class="fa fa-close"></i>&nbsp; Delete Selected</a>
+          </form>
         </div>
         <!-- /.box-body -->
       </div>
@@ -125,7 +135,7 @@
             url:$(this).attr('href')+d.team_id+'/TRUE/2',
             data:$(this).serialize(),
             success:function(){
-              window.location.href = 'team';
+              window.location.href = '';
             }
           });
         });
@@ -146,6 +156,29 @@
           confirmButtonText: 'Yes, delete it!'
         }).then(function(isConfirm) {
           if (isConfirm) {
+            swal("Deleted!", "Team has deleted!", "success");
+            setTimeout(function(){ window.location.replace(url); }, 1000);
+          } else {
+            swal("Cancel", "No data deleted.", "error");
+          }
+        });
+    });
+    $('.delete_selected').on("click", function(e) {
+      e.preventDefault();
+      var url = $(this).attr('href');
+      console.log(url);
+      swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            $('#team_data').prop('action', url);
+            $('#team_data').submit();
             swal("Deleted!", "Team has deleted!", "success");
             setTimeout(function(){ window.location.replace(url); }, 1000);
           } else {

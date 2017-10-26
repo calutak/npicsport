@@ -40,12 +40,12 @@
 		      <div class="input-group-addon">
 		        <i class="fa fa-calendar"></i>
 		      </div>
-		      <input class="form-control pull-right" name="tdate" id="reservation" type="text">
+		      <input class="form-control pull-right" name="tdate" id="reservation" type="text" placeholder="Input registration date first">
 		    </div>
 		</div>
 		<div class="form-group col-xs-4">
 			<label>* Sport type</label>
-			<select name="select2" class="form-control select2">
+			<select name="select2" class="form-control">
 				<option value="Football (Soccer)" selected>Football (Soccer)</option>
 			</select>
 		</div>
@@ -55,7 +55,8 @@
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Team</label>
-			<input type="text" id="mt" name="max_team" class="form-control col-xs-2" placeholder="Max Team">
+			<input type="text" id="mt" name="max" class="form-control col-xs-2" placeholder="Max Team" disabled>
+			<input type="hidden" id="mth" name="max_team">
 		</div>
 		<div class="form-group col-xs-2">
 			<label>* Max Member</label>
@@ -85,21 +86,32 @@
 	</div>
 </section>
 <script>
-$('#reservation').daterangepicker({
-    "startDate": "08/07/2017",
-    "endDate": "08/20/2017"
-}, function(start, end, label) {
-  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-});
 $('#reservation2').daterangepicker({
-    "startDate": "08/21/2017",
-    "endDate": "08/30/2017"
+    "minDate": new Date(),
 }, function(start, end, label) {
+	$('#reservation').daterangepicker({
+		"minDate": end,
+	}, function(start, end, label) {
+	  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+	});
   console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 });
 $('#mtfc').change(function() {
 	var n = parseInt($('#mtfc').val());
 	var total = n * 9;
+	if (total <= 9) 
+	{
+		total = 8;
+	} 
+	else if (total <=27)
+	{
+		total = 16;
+	}
+	else
+	{
+		total = 32;
+	}
 	$('#mt').val(total);
+	$('#mth').val(total);
 });
 </script>

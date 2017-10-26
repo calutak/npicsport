@@ -17,6 +17,8 @@
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Manage Timeline</h3>
+        <a href="<?php echo site_url('adm/timeline/clear_timeline/news'); ?>" class="btn btn-default pull-right"><i class="fa fa-close"></i>&nbsp; Delete All Post</a>
+        <a href="<?php echo site_url('adm/timeline/create'); ?>" class="btn btn-default pull-right"><i class="fa fa-plus"></i>&nbsp; Add Post</a>
       </div>
       <div class="box-body">
           <table id="catalog" class="table table-bordered table-striped">
@@ -39,7 +41,7 @@
                 <td>'.date('d/M/Y',$row->timeline_date).'</td>
                 <td><center>
                   <a href="'.site_url("adm/timeline/manage/edit/".$row->timeline_id).'" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="left" title="Edit"><i class="fa fa-edit"></i></a>
-                  <a href="'.site_url("adm/timeline/manage/delete/".$row->timeline_id).'" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fa fa-times"></i></a>
+                  <a href="'.site_url("adm/timeline/manage/delete/".$row->timeline_id).'" class="btn btn-xs btn-danger delete" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fa fa-times"></i></a>
                 </center></td>
               </tr>';
               } 
@@ -75,3 +77,29 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- END MODAL Section -->
+
+<script>
+  $(document).ready(function () {
+    $('.delete').on("click", function(e) {
+      e.preventDefault();
+      var url = $(this).attr('href');
+      console.log(url);
+      swal({
+          title: 'Are you sure to clear all the schedule data?',
+          text: "This will also clear all the match data!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            swal("Deleted!", "All data cleared!", "success");
+            setTimeout(function(){ window.location.replace(url); }, 1000);
+          } else {
+            swal("Cancel", "No data deleted.", "error");
+          }
+        });
+    });
+  });
+</script>

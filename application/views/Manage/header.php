@@ -34,12 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" href="<?php echo site_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'); ?>">
   <!-- sweet alert 2 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.css">
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/custom.css'); ?>">
   <!-- Data Toogle -->
   <link rel="stylesheet" href="<?php echo site_url('assets/bootstrap/css/bootstrap-toggle.min.css'); ?>">
   <!-- Datetime Picker -->
-  <link rel="stylesheet" href="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.css'); ?>">
+  <link rel="stylesheet" href="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.min.css'); ?>">
   <!-- InputFile -->
   <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/bootstrap/css/fileinput.min.css'); ?>" media="all">
+  <!-- Bracket -->
+  <link rel="stylesheet" href="<?php echo site_url('assets/plugins/jquerybracket/jquery.bracket.min.css'); ?>">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
 </head>

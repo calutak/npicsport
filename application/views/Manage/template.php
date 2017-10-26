@@ -1,4 +1,4 @@
-<body class="hold-transition skin-green sidebar-mini fixed">
+<body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -21,114 +21,7 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-        <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-info">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                  <li>
-                    <a href="#">
-                      <h4>
-                        AdminLTE Design Team
-                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <h4>
-                        Developers
-                        <small><i class="fa fa-clock-o"></i> Today</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <h4>
-                        Sales Department
-                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Reviewers
-                        <small><i class="fa fa-clock-o"></i> 2 days</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
-          <!-- Notifications: style can be found in dropdown.less -->
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                      page and may cause design problems
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-red"></i> 5 new members joined
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">View all</a></li>
-            </ul>
-          </li>
+        
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
@@ -179,7 +72,7 @@
         <h4 class="modal-title"><i class="fa fa-ban"></i> Alert!</h4>
       </div>
       <div class="modal-body">
-        <h5>Seems you don't have any Tournament yet, want to create one?</h5>
+        <h5>Seems you don't have any Tournament or all of your Tournament already Scheduled, want to create another one?</h5>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancel</button>
@@ -199,9 +92,8 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-        <form action="<?php echo site_url('adm/schedule/create') ?>" method="post">
-        <select name="select2" class="form-control select2" style="width: 100%;">
-          <?php foreach ($tdropdown as $tourname) {
+        <select id="tidt" class="form-control" style="width: 100%;">
+          <?php foreach ($ddropdown as $tourname) {
             echo '<option value="'.$tourname->tournament_id.'">'.$tourname->tournament_name.'</option>';
           } ?>
         </select>
@@ -209,8 +101,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-outline">Choose</button>
-        </form>
+        <button type="button" class="btn btn-outline" onclick="findTournament()">Choose</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -243,8 +134,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-        <form action="<?php echo site_url('adm/schedule/manage') ?>" method="post">
-        <select name="select2" class="form-control select2" style="width: 100%;">
+        <select id="tids" class="form-control" style="width: 100%;">
           <?php foreach ($mdropdown as $tourname) {
             echo '<option value="'.$tourname->tournament_id.'">'.$tourname->tournament_name.'</option>';
           } ?>
@@ -253,8 +143,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-outline">Choose</button>
-        </form>
+        <button type="button" class="btn btn-outline" onclick="findSchedule()">Choose</button>
       </div>
     </div>
   </div>
@@ -278,25 +167,45 @@
 
 <!-- START JS Section Create Tournament-->
 <script>
-$(function () {
+$(document).ready(function () {
   $('#catalog').DataTable();
+  $('[data-toggle="tooltip"]').tooltip();
 });
+function findSchedule() {
+  $.ajax({
+    url: '<?php echo site_url('adm/schedule/find_s'); ?>',
+    type: 'POST',
+    data: {
+      tournamentid: $('#tids').val()
+    },
+    success:function(data) {
+      var dt = JSON.parse(data);
+      var id = dt.id;
+      var url = dt.url;
+      window.location.replace(url);
+    },
+    error:function(data) {
+      alert(data);
+    }
+  });
+}
+function findTournament() {
+  $.ajax({
+    url: '<?php echo site_url('adm/schedule/find_t'); ?>',
+    type: 'POST',
+    data: {
+      tournamentid: $('#tidt').val()
+    },
+    success:function(data) {
+      var dt = JSON.parse(data);
+      var id = dt.id;
+      var url = dt.url;
+      window.location.replace(url);
+    },
+    error:function(data) {
+      alert(data);
+    }
+  });
+}
 </script>
 <!-- END JS Section -->
-
-<!-- START JS Section Schedule -->
-<script>
-$(function () {
-  $(".select2").select2();
-});
-</script>
-<!-- END JS Section Schedule -->
-
-<!-- START JS Section Timeline -->
-<script>
-  $(function () {
-    //bootstrap WYSIHTML5 - text editor
-    $(".textarea").wysihtml5();
-  });
-</script>
-<!-- END JS Section Timeline 

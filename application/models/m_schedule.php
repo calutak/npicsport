@@ -27,6 +27,18 @@ class M_schedule extends CI_Model
 	{
 		return $this->db->where('tournament_id', $id)->select_max('schedule_id', 'id')->get('tb_schedule')->row_object()->id;
 	}
+	public function get_min_id_schedule($id)
+	{
+		return $this->db->where('tournament_id', $id)->select_min('schedule_id', 'id')->get('tb_schedule')->row_object()->id;
+	}
+	public function get_max_time_schedule($id)
+	{
+		return $this->db->where('tournament_id', $id)->select_max('schedule_time', 'st')->get('tb_schedule')->row_object()->st;
+	}
+	public function get_min_time_schedule($id)
+	{
+		return $this->db->where('tournament_id', $id)->select_min('schedule_time', 'st')->get('tb_schedule')->row_object()->st;
+	}
 	public function get_row_schedule()
 	{
 		return $this->db->get('tb_schedule')->num_rows();
@@ -40,9 +52,13 @@ class M_schedule extends CI_Model
 			);
 		return $this->db->insert('tb_schedule',$query);
 	}
-	public function clear_table()
+	public function clear_schedule($tid)
 	{
-		$this->db->truncate('tb_schedule');
+		$this->db->where('tournament_id', $tid)->delete('tb_schedule');
+		$cek = $this->db->get('tb_schedule')->num_rows();
+		if($cek == 0){
+			$this->db->truncate('tb_schedule');
+		}
 	}
 	public function add_setting($round, $bracket, $id)
 	{
@@ -60,5 +76,22 @@ class M_schedule extends CI_Model
 	public function get_filtered_schedule($id)
 	{
 		return $this->db->query('select s.schedule_id, s.schedule_date, s.schedule_time, s.tournament_id FROM tb_schedule s LEFT JOIN tb_match m ON s.schedule_id=m.schedule_id WHERE m.schedule_id IS NULL and s.tournament_id=\''.$id.'\'')->result_object();
+	}
+	public function get_schedule_byID($id)
+	{
+		return $this->db->where('schedule_id', $id)->get('tb_schedule')->row_object();
+	}
+	public function upd_schedule($id, $data)
+	{
+		return $this->db->where('schedule_id', $id)->update('tb_schedule', $data);
+	}
+	public function append_schedule($id, $sid)
+	{
+		$data = array('schedule_id' => $sid);
+		return $this->db->where('match_id', $id)->update('tb_match', $data);
+	}
+	public function schedule_check($val, $tid)
+	{
+		return $this->db->where('tournament_id',$tid)->where($val)->get('tb_schedule')->num_rows();
 	}
 }

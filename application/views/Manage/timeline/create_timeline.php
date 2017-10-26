@@ -29,16 +29,19 @@
       <div class="box-body pad">
         <div class="form-group">
           <label>Label Post</label>
-          <select class="form-control select2" name="cat">
+          <select class="form-control" name="cat">
             <option value="news">News</option>
           </select>
           <label class="control-label">Select Thumbnail</label>
-          <input id="th" name="thumbnailpost" type="file">
+          <input id="th" name="thumbnailpost" type="file" required>
           <script>
             $(document).ready(function(){
               $("#th").fileinput({showCaption: false, showUpload: false});
             })
           </script>
+        </div>
+        <div class="checkbox">
+          <label><input type="checkbox" name="check_headlines" value="true">Set as Top Headlines</label>
         </div>
 				<label>Description</label>
         <textarea name="description" enctype="multipart/form-data" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>

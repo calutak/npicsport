@@ -1,7 +1,9 @@
+<!-- jQuery3.2.0 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="<?php echo site_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!--JQuery UI-->
+<script src="<?php echo site_url('assets/plugins/jQueryUI/jquery-ui.min.js'); ?>"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
@@ -45,7 +47,7 @@
 <!-- CheckButton JS -->
 <script src="<?php echo site_url('assets/bootstrap/js/checkbutton.js'); ?>"></script>
 <!-- Time Picker -->
-<script src="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.js'); ?>"></script>
+<script src="<?php echo site_url('assets/plugins/timepicker/jquery.timepicker.min.js'); ?>"></script>
 <!-- TinyMCE -->
 <script src="<?php echo site_url('assets/plugins/tinymce/tinymce.min.js'); ?>"></script>
 <!-- Input File -->
@@ -55,17 +57,20 @@
 <script src="<?php echo site_url('assets/fileinput.min.js'); ?>"></script>
 <script src="<?php echo site_url('assets/locales/LANG.js'); ?>"></script>
 <script src="<?php echo site_url('assets/plugins/fileInput/fa/theme.min.js'); ?>"></script>
+<!-- Bracket -->
+<script src="<?php echo site_url('assets/plugins/jquerybracket/jquery.bracket.min.js'); ?>"></script>
+<!-- sortable -->
+<script src="<?php echo site_url('assets/plugins/jquery-sortable-min.js'); ?>"></script>
 
 <script>
 	$(document).ready(function() {
 		var loc = window.location;
-		var path = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-		var basePath = loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - path.length));
+		var basePath = loc.href.substring(0,26);
 		setInterval(function() {
-			$.get(basePath+'check_date', {}, function() {
-
-			});
-		}, 20000);
+			$.get(basePath+'/check_date', {}, function() {
+				console.log(basePath+'/check_date');
+			});	
+		}, 10000);
 	});
 </script>
 

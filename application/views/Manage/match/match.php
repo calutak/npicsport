@@ -14,96 +14,113 @@
 
 <!-- Main content -->
 <section class="content">
+  <?php echo $this->session->flashdata('response'); ?>
   <div class="box box-primary">
-      <div class="box-header with-border">
-          <h3 class="box-title">Update Match Result</h3>
-      </div>
-      <?php form_open(); ?>
+    <div class="box-header with-border">
+        <h3 class="box-title">Update Match Result</h3>
+    </div>
+    <form id="find" action="<?php echo site_url('adm/match/find') ?>" method="post">
       <div class="box-body">
-        <div class="box no-border box-list">
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover no-border">
-              <?php
-              foreach ($list_match as $matches) 
-              { ?>
-                <tr class="bg-gray-active color-palette">
-                  <th>
-                  <?php 
-                    if(empty($matches->dates))
-                    {
-                      echo 'TBD';
-                    }
-                    else
-                    {
-                      echo date('l, d/M/Y', $matches->dates);
-                    } 
-                  ?>
-                  </th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr class="bg-gray color-palette">
-                  <td class="pull-left"><?php echo $matches->loc; ?></td>
-                  <td><?php echo date('h:i A', $matches->times); ?></td>
-                  <td class="pull-right"><a href="#"><i class="fa fa-edit"></i></a></td>
-                </tr>
-                <tr>
-                  <?php
-                  $score = explode('v', $matches->score);
-                  if(!empty($matches->teamA)) {
-                    echo '<td class="pull-left">'.$matches->teamA.'</td>';
-                  } else {
-                    echo '<td class="pull-left"> Waiting Opponent </td>';
-                  }
-                  echo '<td>'.$score[0].' VS '.$score[1].'</td>';
-                  if(!empty($matches->teamB)) {
-                    echo '<td class="pull-right">'.$matches->teamB.'</td>';
-                  } else {
-                    echo '<td class="pull-right"> Waiting Opponent </td>';
-                  } 
-                  ?>
-                </tr>
-              <?php 
-              } 
-              ?>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+        <?php if(!isset($mdropdown)) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>No Match Scheduled!
+        </div>
+        <?php } else { ?>
+        <div class="form-group col-md-3">
+          <label style="padding-top: 4%;">Choose Tournament Match</label>
+        </div>
+        <div class="form-group col-md-2">
+          <select class="form-control" name="tid">
+            <?php foreach ($mdropdown as $row) 
+            {
+              echo '<option value="'.$row->tournament_id.'">'.$row->tournament_name.'</option>';
+            }
+            ?>
+          </select>
+        </div>
+        <div class="form-group col-md-2">
+          <button type="submit" class="btn btn-info">Go</button>
+        </div>
+        <?php } ?>
       </div>
-      <div class="box-footer with-border">
-          <?php
-              echo form_submit('update','Update Schedule','class=\'btn btn-info\'');
-              form_close();
-              echo anchor(site_url('adm/schedule/clear/'.$tid),'Erase Schedule','class=\'btn btn-danger delete\'');
-          ?>
-      </div>
+    </form>
+    <div class="clearfix"></div>
+    <div class="box-body match_list"></div>
+    <div class="box-footer with-border">
+    </div>
   </div>
 </section>
 
 <script>
-  $(document).ready(function () {
-    $('.delete').on("click", function(e) {
-      e.preventDefault();
-      var url = $(this).attr('href');
-      console.log(url);
-      swal({
-          title: 'Are you sure to clear all the schedule data?',
-          text: "This will also clear all the match data!",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
-        }).then(function(isConfirm) {
-          if (isConfirm) {
-            swal("Deleted!", "All data cleared!", "success");
-            setTimeout(function(){ window.location.replace(url); }, 1000);
-          } else {
-            swal("Cancel", "No data deleted.", "error");
-          }
-        });
+$(document).ready(function () {
+  $('.delete').on("click", function(e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    swal({
+      title: 'Are you sure to clear all the schedule data?',
+      text: "This will also clear all the match data!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        swal("Deleted!", "All data cleared!", "success");
+        setTimeout(function(){ window.location.replace(url); }, 1000);
+      } else {
+        swal("Cancel", "No data deleted.", "error");
+      }
     });
   });
+  $('#find').submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: $(this).attr('method'),
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      success:function(data) {
+        $('.match_list').html(data).promise().done(function() {
+          $('.edit').click(function(e){
+            e.preventDefault();
+            var tid = $('input[name=tid]').val();
+            var id = $(this).attr('id');
+            // $('input[id=scA'+id+']').prop('disabled', false);
+            // $('input[id=scB'+id+']').prop('disabled', false);
+            // $(this).addClass('update');
+            // $(this).html('<i class=\'fa fa-save\'></i>Update');
+            // $('.update').click(function(e){
+            //   e.preventDefault();
+              $.ajax({
+                url: $('form[id=upd]').attr('action'),
+                type: 'POST',
+                data: {
+                  mid: id,
+                  tid: tid,
+                  scoreA: $('input[id=scA'+id+']').val(),
+                  scoreB: $('input[id=scB'+id+']').val(),
+                  tA: $("#A"+id).text(),
+                  tB: $("#B"+id).text()
+                },
+                success:function(s){
+                  var url = JSON.parse(s);
+                  console.log(url);
+                  window.location.replace(url);
+                }
+              });
+            // });
+          });
+          $('.updateAll').on("click", function(e) {
+            e.preventDefault();
+            var tid = $('input[name=tid]').val();
+            var urls = '<?php echo site_url('adm/match/updateAll'); ?>';
+            $('form[id=upd]').prop('action', urls);
+            $('form[id=upd]').submit();
+          });
+        });
+      }
+    });
+  });
+});
 </script>
